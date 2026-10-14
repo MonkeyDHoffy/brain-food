@@ -1,0 +1,22 @@
+# Brain Food – Präsentation unter https://brainfood.hoffja.de
+# Liegt auf meinserver unter /opt/brainfood/docker-compose.yml, eigenes Compose-Projekt neben /opt/webserver.
+# TLS und HTTP-Weiterleitung macht der vorhandene nginx-proxy samt acme-companion (Netz webserver_default).
+name: brainfood
+services:
+  brainfood-web:
+    image: nginx:alpine
+    container_name: brainfood-web
+    restart: unless-stopped
+    environment:
+      VIRTUAL_HOST: brainfood.hoffja.de
+      LETSENCRYPT_HOST: brainfood.hoffja.de
+    volumes:
+      - /opt/brainfood/site:/srv/brainfood:ro
+      - /opt/brainfood/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - /opt/brainfood/htpasswd:/etc/nginx/brainfood.htpasswd:ro
+    mem_limit: 64m
+    networks: [webserver_default]
+
+networks:
+  webserver_default:
+    external: true

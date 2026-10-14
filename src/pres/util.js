@@ -1,6 +1,7 @@
 // Hilfen für die Präsentationsflächen: Bilder mit Platzhalter, Tipp-Animation, Syntax-Hervorhebung.
 import { animate, isAbort } from '../engine/clock.js'
 import { audio } from '../engine/audio.js'
+import MANIFEST from 'virtual:media'
 
 export const BASE = import.meta.env.BASE_URL
 export const MEDIA = `${BASE}media/images/`
@@ -10,6 +11,7 @@ export const qa = (root, sel) => [...root.querySelectorAll(sel)]
 
 /** Bild mit automatischem Platzhalter, falls die Datei fehlt. */
 export function imgTag(file, alt) {
+  if (!MANIFEST.images.includes(file)) return `<div class="ph">Platzhalter<br>${file}<br><small>${alt}</small></div>`
   return `<img src="${MEDIA}${file}" alt="${alt}" data-file="${file}" loading="eager" decoding="async">`
 }
 

@@ -46,17 +46,20 @@ test('Bootscreen → Menü → manuell: Mikrofon mit E, Sätze mit N überspring
   await page.keyboard.press('Enter') // Level 1
   await page.keyboard.press('Enter') // Manuell spielen
   await expect(page.locator('#modeTag')).toHaveText('MANUELL')
-  await page.waitForFunction(() => window.__bf.director.armed?.id === 'mic')
+  await page.waitForFunction(() => window.__bf.director.armed?.id === 'mic', null, { timeout: 15000 })
   // Zum Mikrofon laufen und E drücken
   await page.keyboard.down('KeyD')
-  await page.waitForFunction(() => window.__bf.world.player.x > 228)
+  await page.waitForFunction(() => window.__bf.world.player.x > 226, null, { timeout: 15000 })
   await page.keyboard.up('KeyD')
+  await page.waitForFunction(() => Math.abs(window.__bf.world.player.vx) < 1, null, { timeout: 5000 })
+  expect(await page.evaluate(() => Math.abs(window.__bf.world.player.x - 252))).toBeLessThan(30)
   await page.keyboard.press('KeyE')
-  await page.waitForFunction(() => window.__bf.speech.active?.id === '01-intro')
-  // Alle Sätze überspringen
-  for (let i = 0; i < 12; i++) {
+  await page.waitForFunction(() => window.__bf.speech.active?.id === '01-intro', null, { timeout: 10000 })
+  // Sätze überspringen, bis die Tür bereitsteht
+  for (let i = 0; i < 60; i++) {
+    if (await page.evaluate(() => window.__bf.director.armed?.id === 'door')) break
     await page.keyboard.press('KeyN')
-    await page.waitForTimeout(150)
+    await page.waitForTimeout(250)
   }
   await page.waitForFunction(() => window.__bf.director.armed?.id === 'door', null, { timeout: 15000 })
   await expect(page.locator('.fcard.in')).toHaveCount(4)

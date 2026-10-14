@@ -1,5 +1,5 @@
 // Pixel-Icons als SVG aus Zeichenrastern. '#' = aktuelle Textfarbe, weitere Zeichen = Palette.
-const PAL = { g: '#22654f', l: '#dcea9e', r: '#a74d30', w: '#fbfaf3', k: '#233a34', m: '#8f9b94', y: '#e9b949', s: '#e7b894' }
+const PAL = { d: '#174937', g: '#22654f', l: '#dcea9e', r: '#a74d30', w: '#fbfaf3', k: '#233a34', m: '#8f9b94', y: '#e9b949', s: '#e7b894' }
 
 const ICONS = {
   play: ['..#.........', '..##........', '..###.......', '..####......', '..#####.....', '..######....', '..######....', '..#####.....', '..####......', '..###.......', '..##........', '..#.........'],
@@ -23,7 +23,7 @@ const ICONS = {
   check: ['..........#', '.........##', '........##.', '#......##..', '##....##...', '.##..##....', '..####.....', '...##......'],
   cross: ['##....##', '###..###', '.######.', '..####..', '..####..', '.######.', '###..###', '##....##'],
   arrow: ['......#.....', '......##....', '......###...', '#########...', '##########..', '###########.', '##########..', '#########...', '......###...', '......##....', '......#.....'],
-  brain: ['...######...', '..#llllll#..', '.#lgllllgl#.', '#llgllllglll', '#lllllgllll#', '#llgllgllgl#', '#lllgllllll#', '.#llllglll#.', '..########..', '....#..#....', '....####....'],
+  brain: ['....dddddd.ddddd....', '..ddllllgldlllglldd.', '.dlllgggllldllggglld', 'dllgglllglldlglllgld', 'dlglllggllldllgglld.', 'dllggglllgldlllgglld', 'dlglllgglllddgllllgd', '.dllgglllgllllggllld', '..ddlllggllgggllldd.', '....ddddddddlllddd..', '...........dlld.....', '............dd......'],
 }
 
 export function icon(name, { size = 24, title } = {}) {

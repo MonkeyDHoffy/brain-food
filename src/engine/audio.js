@@ -1,6 +1,8 @@
 // Ton: Geräusche (SFX), Hintergrundmusik und die selbst eingesprochenen Sprachaufnahmen.
 // Alles startet erst nach einer bewussten Nutzeraktion (Einschalten im Bootscreen).
 // Fehlende Dateien sind kein Fehler: Dann bleibt es still bzw. der Textmodus übernimmt.
+import MEDIA from 'virtual:media'
+
 const BASE = import.meta.env.BASE_URL
 
 const SFX = {
@@ -30,6 +32,7 @@ function setGain(node, v, t = 0.25) {
 }
 
 async function loadSfx(name) {
+  if (!MEDIA.sfx.includes(`${name}.mp3`)) return
   try {
     const res = await fetch(`${BASE}media/sfx/${name}.mp3`)
     if (!res.ok || !(res.headers.get('content-type') || '').includes('audio')) return
@@ -98,7 +101,7 @@ export const audio = {
   async startMusic() {
     if (!ctx || musicEl) return
     const url = `${BASE}media/music/loop.mp3`
-    if (!(await mediaExists(url))) return
+    if (!MEDIA.music.includes('loop.mp3')) return
     musicEl = new Audio(url)
     musicEl.loop = true
     musicEl.preload = 'auto'
@@ -142,7 +145,7 @@ export const audio = {
     const url = `${BASE}media/audio/${file}`
     const entry = { ok: false, el: null, duration: 0 }
     voices.set(seqId, entry)
-    if (!(await mediaExists(url))) return entry
+    if (!MEDIA.audio.includes(file)) return entry
     const el = new Audio(url)
     el.preload = 'auto'
     await new Promise((resolve) => {

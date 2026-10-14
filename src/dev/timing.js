@@ -3,6 +3,7 @@
 // Ergebnis sofort im Spiel testen kann (gilt dann nur in diesem Browser).
 import content from '../data/content.json'
 import timings from '../data/timings.json'
+import MEDIA from 'virtual:media'
 
 const BASE = import.meta.env.BASE_URL
 const KEY = 'bf-timings'
@@ -54,8 +55,7 @@ export function openTimingTool() {
   async function checkAudio() {
     const el = root.querySelector('.tt-audio')
     try {
-      const res = await fetch(`${BASE}media/audio/${seq.audio}`, { method: 'HEAD' })
-      const ok = res.ok && (res.headers.get('content-type') || '').startsWith('audio')
+      const ok = MEDIA.audio.includes(seq.audio)
       el.textContent = ok ? '✓ vorhanden' : '✗ fehlt'
       el.className = `tt-audio ${ok ? 'ok' : 'bad'}`
     } catch {
