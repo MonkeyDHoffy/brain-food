@@ -16,6 +16,16 @@ Doppelklick auf `tools\Online-aktualisieren.cmd`. Das Skript baut, lädt hoch un
 ssh meinserver "sh /opt/brainfood/deploy.sh --zurueck"
 ```
 
+## Gesicherte Fassung v1
+
+Die erste vollständige Fassung liegt fest unter `/opt/brainfood/site/v1`. Sie steht außerhalb von `releases/` und wird nie automatisch gelöscht.
+Dazu kommen der Git-Tag `v1.0` und das GitHub-Release mit fertigem Build.
+
+- Notfall, sofort auf v1: Doppelklick auf `tools\Zurueck-zu-v1.cmd` (oder `ssh meinserver "sh /opt/brainfood/deploy.sh --auf v1"`)
+- Zurück auf den neuesten Stand: `tools\Online-aktualisieren.cmd`
+- Weitere Fassung sichern, z. B. v2: `ssh meinserver "sh /opt/brainfood/deploy.sh --sichern v2"`
+- v1 lokal wiederherstellen: `git checkout v1.0` (zurück mit `git checkout main`)
+
 Ganz abschalten (andere Sites bleiben unberührt):
 
 ```sh

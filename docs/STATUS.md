@@ -65,4 +65,5 @@ Bedienleiste und Mauszeiger blenden sich nach 2,5 s Mausruhe aus.
 - Server: Container `brainfood-web` unter `/opt/brainfood` auf meinserver. Andere Sites wurden nicht angefasst.
 - Zugang: Benutzer `brainfood`, das Passwort steht in **`.zugang.local.txt`** im Projektordner. Die Datei ist nicht im Repo.
 - Aktualisieren: `tools\Online-aktualisieren.cmd`. Rollback: `ssh meinserver "sh /opt/brainfood/deploy.sh --zurueck"`.
+- **Gesicherte Fassung v1:** Git-Tag `v1.0`, GitHub-Release mit Build, Server-Kopie `/opt/brainfood/site/v1`. Notfall: `tools\Zurueck-zu-v1.cmd`.
 - Repo: https://github.com/MonkeyDHoffy/brain-food (privat).
