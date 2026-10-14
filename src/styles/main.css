@@ -254,3 +254,29 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .tt-json { background: var(--ink); color: var(--lime); padding: 12px; font: 14px/1.4 var(--font-code); white-space: pre-wrap; word-break: break-all; }
 
 @media (prefers-reduced-motion: reduce) { .roll { animation: none !important; } .credits { overflow: auto; mask-image: none; } }
+
+/* ---------- Abspann v2: Video-Tipp und Bonuslevel ---------- */
+.end-wrap { grid-template-columns: 820px 1fr; gap: 56px; padding: 64px 90px 56px; }
+.lc { font-size: 0; line-height: 0; margin-top: 18px; text-shadow: none; }
+.lc svg { display: block; }
+.stars { margin: 18px 0 22px; }
+.stars i { width: 44px; height: 44px; }
+.stats div { font-size: 21px; padding: 6px 0; }
+.thanks-line { margin-top: 26px; font: 700 54px/1 var(--font-pixel); color: var(--paper); }
+.thanks-line span { color: var(--lime); margin-left: 14px; }
+.video-tip { display: flex; gap: 20px; align-items: center; margin-top: 22px; padding: 14px 18px 14px 14px; background: var(--paper-2); color: var(--ink); text-decoration: none; border: 3px solid var(--lime-d); box-shadow: 8px 8px 0 #0005; max-width: 640px; }
+.video-tip:hover, .video-tip:focus-visible { background: var(--lime-l); }
+.video-tip .qr svg { width: 132px; height: 132px; display: block; }
+.vt-text { display: grid; gap: 6px; }
+.vt-text small { font: 600 16px/1 var(--font-ui); letter-spacing: 1.5px; text-transform: uppercase; color: var(--green); }
+.vt-text b { font: 700 30px/1.1 var(--font-text); letter-spacing: -.5px; }
+.vt-text span { font: 500 19px/1.2 var(--font-text); color: var(--muted); }
+.end-actions { margin-top: 26px; }
+.bonus-head { display: flex; align-items: baseline; gap: 14px; font: 600 30px/1 var(--font-pixel); color: var(--paper); margin-bottom: 14px; }
+.bonus-head b { font: 700 16px/1 var(--font-ui); letter-spacing: 2px; background: var(--lime); color: var(--ink); padding: 6px 8px; }
+.bonus-score { margin-left: auto; font: 600 18px/1 var(--font-ui); color: var(--lime); }
+.headman { display: block; width: 840px; height: 440px; border: 4px solid var(--lime-d); box-shadow: 10px 10px 0 #0006; image-rendering: auto; }
+.bonus-hint { margin: 12px 0 0; font: 400 17px/1.4 var(--font-text); color: #9fb1a8; }
+.bonus-hint kbd { font: 600 14px/1 var(--font-ui); color: var(--paper); border: 2px solid #4d665d; padding: 2px 6px; margin: 0 2px; }
+.end-right .credits { height: 250px; margin-top: 18px; }
+@keyframes roll { from { transform: translateY(250px) } to { transform: translateY(-100%) } }

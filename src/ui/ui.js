@@ -3,8 +3,10 @@ import { icon } from './icons.js'
 import { audio } from '../engine/audio.js'
 import { SOURCES } from '../data/media.js'
 import { ALL_SENTENCES } from '../engine/speech.js'
-import { Head } from '../game/head.js'
-import { Babble } from '../engine/babble.js'
+import { HeadMan } from './pacman.js'
+import { pixelSvg } from '../game/pixelfont.js'
+import qrcode from 'qrcode-generator'
+import { VIDEO } from '../data/media.js'
 
 const $ = (id) => document.getElementById(id)
 const BASE = import.meta.env.BASE_URL
@@ -17,6 +19,17 @@ const BOOT_LINES = [
   ['Kalibriere Kulleraugen', 'OK'],
   ['KI-Assistent', 'BEREIT'],
 ]
+
+/** QR-Code als SVG (eigene Rechtecke, gestochen scharf in jeder Größe). */
+function qrSvg(text) {
+  const qr = qrcode(0, 'M')
+  qr.addData(text)
+  qr.make()
+  const n = qr.getModuleCount()
+  let rects = ''
+  for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (qr.isDark(r, c)) rects += `<rect x="${c}" y="${r}" width="1" height="1"/>`
+  return `<svg viewBox="-2 -2 ${n + 4} ${n + 4}" shape-rendering="crispEdges"><rect x="-2" y="-2" width="${n + 4}" height="${n + 4}" fill="#fbfaf3"/><g fill="#1a2b26">${rects}</g></svg>`
+}
 
 export class UI {
   constructor() {
@@ -306,23 +319,29 @@ export class UI {
       <div class="end-wrap">
         <div class="end-left">
           <p class="eyebrow">Brain Food · Level 1</p>
-          <h1 class="lc">LEVEL<br>COMPLETE</h1>
+          <h1 class="lc">${pixelSvg('LEVEL COMPLETE', { px: 12.4 })}</h1>
           <div class="stars">${'<i></i>'.repeat(3)}</div>
           <dl class="stats">${stats.map(([a, b]) => `<div><dt>${a}</dt><dd>${b}</dd></div>`).join('')}</dl>
+          <div class="thanks-line">Danke! <span>Fragen?</span></div>
+          <a class="video-tip" href="${VIDEO.url}" target="_blank" rel="noopener">
+            <span class="qr" aria-hidden="true">${qrSvg(VIDEO.url)}</span>
+            <span class="vt-text"><small>Mehr zum Thema</small><b>„${VIDEO.title}“</b><span>${VIDEO.author} · YouTube ↗</span></span>
+          </a>
           <div class="end-actions">
             <button type="button" class="menu-item sel" data-v="again">Nochmal ansehen</button>
             <button type="button" class="menu-item" data-v="menu">Zum Menü</button>
           </div>
         </div>
         <div class="end-right">
-          <div class="thanks">
-            <canvas class="talker" width="380" height="480" aria-hidden="true"></canvas>
-            <div class="say card">Danke! <span>Fragen?</span></div>
-          </div>
+          <div class="bonus-head"><b>BONUSLEVEL</b> Kopf-Mampf <span class="bonus-score" aria-live="off">Bits 0 · Abmahnungen 0</span></div>
+          <canvas class="headman" width="840" height="440" aria-label="Bonusspiel: Der Kopf frisst Bits, Paragrafen jagen ihn"></canvas>
+          <p class="bonus-hint">Läuft von allein · <kbd>←</kbd><kbd>↑</kbd><kbd>↓</kbd><kbd>→</kbd> oder <kbd>WASD</kbd> zum Selberspielen</p>
           <div class="credits">
             <div class="roll">
               <h3>Quellen</h3>
               ${SOURCES.map(([a, b]) => `<p><b>${a}</b>${b}</p>`).join('')}
+              <h3>Zum Weiterschauen</h3>
+              <p><b>„${VIDEO.title}“ – ${VIDEO.author}</b>${VIDEO.url.replace('https://www.', '')}</p>
               <h3>Gebaut mit</h3>
               <p><b>Code</b>Vite + JavaScript, gebaut mit Claude Code</p>
               <p><b>Hinweis</b>Alle Marken gehören ihren Inhabern. Bilder dienen der Veranschaulichung.</p>
@@ -330,7 +349,12 @@ export class UI {
           </div>
         </div>
       </div>`
-    this.endHead(el)
+    const scoreEl = el.querySelector('.bonus-score')
+    this.headman?.destroy()
+    this.headman = new HeadMan(el.querySelector('.headman'), {
+      onScore: (bits, caught) => (scoreEl.textContent = `Bits ${bits} · Abmahnungen ${caught}`),
+    })
+    this.headman.start()
     const items = [...el.querySelectorAll('.menu-item')]
     items[0].focus()
     items.forEach((b) => {
@@ -340,31 +364,9 @@ export class UI {
     })
   }
 
-  // Der Fotokopf sagt im Abspann immer wieder "Danke!" – mit Kulleraugen und Brauen
-  endHead(el) {
-    const cv = el.querySelector('.talker')
-    const g = cv.getContext('2d')
-    const head = new Head(BASE)
-    const babble = new Babble()
-    let last = performance.now()
-    let t = 0
-    head.brow('happy')
-    const loop = (now) => {
-      if (el.hidden || !cv.isConnected) return
-      const dt = Math.min(0.05, (now - last) / 1000)
-      last = now
-      t += dt
-      head.setTalk(babble.update(dt, t % 3.4 < 1.5))
-      head.setLook(Math.sin(t * 0.7) * 0.5, 0.15)
-      head.update(dt)
-      g.clearRect(0, 0, cv.width, cv.height)
-      head.draw(g, cv.width / 2, cv.height - 8, cv.height * 0.92, 1)
-      requestAnimationFrame(loop)
-    }
-    requestAnimationFrame(loop)
-  }
-
   hideEnding() {
+    this.headman?.destroy()
+    this.headman = null
     $('ending').hidden = true
     this.syncInert()
   }

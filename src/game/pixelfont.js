@@ -39,3 +39,18 @@ export function pixelText(g, s, x, y, color) {
     cx += w + 1
   }
 }
+
+/** Pixeltext als SVG (für große Titel im HTML, z. B. LEVEL COMPLETE). px = Größe eines Pixels. */
+export function pixelSvg(text, { px = 12, color = '#dcea9e', shadow = '#174937', label = text } = {}) {
+  let rects = ''
+  let cx = 0
+  for (const ch of text.toUpperCase()) {
+    const m = F[ch] ?? F[' ']
+    const w = cols(ch)
+    for (let i = 0; i < m.length; i++) if (m[i] === '1') rects += `<rect x="${cx + (ch === '<' ? w - 1 - (i % w) : i % w)}" y="${Math.floor(i / w)}" width="1" height="1"/>`
+    cx += w + 1
+  }
+  const W = cx - 1 + 0.5
+  const H = 5.5
+  return `<svg role="img" aria-label="${label}" width="${W * px}" height="${H * px}" viewBox="0 0 ${W} ${H}" shape-rendering="crispEdges"><g fill="${shadow}" transform="translate(.5 .5)">${rects}</g><g fill="${color}">${rects}</g></svg>`
+}

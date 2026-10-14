@@ -51,6 +51,13 @@ export const ARTCRAFT = {
   photocraftCredit: 'PhotoCraft-Screenshot: github.com/storytold · Motiv: Hokusai (gemeinfrei)',
 }
 
+// Video-Tipp im Abspann (Link und QR-Code)
+export const VIDEO = {
+  url: 'https://www.youtube.com/watch?v=LPEqG_K5lv0',
+  title: 'Es ist vorbei',
+  author: 'Niklas Steenfatt',
+}
+
 export const SOURCES = [
   ['Super Mario 64 × Elden Ring', 'Mod „ER Mario“ von Deltaroo (github.com/deltarooo/er-mario); Bild: esport1.hu, 03.10.2026'],
   ['Minecraft × GTA V', 'Beispielprojekt „minecraft-gta5-passthrough“ aus universal-modder (github.com/rehan-remade/universal-modder); Bild via Reddit'],
