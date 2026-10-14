@@ -2,7 +2,7 @@
 // Der Körper wird in die Pixelwelt gezeichnet, der Fotokopf danach in voller Auflösung.
 import { bodySprite, CX, FEET, BODY_STYLES } from './body.js'
 
-export const DEFAULT_BODY = 'classic'
+export const DEFAULT_BODY = 'strick'
 import { Head } from './head.js'
 import { FLOOR, LW, BUTTON } from './rooms.js'
 import { input } from '../engine/input.js'

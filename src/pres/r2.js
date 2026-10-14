@@ -5,7 +5,7 @@ import { audio } from '../engine/audio.js'
 import { animate, sleep } from '../engine/clock.js'
 import { bodySprite } from '../game/body.js'
 import { P } from '../game/palette.js'
-import { q, qa, run, typeInto, highlightC } from './util.js'
+import { q, qa, run, typeInto, highlightC, NULL_EL } from './util.js'
 
 const SOURCE = '// Zwei Zahlen addieren\nint addiere(int a, int b) {\n  return a + b;\n}'
 const BITS = '10001001 11111000\n00000001 11110000\n11000011'
@@ -64,7 +64,7 @@ function mechanicsScene() {
       <span class="chip ink mode-chip">Mechaniken einbauen</span>
     </header></div>
     <div class="games">
-      <div class="gwin a"><div class="bar"><i></i>Spiel A · Jump'n'Run</div><canvas width="140" height="63"></canvas></div>
+      <div class="gwin a"><div class="bar"><i></i>Spiel A · Jump’n’Run</div><canvas width="140" height="63"></canvas></div>
       <div class="gwin b"><div class="bar"><i class="r"></i>Spiel B · Fantasy-Welt</div><canvas width="140" height="63"></canvas></div>
       <span class="fnchip one">springen()</span>
       <span class="fnchip two">kämpfen()</span>
@@ -96,7 +96,7 @@ function cleanroomScene() {
       <span class="cr-arrow reveal a3" style="left:1530px">${icon('arrow', { size: 40 })}</span>
       <div class="cr-box card res reveal"><div class="ic">${icon('check', { size: 30 })}</div><div><h4>Neues Programm</h4><p>Ähnliche Funktionen, eigener Code</p></div></div>
       <div class="team b reveal"><span class="ppl">${icon('personR', { size: 34 })}${icon('personR', { size: 34 })}</span><span>Team B<small>kennt den Originalcode nicht</small></span></div>
-      <span class="chip lime ai-chip reveal">${icon('spark', { size: 20 })} KI hilft beim Neu-Programmieren</span>
+      <span class="chip lime ai-chip reveal">${icon('spark', { size: 20 })} KI hilft beim Neuprogrammieren</span>
     </div>
     <div class="foot-note reveal fn" style="right:640px"><b>EINORDNUNG</b> Clean Room ist eine organisatorische Trennung von Analyse und Umsetzung – keine dritte Compiler-Methode und keine Garantie für Rechtmäßigkeit.</div>
     <div class="teaser reveal">Nicht nur Spiele – nächste Tür ${icon('arrow', { size: 26 })}</div>
@@ -168,18 +168,19 @@ function drawGameB(g, t, st) {
 export function mountR2(root, { signal, onFrame }) {
   root.innerHTML = compilerScene()
   let scene = root.firstElementChild
-  const $ = (s) => q(scene, s)
+  const $ = (s) => q(scene, s) || NULL_EL
   const st = { canJump: false, canFight: false, heroGhost: false, knightGhost: false }
 
+  // Szenenwechsel: neue Szene sofort einsetzen (folgende Cues greifen direkt auf sie zu),
+  // die alte blendet nur noch aus und wird danach entfernt. So überholen sich schnelle Cues nicht.
   async function swap(html) {
     const old = scene
     old.classList.remove('in')
     old.classList.add('out')
     audio.sfx('whoosh')
-    await sleep(420, signal)
-    old.remove()
     root.insertAdjacentHTML('beforeend', html)
     scene = root.lastElementChild
+    run(sleep(450, signal).then(() => old.remove()))
   }
 
   function setPanel(sel, cls = 'active') {

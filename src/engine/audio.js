@@ -21,7 +21,7 @@ const buffers = new Map()
 let musicEl = null
 let musicOn = true
 let musicTarget = MUSIC_VOL
-const voices = new Map() // seqId -> {el, ok}
+const voices = new Map() // seqId -> Lade-Versprechen
 let currentVoice = null
 const levelBuf = new Float32Array(1024)
 
@@ -51,6 +51,34 @@ export async function mediaExists(url, kind = 'audio') {
   } catch {
     return false
   }
+}
+
+const entries = new Map() // seqId -> Eintrag {ok, el, duration, analysed}
+
+/** Lädt eine Aufnahme. Der Eintrag wird sofort angelegt und später auf ok gesetzt, sobald die Datei bereit ist. */
+function loadVoice(seqId, file) {
+  const entry = { ok: false, el: null, duration: 0, analysed: false }
+  entries.set(seqId, entry)
+  if (!MEDIA.audio.includes(file)) return Promise.resolve(entry)
+  const el = new Audio(`${BASE}media/audio/${file}`)
+  el.preload = 'auto'
+  entry.el = el
+  return new Promise((resolve) => {
+    const ready = () => {
+      if (!entry.ok && isFinite(el.duration) && el.duration > 0) {
+        if (ctx && !entry.analysed) {
+          ctx.createMediaElementSource(el).connect(analyser)
+          entry.analysed = true
+        }
+        entry.duration = el.duration
+        entry.ok = true
+      }
+      resolve(entry)
+    }
+    el.addEventListener('loadedmetadata', ready, { once: true })
+    el.addEventListener('error', () => resolve(entry), { once: true })
+    if (el.readyState >= 1) ready()
+  })
 }
 
 export const audio = {
@@ -141,25 +169,17 @@ export const audio = {
   // --- Sprachaufnahmen -------------------------------------------------------------------------
   /** Lädt die Aufnahme einer Sequenz, falls vorhanden. Liefert {ok, duration}. */
   async voice(seqId, file) {
-    if (voices.has(seqId)) return voices.get(seqId)
-    const url = `${BASE}media/audio/${file}`
-    const entry = { ok: false, el: null, duration: 0 }
-    voices.set(seqId, entry)
-    if (!MEDIA.audio.includes(file)) return entry
-    const el = new Audio(url)
-    el.preload = 'auto'
-    await new Promise((resolve) => {
-      el.addEventListener('loadedmetadata', resolve, { once: true })
-      el.addEventListener('error', resolve, { once: true })
-      setTimeout(resolve, 4000)
-    })
-    if (!isFinite(el.duration) || el.duration <= 0) return entry
-    if (ctx) ctx.createMediaElementSource(el).connect(analyser)
-    entry.analysed = !!ctx
-    entry.ok = true
-    entry.el = el
-    entry.duration = el.duration
-    return entry
+    // Das Lade-Versprechen wird gemerkt (nicht ein vorläufiges "fehlt"). Wird die Datei erst spät fertig,
+    // setzt der Eintrag ok nachträglich – der nächste Abspielversuch nutzt sie dann.
+    if (!voices.has(seqId)) voices.set(seqId, loadVoice(seqId, file))
+    return voices.get(seqId)
+  },
+
+  /** Wie voice(), wartet aber höchstens ms und liefert dann den (evtl. noch nicht fertigen) Eintrag. */
+  async voiceWithin(seqId, file, ms) {
+    const p = this.voice(seqId, file)
+    const late = new Promise((r) => setTimeout(() => r(entries.get(seqId) || { ok: false }), ms))
+    return Promise.race([p, late])
   },
 
   /** Spielt eine Aufnahme ab Sekunde from. Stoppt vorher jede andere Aufnahme. */

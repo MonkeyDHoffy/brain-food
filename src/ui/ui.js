@@ -94,9 +94,12 @@ export class UI {
     $('progress').style.width = `${((k + 1) / ALL_SENTENCES.length) * 100}%`
   }
 
-  clearSubtitle() {
+  clearSubtitle(roomId) {
     $('subtitleText').textContent = ''
     $('subtitleMeta').innerHTML = ''
+    const first = { r1: '01-intro:0', r2: '02-compile:0', r3: '04-artcraft-outlook:0' }[roomId]
+    const k = first ? ALL_SENTENCES.indexOf(first) : 0
+    $('progress').style.width = `${(Math.max(0, k) / ALL_SENTENCES.length) * 100}%`
   }
 
   toggleSubs() {

@@ -22,6 +22,17 @@ export class FX {
     this.tmp = document.createElement('canvas')
   }
 
+  /** Beim Raumwechsel: laufende Effekte beenden (offene Versprechen auflösen). */
+  reset() {
+    if (this.morph) {
+      this.morph.player.hidden = false
+      this.morph.resolve()
+      this.morph = null
+    }
+    this.dust = []
+    this.sparks = []
+  }
+
   dustAt(x, y, n = 6) {
     if (reduced) n = Math.min(n, 3)
     for (let i = 0; i < n; i++)
@@ -42,6 +53,7 @@ export class FX {
    * Liefert ein Promise, das nach dem Effekt erfüllt wird.
    */
   compileFigure(player, pipeX, color) {
+    if (this.morph) this.morph.resolve()
     return new Promise((resolve) => {
       const pts = []
       const n = reduced ? 30 : 90

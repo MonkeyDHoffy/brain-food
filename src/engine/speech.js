@@ -126,7 +126,8 @@ export class Speech {
   async say(id, { from = 0, to, cues = [], signal } = {}) {
     const seq = SEQ[id]
     to = to ?? seq.sentences.length
-    const v = await audio.voice(id, seq.audio)
+    // Höchstens 2,5 s auf die Aufnahme warten, sonst Textmodus (sie wird für später weiter geladen)
+    const v = await audio.voiceWithin(id, seq.audio, 2500)
     const times = v.ok ? sentenceTimes(id, seq, v.duration) : null
     this.active = { id, voice: v.ok ? v : null }
     this.skipAllFlag = false

@@ -85,6 +85,33 @@ test('Menü per Tastatur: „Autopilot starten“ bleibt im Autopiloten (Enter l
   await expect(page.locator('#modeTag')).toHaveText('AUTOPILOT')
 })
 
+test('Schnelles Überspringen (N, Shift+N) stapelt keine Szenen und wirft keine Fehler', async ({ page }) => {
+  const errors = collectErrors(page)
+  await page.goto('/?room=2&auto=1&speed=3')
+  await page.waitForFunction(() => window.__bf.speech.active?.id === '03-decompile-cleanroom', null, { timeout: 60000 })
+  for (let i = 0; i < 30; i++) {
+    await page.keyboard.press('KeyN')
+    await page.waitForTimeout(120)
+  }
+  await page.waitForTimeout(800)
+  expect(await page.locator('#pres .scene').count()).toBe(1)
+  await page.keyboard.press('Digit3')
+  await page.waitForFunction(() => window.__bf.speech.active?.id === '04-artcraft-outlook', null, { timeout: 30000 })
+  await page.keyboard.press('Shift+KeyN')
+  await page.waitForTimeout(800)
+  expect(await page.locator('#pres .scene').count()).toBe(1)
+  expect(errors).toEqual([])
+})
+
+test('R im Abspann blendet den Abspann aus und setzt den Untertitel zurück', async ({ page }) => {
+  await page.goto('/?room=3&auto=1&speed=12')
+  await expect(page.locator('#ending')).toBeVisible({ timeout: 60000 })
+  await page.locator('#ending').evaluate(() => document.activeElement?.blur())
+  await page.keyboard.press('KeyR')
+  await expect(page.locator('#ending')).toBeHidden()
+  await expect(page.locator('#subtitleText')).toHaveText('')
+})
+
 test('Pause hält Spielzeit und Text an', async ({ page }) => {
   await page.goto('/?room=1&auto=1&speed=2')
   await page.waitForFunction(() => window.__bf.speech.active)

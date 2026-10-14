@@ -300,7 +300,8 @@ export function drawRoomDynamic(g, room, st, t) {
   if (room.id === 'r3') {
     // Galerie: Rahmen füllen sich mit Werkzeug-Kacheln, wenn ArtCraft gezeigt wird
     const ICONS = [
-      [P.green, 'img'], [P.rust, 'pen'], [P.ink2, 'film'], [P.limeD, 'type'], [P.greenL, 'shape'], [P.rustD, 'layers'], [P.ink, 'wave'],
+      // Reihenfolge wie ARTCRAFT_APPS: Photo, Vector, Film, Light, Pdf, Effect, Design
+      [P.green, 'img'], [P.rust, 'pen'], [P.ink2, 'film'], [P.limeD, 'sun'], [P.greenL, 'doc'], [P.rustD, 'layers'], [P.ink, 'type'],
     ]
     for (let i = 0; i < 7; i++) {
       const lit = st.gallery > i
@@ -330,6 +331,12 @@ function drawTinyIcon(g, kind, x, y) {
       break
     case 'shape':
       R(g, x, y + 3, 5, 5, c); R(g, x + 5, y, 4, 4, P.lime)
+      break
+    case 'sun':
+      R(g, x + 3, y + 2, 4, 4, c); R(g, x + 4, y, 2, 1, c); R(g, x + 4, y + 7, 2, 1, c); R(g, x, y + 3, 1, 2, c); R(g, x + 9, y + 3, 1, 2, c)
+      break
+    case 'doc':
+      R(g, x + 1, y, 7, 9, c); R(g, x + 6, y, 2, 2, P.limeD); R(g, x + 2, y + 3, 5, 1, P.greenD); R(g, x + 2, y + 5, 5, 1, P.greenD)
       break
     case 'layers':
       R(g, x + 1, y + 1, 7, 2, c); R(g, x, y + 4, 9, 2, P.lime); R(g, x + 1, y + 7, 7, 2, c)

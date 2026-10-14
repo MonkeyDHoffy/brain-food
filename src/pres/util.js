@@ -7,6 +7,21 @@ export const BASE = import.meta.env.BASE_URL
 export const MEDIA = `${BASE}media/images/`
 
 export const q = (root, sel) => root.querySelector(sel)
+
+/** Platzhalter-Element: Zugriffe auf ein (noch) nicht vorhandenes Element bleiben folgenlos. */
+const noop = () => {}
+export const NULL_EL = {
+  classList: { add: noop, remove: noop, toggle: noop, contains: () => false },
+  style: {},
+  dataset: {},
+  textContent: '',
+  innerHTML: '',
+  hidden: true,
+  querySelector: () => null,
+  querySelectorAll: () => [],
+  addEventListener: noop,
+  remove: noop,
+}
 export const qa = (root, sel) => [...root.querySelectorAll(sel)]
 
 /** Bild mit automatischem Platzhalter, falls die Datei fehlt. */

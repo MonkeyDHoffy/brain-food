@@ -96,7 +96,7 @@ export class Head {
     if (!this.browGest && this.nextBrow <= 0) {
       const r = Math.random()
       if (talk) this.brow(r < 0.45 ? 'happy' : r < 0.8 ? 'raise' : 'flash')
-      else this.brow(r < 0.45 ? 'flash' : r < 0.8 ? 'wiggle' : 'skeptic')
+      else this.brow(r < 0.4 ? 'flash' : r < 0.7 ? 'wiggle' : 'happy')
       this.nextBrow = talk ? 2.2 + Math.random() * 2.5 : 4 + Math.random() * 4
     }
     return goals

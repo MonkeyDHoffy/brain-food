@@ -20,20 +20,20 @@ export const FUSIONS = [
   {
     file: 'fusion-03.jpg',
     title: 'Skate 3 × Modern Warfare 2',
-    sub: 'Fanprojekt: Skate-Physik auf Karten von MW2',
+    sub: 'Neuimplementierung: MW2 in Rust nachgebaut, mit Skate-3-Modus',
     tags: ['Bewegen'],
     credit: 'Thumbnail: ZexyZek (YouTube) · Projekt: chasmlol u. a.',
   },
   {
     file: 'fusion-04.webp',
     title: 'Skyrim × Minecraft',
-    sub: 'Game Bridge „SkyCraft“: Minecraft-Steuerung und -HUD in Skyrims Welt',
+    sub: 'Game Bridge „SkyCraft“: Minecraft-Steuerung und Minecraft-HUD in Skyrims Welt',
     tags: ['Bauen', 'Spielwelten'],
     credit: 'SkyCraft (chasmlol) · Bild: Caffs (YouTube) via Reddit',
   },
 ]
 
-// Die sieben Adobe-bezogenen Nachbauten der ArtCraft-„Crafting Apps“ (Stand 14.10.2026)
+// Die sieben Adobe-inspirierten Nachbauten der ArtCraft „Craft Apps“ (Stand 14.10.2026)
 export const ARTCRAFT_APPS = [
   { name: 'PhotoCraft', like: 'Photoshop', icon: 'artcraft-icon-photocraft.png', color: '#2f6fdb' },
   { name: 'VectorCraft', like: 'Illustrator', icon: 'artcraft-icon-vectorcraft.png', color: '#d4492f' },
@@ -49,7 +49,6 @@ export const ARTCRAFT = {
   overviewCredit: 'Screenshot: ArtCraft Launcher, github.com/storytold/craft-launcher',
   photocraft: 'photocraft-demo.jpg',
   photocraftCredit: 'PhotoCraft-Screenshot: github.com/storytold · Motiv: Hokusai (gemeinfrei)',
-  aiFact: 'Laut Projektstatistik: Bei 736 von 1.302 PhotoCraft-Commits ist ein KI-Modell als Ko-Autor eingetragen (Stand 10.10.2026).',
 }
 
 export const SOURCES = [
@@ -58,6 +57,6 @@ export const SOURCES = [
   ['Skate 3 × Modern Warfare 2', 'Thumbnail: ZexyZek, YouTube „The Skate 3 in MW2 Mod is Unbelievable…“; Projekt „2010 Rust Rewrite Mashup“ (chasmlol), IW4L, skate-3-rust-engine'],
   ['Skyrim × Minecraft', 'SkyCraft von chasmlol (github.com/chasmlol/SkyCraft); Bild: Caffs, YouTube, via Reddit'],
   ['ArtCraft / PhotoCraft', 'getartcraft.com · github.com/storytold (README, AGENTS.md, Parity-Doku), abgerufen 14.10.2026'],
-  ['Einordnung', 'HotHardware, 08.10.2026: „Dev uses AI to build clones of Photoshop and entire Adobe suite“'],
+  ['Einordnung', 'HotHardware, 08.10.2026: „Dev Uses AI To Build Clones Of Photoshop And Entire Adobe Suite For Free“'],
   ['Sounds & Musik', 'Kenney.nl (CC0) · „Bossa Nova“ von Joth und „Air Woosh“ von Almitory, OpenGameArt (CC0)'],
 ]

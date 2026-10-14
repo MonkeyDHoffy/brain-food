@@ -52,6 +52,7 @@ export class World {
     this.room = def
     this.objects = def.objects.map((o) => ({ ...o, armed: false, open: 0, press: 0, lit: 0, flow: 0 }))
     this.st = { onAir: false, spot: 0, screenBoost: false, gallery: 0 }
+    this.fx.reset()
     this.player.reset(def.entry ? 30 : def.spawn)
     this.player.alpha = def.entry ? 0 : 1
     this.arrowId = null

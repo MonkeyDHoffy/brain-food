@@ -4,7 +4,7 @@ import { ARTCRAFT, ARTCRAFT_APPS } from '../data/media.js'
 import { icon } from '../ui/icons.js'
 import { audio } from '../engine/audio.js'
 import { animate, sleep } from '../engine/clock.js'
-import { q, qa, run, imgTag, hydrateImages, MEDIA, typeInto } from './util.js'
+import { q, qa, run, imgTag, hydrateImages, MEDIA, typeInto, NULL_EL } from './util.js'
 
 function waitScene() {
   return `
@@ -24,13 +24,13 @@ function artcraftScene() {
       <span class="chip ink">${icon('spark', { size: 18 })} mit KI-Unterstützung</span>
     </header></div>
     <div class="apps-wrap">
-      <div class="app-count"><b>0</b><span>bekannte Adobe-Anwendungen<br>nachgebaut – die „Crafting Apps“</span></div>
+      <div class="app-count"><b>0</b><span>bekannte Adobe-Anwendungen<br>nachgebaut – die „Craft Apps“</span></div>
       <div class="apps">
         ${ARTCRAFT_APPS.map((a) => `
           <div class="app"><img src="${MEDIA}${a.icon}" alt="" onerror="this.style.visibility='hidden'">
-            <div><strong>${a.name.replace('Craft', `<span class="acc" style="color:${a.color}">Craft</span>`)}</strong><small>wie Adobe ${a.like}</small></div></div>`).join('')}
+            <div><strong>${a.name.replace('Craft', `<span class="acc" style="color:${a.color}">Craft</span>`)}</strong><small>inspiriert von Adobe ${a.like}</small></div></div>`).join('')}
       </div>
-      <p class="ai-fact reveal">${ARTCRAFT.aiFact}<br>Quelle: getartcraft.com · github.com/storytold</p>
+      <p class="ai-fact reveal">Quelle: getartcraft.com · github.com/storytold (Stand 14.10.2026)</p>
     </div>
     <div class="shot">
       <div class="bar"><i></i><i></i><i></i>&nbsp;PhotoCraft · Early Alpha</div>
@@ -99,18 +99,19 @@ function finaleScene() {
 export function mountR3(root, { signal }) {
   root.innerHTML = waitScene()
   let scene = root.firstElementChild
-  const $ = (s) => q(scene, s)
+  const $ = (s) => q(scene, s) || NULL_EL
 
+  // Szenenwechsel: neue Szene sofort einsetzen (folgende Cues greifen direkt auf sie zu),
+  // die alte blendet nur noch aus und wird danach entfernt. So überholen sich schnelle Cues nicht.
   async function swap(html) {
     const old = scene
     old.classList.remove('in')
     old.classList.add('out')
     audio.sfx('whoosh')
-    await sleep(420, signal)
-    old.remove()
     root.insertAdjacentHTML('beforeend', html)
     scene = root.lastElementChild
     hydrateImages(scene)
+    run(sleep(450, signal).then(() => old.remove()))
   }
 
   return {

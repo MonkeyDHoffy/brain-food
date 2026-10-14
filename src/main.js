@@ -6,6 +6,7 @@ import '@fontsource/pixelify-sans/700.css'
 import '@fontsource/space-grotesk/400.css'
 import '@fontsource/space-grotesk/500.css'
 import '@fontsource/space-grotesk/600.css'
+import '@fontsource/space-grotesk/700.css'
 import '@fontsource/jetbrains-mono/500.css'
 import '@fontsource/jetbrains-mono/700.css'
 import './styles/main.css'
@@ -151,7 +152,18 @@ addEventListener('keydown', (e) => {
     actions.pause()
     return
   }
-  if (director.paused) return
+  if (director.paused) {
+    // Kürzel aus dem Pause-Menü und Pfeiltasten zum Blättern
+    if (c === 'KeyR') ui.fire('pauseMenu', 'restart')
+    else if (c === 'KeyO') ui.fire('pauseMenu', 'auto')
+    else if (c === 'ArrowDown' || c === 'ArrowUp') {
+      e.preventDefault()
+      const items = [...document.querySelectorAll('#pause .menu-item')]
+      const i = items.indexOf(document.activeElement)
+      items[(i + (c === 'ArrowDown' ? 1 : -1) + items.length) % items.length]?.focus()
+    }
+    return
+  }
   if (c === 'KeyN') {
     e.preventDefault()
     if (e.shiftKey) director.skipSequence()
@@ -193,6 +205,19 @@ function wake() {
 addEventListener('pointermove', wake)
 addEventListener('pointerdown', wake)
 wake()
+
+// Ton freischalten, sobald es eine Nutzergeste gibt (auch beim Direkteinstieg ?room=…)
+const wakeAudio = () => {
+  audio.unlock()
+  audio.startMusic()
+}
+addEventListener('pointerdown', wakeAudio, { once: true, capture: true })
+addEventListener('keydown', wakeAudio, { once: true, capture: true })
+
+// Fenster verdeckt/minimiert: automatisch pausieren (sonst liefe die Aufnahme ohne Bild weiter)
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden && inGame && !director.paused) director.pause(true)
+})
 
 // --- Start ---------------------------------------------------------------------------------------------------
 async function boot() {

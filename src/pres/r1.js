@@ -38,7 +38,7 @@ export function mountR1(root) {
         <div class="ic">${icon('spark', { size: 46 })}</div>
         <h3>+ KI</h3>
         <p>kann aufwendige Analyse- und Programmierarbeit vereinfachen und beschleunigen.</p>
-        <div class="chips"><span>Mehrere der gezeigten Projekte nennen KI-Werkzeuge, z. B. „Written with Claude Code“.</span></div>
+        <div class="chips"><span>Beispiel: Minecraft × GTA V entstand laut README mit „universal-modder“, einem Werkzeugkasten für KI-Coding-Agenten.</span></div>
       </div>
     </div>
     <div class="teaser reveal">Wie das funktioniert? Hinter der Tür ${icon('arrow', { size: 26 })}</div>

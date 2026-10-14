@@ -53,6 +53,9 @@ export class Director {
   /** Startet den Ablauf ab einem Raum (bricht einen laufenden Ablauf sauber ab). */
   async play(roomId = 'r1') {
     this.stop()
+    // Alter Text und Abspann dürfen beim Sprung/Neustart nicht stehen bleiben
+    this.ui.hideEnding()
+    this.ui.clearSubtitle(roomId)
     const ctrl = new AbortController()
     this.ctrl = ctrl
     const signal = ctrl.signal
@@ -156,7 +159,7 @@ export class Director {
       // Die Figur "dekompiliert" sich selbst: zerfällt in 0/1 und setzt sich wieder zusammen
       selfDecompile(color) {
         w.locked = true
-        w.fx.compileFigure(w.player, w.player.x, color).then(() => (w.locked = false))
+        w.fx.compileFigure(w.player, w.player.x, color).then(() => !signal.aborted && (w.locked = false))
       },
       buttonOn(id) {
         const o = w.obj(id)
@@ -171,6 +174,7 @@ export class Director {
         w.locked = true
         w.st.screenBoost = true
         w.fx.compileFigure(w.player, o.x, color).then(() => {
+          if (signal.aborted) return // Raum wurde inzwischen gewechselt
           w.locked = false
           w.st.screenBoost = false
         })
@@ -217,7 +221,7 @@ export class Director {
   }
 
   onClick(id) {
-    if (this.paused || !this.armed || this.armed.id !== id) return
+    if (this.paused || !this.armed || this.armed.id !== id || this.autopilot.busy) return
     // Klick auf das aktuelle Ziel: Figur läuft selbst hin und löst aus
     this.autopilot.perform(id, this.signal)
   }
@@ -226,7 +230,7 @@ export class Director {
   next() {
     if (this.paused) return
     if (this.speech.active) this.speech.skip()
-    else if (this.armed) this.autopilot.perform(this.armed.id, this.signal)
+    else if (this.armed && !this.autopilot.busy) this.autopilot.perform(this.armed.id, this.signal)
   }
 
   skipSequence() {
