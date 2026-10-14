@@ -89,7 +89,8 @@ export class Speech {
       this.mouth = -1
       return
     }
-    if (this.active.voice) this.mouth = audio.voiceLevel()
+    const v = this.active.voice
+    if (v) this.mouth = v.analysed ? audio.voiceLevel() : this.babble.update(dt, audio.voicePlaying)
     else this.mouth = this.babble.update(dt, this.chunkActive)
   }
 

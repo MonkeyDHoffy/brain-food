@@ -169,6 +169,21 @@ addEventListener('keydown', (e) => {
   }
 })
 
+// HUD und Mauszeiger treten zurück, wenn die Maus ruht (aufgeräumte Bühne im Teams-Stream)
+let idleTimer = 0
+function wake() {
+  $('hud').classList.remove('dim')
+  stage.classList.remove('idle')
+  clearTimeout(idleTimer)
+  idleTimer = setTimeout(() => {
+    if (!$('hud').contains(document.activeElement)) $('hud').classList.add('dim')
+    stage.classList.add('idle')
+  }, 2500)
+}
+addEventListener('pointermove', wake)
+addEventListener('pointerdown', wake)
+wake()
+
 // --- Start ---------------------------------------------------------------------------------------------------
 async function boot() {
   input.enabled = false

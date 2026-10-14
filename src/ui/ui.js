@@ -176,7 +176,7 @@ export class UI {
         const items = [...el.querySelectorAll('.menu-item')]
         items[0].focus()
         items.forEach((b) => {
-          b.addEventListener('mouseenter', () => b.focus())
+          b.addEventListener('pointermove', (e) => (e.movementX || e.movementY) && document.activeElement !== b && b.focus())
           b.addEventListener('focus', () => {
             items.forEach((x) => x.classList.toggle('sel', x === b))
           })
@@ -199,6 +199,7 @@ export class UI {
         }
       }
       const keys = (e) => {
+        if (['ArrowDown', 'KeyS', 'ArrowUp', 'KeyW', 'Enter', 'Space', 'KeyE', 'Escape'].includes(e.code)) e.stopPropagation()
         const items = [...el.querySelectorAll('.menu-item')]
         const i = items.indexOf(document.activeElement)
         if (['ArrowDown', 'KeyS'].includes(e.code)) {
@@ -244,7 +245,7 @@ export class UI {
     items[0].focus()
     items.forEach((b) => {
       b.addEventListener('focus', () => items.forEach((x) => x.classList.toggle('sel', x === b)))
-      b.addEventListener('mouseenter', () => b.focus())
+      b.addEventListener('pointermove', (e) => (e.movementX || e.movementY) && document.activeElement !== b && b.focus())
       b.addEventListener('click', () => this.fire('pauseMenu', b.dataset.v))
     })
   }
@@ -317,7 +318,7 @@ export class UI {
     items[0].focus()
     items.forEach((b) => {
       b.addEventListener('focus', () => items.forEach((x) => x.classList.toggle('sel', x === b)))
-      b.addEventListener('mouseenter', () => b.focus())
+      b.addEventListener('pointermove', (e) => (e.movementX || e.movementY) && document.activeElement !== b && b.focus())
       b.addEventListener('click', () => this.fire('endMenu', b.dataset.v))
     })
   }

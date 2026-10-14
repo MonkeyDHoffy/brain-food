@@ -155,6 +155,7 @@ export const audio = {
     })
     if (!isFinite(el.duration) || el.duration <= 0) return entry
     if (ctx) ctx.createMediaElementSource(el).connect(analyser)
+    entry.analysed = !!ctx
     entry.ok = true
     entry.el = el
     entry.duration = el.duration
@@ -164,6 +165,7 @@ export const audio = {
   /** Spielt eine Aufnahme ab Sekunde from. Stoppt vorher jede andere Aufnahme. */
   playVoice(entry, from) {
     if (!entry?.ok) return
+    if (ctx && ctx.state === 'suspended') ctx.resume()
     if (currentVoice && currentVoice !== entry) currentVoice.el.pause()
     currentVoice = entry
     if (Math.abs(entry.el.currentTime - from) > 0.2) entry.el.currentTime = from

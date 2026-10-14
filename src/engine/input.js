@@ -49,9 +49,10 @@ export const input = {
   },
 }
 
+// Tasten, die an Eingabefelder oder fokussierte Bedienknöpfe gehen, steuern nicht die Figur
 function isTyping(e) {
   const t = e.target
-  return t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)
+  return t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'BUTTON' || t.isContentEditable)
 }
 
 addEventListener('keydown', (e) => {

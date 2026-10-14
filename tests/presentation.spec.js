@@ -69,6 +69,17 @@ test('Bootscreen → Menü → manuell: Mikrofon mit E, Sätze mit N überspring
   expect(errors).toEqual([])
 })
 
+test('Menü per Tastatur: „Autopilot starten“ bleibt im Autopiloten (Enter löst keine Übernahme aus)', async ({ page }) => {
+  await page.goto('/?speed=2')
+  await page.getByRole('button', { name: /EINSCHALTEN/ }).click()
+  await expect(page.locator('#menu')).toBeVisible({ timeout: 8000 })
+  await page.keyboard.press('Enter')
+  await page.keyboard.press('ArrowDown')
+  await page.keyboard.press('Enter')
+  await page.waitForFunction(() => window.__bf.speech.active?.id === '01-intro', null, { timeout: 20000 })
+  await expect(page.locator('#modeTag')).toHaveText('AUTOPILOT')
+})
+
 test('Pause hält Spielzeit und Text an', async ({ page }) => {
   await page.goto('/?room=1&auto=1&speed=2')
   await page.waitForFunction(() => window.__bf.speech.active)

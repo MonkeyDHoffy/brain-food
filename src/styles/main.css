@@ -120,7 +120,9 @@ button { font: inherit; color: inherit; cursor: pointer; }
   background: var(--ink); color: var(--paper); font: 500 16px/1 var(--font-ui); padding: 7px 9px; opacity: 0; transform: translateY(-4px); transition: .15s;
 }
 .hud button:hover .tip, .hud button:focus-visible .tip { opacity: 1; transform: none; }
-.hud.dim { opacity: .35; transition: opacity .4s; }
+.hud { transition: opacity .4s; }
+.hud.dim { opacity: .18; }
+.stage.idle, .stage.idle canvas { cursor: none !important; }
 .hud.dim:hover, .hud.dim:focus-within { opacity: 1; }
 
 /* ---------- Präsentationsfläche ---------- */
