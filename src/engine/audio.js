@@ -21,6 +21,12 @@ const buffers = new Map()
 let musicEl = null
 let musicOn = true
 let musicTarget = MUSIC_VOL
+// Stimmfilter (optional, Taste V), gemerkt im Browser
+let voiceFxOn = false
+try {
+  voiceFxOn = localStorage.getItem('bf-voicefx') === '1'
+} catch {}
+let fxDry, fxWet
 const voices = new Map() // seqId -> Lade-Versprechen
 let currentVoice = null
 const levelBuf = new Float32Array(1024)
@@ -43,6 +49,61 @@ async function loadSfx(name) {
   }
 }
 
+// Kurzer, gedämpfter Nachhall aus gefiltertem Rauschen (kleiner Raum, kein Hall-Effekt)
+function roomImpulse(c, sec) {
+  const len = Math.floor(c.sampleRate * sec)
+  const buf = c.createBuffer(2, len, c.sampleRate)
+  for (let ch = 0; ch < 2; ch++) {
+    const d = buf.getChannelData(ch)
+    let lp = 0
+    for (let i = 0; i < len; i++) {
+      lp += (Math.random() * 2 - 1 - lp) * 0.3
+      d[i] = lp * (1 - i / len) ** 3
+    }
+  }
+  return buf
+}
+
+// Pegelausgleich, damit der Filter nicht lauter oder leiser klingt (gemessen über acht Aufnahmen)
+const VOICE_FX_MAKEUP = 0.83
+
+/**
+ * Stimmfilter: macht die Headset-Aufnahmen wärmer und weicher. Gemessen (Terzbänder über acht Aufnahmen,
+ * verglichen mit typischer Sprache) sind sie bei 160–250 Hz etwa 3 dB zu dünn und bei 2–6 kHz etwa 5–6 dB
+ * zu präsent (klingt hart); über 7,5 kHz ist nichts (Mikrofon mit 16 kHz). Also: Wärme um 200 Hz dazu,
+ * den harten Bereich ab 2 kHz zurück, sanfte Kompression und ein Hauch Raum. Baut die Kette von input nach out.
+ */
+export function buildVoiceFx(c, input, out) {
+  const f = (type, freq, gain = 0, Q = 0.7) => {
+    const n = c.createBiquadFilter()
+    n.type = type
+    n.frequency.value = freq
+    n.gain.value = gain
+    n.Q.value = Q
+    return n
+  }
+  // vor der Kompression Tiefen aufräumen und wärmen, danach die Härte zähmen
+  // (die Kompression würde die Höhen sonst relativ wieder anheben)
+  const pre = [f('highpass', 80), f('peaking', 200, 3, 0.8)]
+  const post = [f('peaking', 1900, -1.5, 1), f('highshelf', 3200, -3.5)]
+  const comp = c.createDynamicsCompressor()
+  comp.threshold.value = -22
+  comp.knee.value = 16
+  comp.ratio.value = 2.5
+  comp.attack.value = 0.008
+  comp.release.value = 0.2
+  const room = c.createConvolver()
+  room.buffer = roomImpulse(c, 0.5)
+  const roomGain = c.createGain()
+  roomGain.gain.value = 0.1
+  const makeup = c.createGain()
+  makeup.gain.value = VOICE_FX_MAKEUP
+  let node = input
+  for (const n of [...pre, comp, ...post]) node = node.connect(n)
+  node.connect(makeup)
+  node.connect(room).connect(roomGain).connect(makeup)
+  makeup.connect(out)
+}
 /** Prüft, ob eine Mediendatei wirklich existiert (Vite liefert sonst index.html aus). */
 export async function mediaExists(url, kind = 'audio') {
   try {
@@ -88,6 +149,19 @@ export const audio = {
   get musicOn() {
     return musicOn
   },
+  get voiceFxOn() {
+    return voiceFxOn
+  },
+
+  /** Stimmfilter an/aus – blendet weich über, damit nichts knackt. */
+  setVoiceFx(on) {
+    voiceFxOn = on
+    try {
+      localStorage.setItem('bf-voicefx', on ? '1' : '0')
+    } catch {}
+    setGain(fxDry, on ? 0 : 1, 0.15)
+    setGain(fxWet, on ? 1 : 0, 0.15)
+  },
 
   /** Gibt es diese Aufnahme (Pfad unter public/media/audio/)? */
   hasAudio(file) {
@@ -114,7 +188,14 @@ export const audio = {
     voiceBus.connect(master)
     analyser = ctx.createAnalyser()
     analyser.fftSize = 1024
-    analyser.connect(voiceBus)
+    // Stimme: trocken oder durch den Stimmfilter (beide Wege liegen an, umgeschaltet wird per Lautstärke)
+    fxDry = ctx.createGain()
+    fxDry.gain.value = voiceFxOn ? 0 : 1
+    analyser.connect(fxDry).connect(voiceBus)
+    fxWet = ctx.createGain()
+    fxWet.gain.value = voiceFxOn ? 1 : 0
+    buildVoiceFx(ctx, analyser, fxWet)
+    fxWet.connect(voiceBus)
     Object.keys(SFX).forEach(loadSfx)
   },
 
@@ -191,6 +272,11 @@ export const audio = {
   playVoice(entry, from) {
     if (!entry?.ok) return
     if (ctx && ctx.state === 'suspended') ctx.resume()
+    // vor dem Ton-Freischalten geladen: jetzt noch an die Stimm-Kette hängen
+    if (ctx && !entry.analysed) {
+      ctx.createMediaElementSource(entry.el).connect(analyser)
+      entry.analysed = true
+    }
     if (currentVoice && currentVoice !== entry) currentVoice.el.pause()
     currentVoice = entry
     if (Math.abs(entry.el.currentTime - from) > 0.2) entry.el.currentTime = from

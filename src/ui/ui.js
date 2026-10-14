@@ -63,6 +63,7 @@ export class UI {
       btn('next', 'skip', 'Weiter (N)'),
       btn('auto', 'robot', 'Autopilot (O)', true),
       btn('music', 'music', 'Musik (M)', true),
+      btn('voice', 'voice', 'Stimmfilter (V)', true),
       btn('subs', 'cc', 'Untertitel (U)', true),
       btn('full', 'full', 'Vollbild (F)'),
       btn('help', 'help', 'Hilfe (H)'),
@@ -294,6 +295,7 @@ export class UI {
           ${k('G', 'Kulleraugen an/aus')}${k('F', 'Vollbild')}
           ${k('R', 'Raum neu starten')}${k('1–3', 'Raum direkt starten')}
           ${k('K', 'Körper wechseln')}${k('⇧ N', 'ganzen Abschnitt überspringen')}
+          ${k('V', 'Stimmfilter an/aus')}
         </div>
         <p class="help-foot">Mikrofon, Knöpfe und Tür lassen sich auch anklicken – die Figur läuft dann selbst hin. <kbd>H</kbd> schließt.</p>
       </div>`

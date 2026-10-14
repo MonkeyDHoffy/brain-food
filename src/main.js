@@ -42,6 +42,7 @@ function fit() {
 const world = new World(canvas, $('fieldLabels'))
 const bubble = new Bubble($('bubble'), $('bubbleText'))
 const ui = new UI()
+ui.setPressed('voice', audio.voiceFxOn)
 const pres = new Pres($('pres'))
 const speech = new Speech({
   bubble,
@@ -113,6 +114,11 @@ const actions = {
     ui.setPressed('music', audio.musicOn)
     ui.toast(audio.musicOn ? 'Musik an' : 'Musik aus')
   },
+  voice: () => {
+    audio.setVoiceFx(!audio.voiceFxOn)
+    ui.setPressed('voice', audio.voiceFxOn)
+    ui.toast(audio.voiceFxOn ? 'Stimmfilter an – wärmer, weicher' : 'Stimmfilter aus – Originalaufnahme')
+  },
   subs: () => ui.toggleSubs(),
   full: toggleFullscreen,
   help: () => {
@@ -169,6 +175,7 @@ addEventListener('keydown', (e) => {
     if (e.shiftKey) director.skipSequence()
     else actions.next()
   } else if (c === 'KeyM') actions.music()
+  else if (c === 'KeyV') actions.voice()
   else if (c === 'KeyU') actions.subs()
   else if (c === 'KeyF') toggleFullscreen()
   else if (c === 'KeyH') actions.help()

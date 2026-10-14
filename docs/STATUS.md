@@ -22,6 +22,7 @@ Live unter **https://brainfood.hoffja.de** (Passwortschutz, Zugang siehe unten).
 | P / Esc | Pause (im Pausemenü: R Raum neu, O Autopilot) |
 | O | Autopilot an/aus. Ein Tastendruck auf A/D übernimmt sofort manuell |
 | M / U / G / K | Musik / Untertitel / Kulleraugen und Brauen / Körper (Strick, Hoodie, Klassik) |
+| V | Stimmfilter an/aus: etwas wärmer und weicher, gleiche Lautstärke. Die Wahl merkt sich der Browser. |
 | 1 2 3 | Notfall: Raum direkt starten |
 | F / H | Vollbild / Hilfe |
 
@@ -35,7 +36,7 @@ Bedienleiste und Mauszeiger blenden sich nach 2,5 s Mausruhe aus.
 - **Raum 3 (Software-Atelier):** ArtCraft-Knopf, die 7 „Craft Apps“ mit offiziellen Icons zählen hoch, PhotoCraft-Screenshot, „laut Entwicklern: Clean Room“ und „laut Projekt: kein Vollersatz“. Dann Ausblick, Recht (Nachbauen ≠ Kopieren, keine Rechtsberatung), offene Frage, Schlussgedanke.
 - **Extras:** Retro-Bootscreen, Glitch-Türwechsel, Figur wird kompiliert, Level-Complete-Abspann mit animiertem Kopf und Quellen, dazu 64-Bit-Körper (Strick als Standard, Hoodie, Klassik).
 - **Kopf:** dein Foto mit Klappmund im South-Park-Stil, Kulleraugen mit Trägheit, Blinzeln, dicke Brauen mit Gesten. Mit Audio steuert die Lautstärke den Mund.
-- **Ton:** dezente CC0-Geräusche und eine 8-Bit-Bossa-Nova. Die Musik wird beim Sprechen leiser.
+- **Ton:** dezente CC0-Geräusche und eine 8-Bit-Bossa-Nova. Die Musik wird beim Sprechen leiser. Optionaler **Stimmfilter** (Taste V, Knopf oben), standardmäßig aus.
 - **Werkzeuge:** Timing-Rekorder (`/?timing`), Kopf-Vorschau (`/face.html`, nur lokal), Live-Check (`node tools/live-check.mjs`), Upload per Doppelklick (`tools\Online-aktualisieren.cmd`).
 
 ## Was fehlt (für heute gemeinsam)
