@@ -104,6 +104,55 @@ function cleanroomScene() {
 }
 
 // --- Mini-Spiele in der Mechanik-Szene ----------------------------------------------------------------
+// Mini-Jannik: Pixelkörper plus Wackelkopf mit dicken Brauen und Glupschaugen (wie die große Figur).
+// Die Unterkante des Kopfes überlappt den Halsansatz des Körpers – nichts schwebt.
+const MINI_HEAD = [
+  '...OOOOOOO...',
+  '..OHHHhhHHO..',
+  '.OHHHHHhhHHO.',
+  'OHHHHHHHHHHHO',
+  'OHHSHHHHHSHHO',
+  'OHSSSHHHSSSHO',
+  'OSBBBSSSBBBSO',
+  'OSWWWSSSWWWSO',
+  'OSWWWSSSWWWDO',
+  'OSWWWSNSWWWDO',
+  'OSSSSSSSSSSDO',
+  'OSSSMTTTMSSDO',
+  '.OSSSMMMSSDO.',
+  '..OSSSSSSDO..',
+  '...OOOOOOO...',
+]
+const MINI_COL = { O: P.outline, H: '#6b4a2b', h: '#8a6038', S: P.skin, D: P.skinD, N: P.skinD, B: '#3b2616', W: '#ffffff', M: '#9a4a3a', T: '#ffffff' }
+
+function drawMiniHero(g, x, ground, t, { jump = 0, facing = 1, alpha = 1 } = {}) {
+  const spr = bodySprite(jump > 0 ? 'jump' : 'walk', Math.floor(t / 120) % 4)
+  const bx = Math.round(x) - 12
+  const by = Math.round(ground - 26 - jump)
+  g.save()
+  g.globalAlpha = alpha
+  g.save()
+  if (facing < 0) {
+    g.translate(bx * 2 + spr.canvas.width, 0)
+    g.scale(-1, 1)
+  }
+  g.drawImage(spr.canvas, bx, by)
+  g.restore()
+  const hx = bx + 6
+  const hy = by + spr.neckY - 13
+  const W = MINI_HEAD[0].length
+  const px = (c, r, col) => {
+    g.fillStyle = col
+    g.fillRect(hx + (facing > 0 ? c : W - 1 - c), hy + r, 1, 1)
+  }
+  MINI_HEAD.forEach((row, r) => [...row].forEach((ch, c) => ch !== '.' && px(c, r, MINI_COL[ch])))
+  // Glupschaugen: Pupillen schauen in Laufrichtung, wackeln beim Laufen, beim Springen nach oben
+  const pr = jump > 2 ? 7 : 8 + (Math.floor(t / 120) % 2)
+  px(4, pr, P.outline)
+  px(10, pr, P.outline)
+  g.restore()
+}
+
 function drawGameA(g, t, extra) {
   const R = (x, y, w, h, c) => { g.fillStyle = c; g.fillRect(x, y, w, h) }
   R(0, 0, 140, 63, '#cfe7f0')
@@ -118,10 +167,8 @@ function drawGameA(g, t, extra) {
   const ph = (t / 1000) % period
   const x = 18 + Math.abs(((t / 1000) * 22) % 90 - 45)
   const jump = ph < 0.55 ? Math.sin((ph / 0.55) * Math.PI) * 14 : 0
-  const spr = bodySprite(jump > 0 ? 'jump' : 'walk', Math.floor(t / 120) % 4)
-  g.drawImage(spr.canvas, Math.round(x) - 12, Math.round(52 - 26 - jump))
-  R(Math.round(x) - 3, Math.round(52 - 33 - jump), 7, 7, P.skin)
-  R(Math.round(x) - 3, Math.round(52 - 34 - jump), 7, 3, '#7a5233')
+  const facing = ((t / 1000) * 22) % 90 < 45 ? -1 : 1
+  drawMiniHero(g, x, 52, t, { jump, facing })
   if (extra.knightGhost) drawKnight(g, 112, 52, t, 0.5, false)
 }
 
@@ -156,13 +203,7 @@ function drawGameB(g, t, st) {
     jump = ph < 0.55 ? Math.sin((ph / 0.55) * Math.PI) * 13 : 0
   }
   drawKnight(g, x, 52, t, 1, st.canFight, jump)
-  if (st.heroGhost) {
-    g.globalAlpha = 0.55
-    const spr = bodySprite('walk', Math.floor(t / 120) % 4)
-    g.drawImage(spr.canvas, 100, 26)
-    R(109, 19, 7, 7, P.skin)
-    g.globalAlpha = 1
-  }
+  if (st.heroGhost) drawMiniHero(g, 112, 52, t, { facing: -1, alpha: 0.55 })
 }
 
 export function mountR2(root, { signal, onFrame }) {
