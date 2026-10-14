@@ -10,7 +10,7 @@ if not exist "dist\index.html" (
   exit /b 1
 )
 set "ARCHIV=%TEMP%\brainfood-web.tar.gz"
-tar -czf "%ARCHIV%" -C dist . || exit /b 1
+"%SystemRoot%\System32\tar.exe" -czf "%ARCHIV%" -C dist . || exit /b 1
 scp -q -o BatchMode=yes "%ARCHIV%" meinserver:/opt/brainfood/upload/brainfood-web.tar.gz || exit /b 1
 ssh -o BatchMode=yes meinserver "sh /opt/brainfood/deploy.sh /opt/brainfood/upload/brainfood-web.tar.gz" || exit /b 1
 del "%ARCHIV%"
