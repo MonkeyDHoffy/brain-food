@@ -6,6 +6,7 @@ import timings from '../data/timings.json'
 import { audio } from './audio.js'
 import { clock, sleep, until } from './clock.js'
 import { Babble } from './babble.js'
+import { storedTimings } from '../dev/timing.js'
 
 export const SEQ = Object.fromEntries(content.sequences.map((s) => [s.id, s]))
 export const ALL_SENTENCES = content.sequences.flatMap((s) => s.sentences.map((_, i) => `${s.id}:${i}`))
@@ -55,7 +56,7 @@ function splitMiddle(p) {
 
 /** Satzanfänge (Sekunden) einer Aufnahme: aus timings.json oder geschätzt nach Textlänge. */
 function sentenceTimes(id, seq, duration) {
-  const t = timings[id]
+  const t = storedTimings()[id] || timings[id]
   if (Array.isArray(t) && t.length === seq.sentences.length) return t
   const w = seq.sentences.map((s) => s.length + 22)
   const total = w.reduce((a, b) => a + b, 0)

@@ -20,6 +20,7 @@ import { Bubble } from './ui/bubble.js'
 import { UI } from './ui/ui.js'
 import { Pres } from './pres/index.js'
 import { Director } from './story/director.js'
+import { openTimingTool } from './dev/timing.js'
 
 const params = new URLSearchParams(location.search)
 const $ = (id) => document.getElementById(id)
@@ -171,6 +172,10 @@ addEventListener('keydown', (e) => {
 // --- Start ---------------------------------------------------------------------------------------------------
 async function boot() {
   input.enabled = false
+  if (params.has('timing')) {
+    openTimingTool()
+    return
+  }
   if (params.has('room')) {
     // Direkteinstieg für Tests: ?room=2&auto=1
     audio.unlock()
