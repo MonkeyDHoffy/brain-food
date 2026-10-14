@@ -1,0 +1,9 @@
+node_modules/
+dist/
+test-results/
+playwright-report/
+tests/screens/
+*.local.*
+.zugang*
+.DS_Store
+Thumbs.db
