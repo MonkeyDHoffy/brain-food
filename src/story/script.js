@@ -66,7 +66,7 @@ export const ROOM_SCRIPTS = {
       to: 2,
       cues: [
         [0, 0.03, () => { c.typeCode(TYPE_MS); pr.typeSource(TYPE_MS) }],
-        [1, at(A, 1, 'schaut'), () => { pr.lookLeft(); c.lookDown(1500) }],
+        [1, at(A, 1, 'Compiler'), () => { pr.lookLeft(); c.lookDown(1500) }],
       ],
     })
     await c.trigger('btn-compile', '<kbd>␣</kbd>Auf <b>1</b> springen')

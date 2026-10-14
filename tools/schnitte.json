@@ -1,0 +1,4 @@
+{
+  "_hinweis": "Nachträgliche Schnitte für einzelne Aufnahmen (Zeit in Sekunden in der Rohaufnahme). Greift nur, solange die Rohaufnahme dieselbe Dateigröße hat – nach einer Neuaufnahme wird der Schnitt übersprungen.",
+  "02-compile/02": { "bis": 2.5, "bytes": 88202, "grund": "„– schaut nach links“ entfernt (14.10.)" }
+}

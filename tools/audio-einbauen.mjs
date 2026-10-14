@@ -50,6 +50,17 @@ if (!fs.existsSync(IN)) {
   process.exit(0)
 }
 const lip = fs.existsSync(LIP) ? JSON.parse(fs.readFileSync(LIP, 'utf8')) : {}
+// Nachträgliche Schnitte (tools/schnitte.json): Aufnahme ab Sekunde "bis" abschneiden, kurz ausblenden
+const CUTS = JSON.parse(fs.readFileSync(path.join(ROOT, 'tools', 'schnitte.json'), 'utf8'))
+function cutFilter(id, src) {
+  const c = CUTS[id]
+  if (!c) return ''
+  if (c.bytes && fs.statSync(src).size !== c.bytes) {
+    console.log(`! ${id}: Schnitt übersprungen – die Rohaufnahme wurde neu aufgenommen`)
+    return ''
+  }
+  return `atrim=end=${c.bis},afade=t=out:st=${Math.max(0, c.bis - 0.08)}:d=0.08,`
+}
 let done = 0
 let total = 0
 for (const seq of fs.readdirSync(IN, { withFileTypes: true }).filter((e) => e.isDirectory()).map((e) => e.name).sort()) {
@@ -61,7 +72,7 @@ for (const seq of fs.readdirSync(IN, { withFileTypes: true }).filter((e) => e.is
     const dst = path.join(OUT, seq, `${m[1]}.mp3`)
     const id = `${seq}/${m[1]}`
     if (!all && fs.existsSync(dst) && fs.statSync(dst).mtimeMs > fs.statSync(src).mtimeMs && lip[id]) continue
-    execFileSync(ffmpeg, ['-v', 'error', '-y', '-i', src, '-af', FILTER, '-ac', '1', '-ar', '44100', '-c:a', 'libmp3lame', '-b:a', '128k', dst])
+    execFileSync(ffmpeg, ['-v', 'error', '-y', '-i', src, '-af', cutFilter(id, src) + FILTER, '-ac', '1', '-ar', '44100', '-c:a', 'libmp3lame', '-b:a', '128k', dst])
     const v = envelope(dst)
     lip[id] = { fps: FPS, v }
     total += v.length / FPS

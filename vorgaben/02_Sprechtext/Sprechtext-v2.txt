@@ -15,7 +15,7 @@ Bildschirm 1 – Einstieg am Mikrofon
 Bildschirm 2 – Kompilieren
 
 01. Ein Mensch schreibt Quellcode, zum Beispiel in C: eine Programmiersprache, die Menschen gut lesen und verstehen können.
-02. Ich starte den Compiler – schaut nach links.
+02. Ich starte den Compiler.
 03. Der Compiler übersetzt ihn in Maschinensprache – hier als Nullen und Einsen dargestellt, mit denen der Computer arbeiten kann, wir Menschen aber kaum.
 04. Spiele und kommerzielle Programme werden meist nur als Maschinencode ausgeliefert – der lesbare Quellcode bleibt beim Hersteller.
 05. Genau das hat Software lange geschützt: Die Funktionsweise daraus zu erschließen war mühsam – und machte den Nachbau teuer.

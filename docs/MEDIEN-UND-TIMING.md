@@ -30,7 +30,7 @@
    - Mit **Testen** prüfen: Der aktuelle Satz wird beim Abspielen hervorgehoben.
    - Das Ergebnis wird sofort in diesem Browser genutzt. Damit es dauerhaft gilt, kopierst du es mit **JSON kopieren** in `src/data/timings.json`, zum Beispiel `"01-intro": [0.4, 9.8, 17.2, …]`.
 
-> In Raum 2 tippt die Figur während Satz 1 („Ein Mensch schreibt Quellcode …“) am PC. Nach Satz 2 („Ich starte den Compiler – schaut nach links.“) wartet sie auf den Sprung.
+> In Raum 2 tippt die Figur während Satz 1 („Ein Mensch schreibt Quellcode …“) am PC. Nach Satz 2 („Ich starte den Compiler.“) wartet sie auf den Sprung. Nachträgliche Schnitte in einzelnen Aufnahmen stehen in `tools/schnitte.json`.
 
 ## Texte ändern
 
