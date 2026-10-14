@@ -21,10 +21,10 @@ const buffers = new Map()
 let musicEl = null
 let musicOn = true
 let musicTarget = MUSIC_VOL
-// Stimmfilter (optional, Taste V), gemerkt im Browser
-let voiceFxOn = false
+// Stimmfilter (Taste V): standardmäßig an, ausgeschaltet bleibt er nur, wenn man ihn abgeschaltet hat
+let voiceFxOn = true
 try {
-  voiceFxOn = localStorage.getItem('bf-voicefx') === '1'
+  voiceFxOn = localStorage.getItem('bf-voicefx') !== '0'
 } catch {}
 let fxDry, fxWet
 const voices = new Map() // seqId -> Lade-Versprechen
