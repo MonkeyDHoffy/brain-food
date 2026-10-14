@@ -280,6 +280,7 @@ export class UI {
           ${k('M', 'Musik an/aus')}${k('U', 'Untertitel an/aus')}
           ${k('G', 'Kulleraugen an/aus')}${k('F', 'Vollbild')}
           ${k('R', 'Raum neu starten')}${k('1–3', 'Raum direkt starten')}
+          ${k('K', 'Körper wechseln')}${k('⇧ N', 'ganzen Abschnitt überspringen')}
         </div>
         <p class="help-foot">Mikrofon, Knöpfe und Tür lassen sich auch anklicken – die Figur läuft dann selbst hin. <kbd>H</kbd> schließt.</p>
       </div>`

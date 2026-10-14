@@ -68,7 +68,9 @@ Steuerung → (3) Autopilot und Pause → (4) Medien → (5) visuelle Extras.
 | N | nächster Satz (überspringen) |
 | M | Musik an/aus |
 | U | Untertitel an/aus |
-| G | Kulleraugen an/aus |
+| G | Kulleraugen und Brauen an/aus |
+| K | Körper wechseln (Strick, Hoodie, Klassik) |
+| Shift+N | ganzen Abschnitt überspringen |
 | O | Autopilot an/aus (Tastendruck A/D übernimmt manuell) |
 | 1 / 2 / 3 | Notfall: Raum direkt starten |
 | F | Vollbild |
