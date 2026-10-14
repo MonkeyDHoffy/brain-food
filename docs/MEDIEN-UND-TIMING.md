@@ -10,6 +10,9 @@
    | `public/media/audio/02-compile.mp3` | Raum 2, Kompilieren | Satz 1 beim Betreten, Rest nach dem Sprung auf Knopf 1 |
    | `public/media/audio/03-decompile-cleanroom.mp3` | Raum 2, Dekompilieren und Clean Room | Sprung auf Knopf 2 |
    | `public/media/audio/04-artcraft-outlook.mp3` | Raum 3, ArtCraft und Ausblick | Sprung auf den ArtCraft-Knopf |
+   | `public/media/audio/03b-gag-jannik.mp3` *(optional)* | Raum 2, Gag: „Und genau so habe ich, Jannik, mich übrigens auch dekompiliert – und in dieses Spiel eingebaut. 😉“ | direkt nach „… lassen sich in ein anderes Spiel einbauen.“ |
+
+   Der Gag steht in `src/data/extras.json`, nicht im abgestimmten Sprechtext. Die Aufnahme 03 hält nach Satz 5 an, dann läuft der Gag, danach geht 03 weiter.
 
 2. Mehr ist nicht nötig. Liegt eine Datei vor, spielt das Spiel sie ab und bewegt den Mund im Takt der Lautstärke. Ohne Zeitmarken teilt es die Sätze nach Textlänge auf. Das passt grob.
 

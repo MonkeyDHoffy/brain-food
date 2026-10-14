@@ -76,8 +76,7 @@ export const ROOM_SCRIPTS = {
     c.buttonOn('btn-decompile')
     c.compileFigure('btn-decompile', P.rustXL)
     pr.decompile()
-    await c.say(B, {
-      cues: [
+    const cuesB = [
         [1, 0, () => pr.typeReconstructed()],
         [2, 0, () => pr.notOriginal()],
         [2, at(B, 2, 'schwierig'), () => pr.cost(0)],
@@ -94,8 +93,17 @@ export const ROOM_SCRIPTS = {
         [8, 0, () => pr.cleanRoom(3)],
         [9, 0, () => { pr.cleanRoom(4); c.sparkleHead() }],
         [10, 0, () => { pr.cleanRoom(5); c.openDoor() }],
+    ]
+    // Bis zum Mechanik-Transfer (Satz 5), dann der Gag, dann weiter mit Satz 6
+    await c.say(B, { to: 5, cues: cuesB })
+    await c.say('gag-jannik', {
+      cues: [
+        [0, 0.05, () => { c.brow('wiggle'); pr.gag() }],
+        [0, at('gag-jannik', 0, 'dekompiliert'), () => c.selfDecompile(P.lime)],
+        [0, 0.93, () => { c.wink(); c.brow('happy') }],
       ],
     })
+    await c.say(B, { from: 5, cues: cuesB })
     c.openDoor()
     await c.trigger('door', 'Durch die Tür <kbd>D</kbd>')
     return 'r3'

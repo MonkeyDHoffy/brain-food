@@ -1,6 +1,8 @@
 // Spielfigur: einfache Plattform-Physik (Laufen, Springen, Landen auf Knöpfen) und Darstellung.
 // Der Körper wird in die Pixelwelt gezeichnet, der Fotokopf danach in voller Auflösung.
-import { bodySprite, CX, FEET } from './body.js'
+import { bodySprite, CX, FEET, BODY_STYLES } from './body.js'
+
+export const DEFAULT_BODY = 'classic'
 import { Head } from './head.js'
 import { FLOOR, LW, BUTTON } from './rooms.js'
 import { input } from '../engine/input.js'
@@ -18,6 +20,12 @@ const HALF_W = 5
 export class Player {
   constructor(base) {
     this.head = new Head(base)
+    // Körperstil: 'classic' | 'strick' | 'hoodie' (Taste K), gemerkt im Browser
+    let saved = null
+    try {
+      saved = localStorage.getItem('bf-body')
+    } catch {}
+    this.style = BODY_STYLES.includes(saved) ? saved : DEFAULT_BODY
     this.reset(60)
   }
 
@@ -142,7 +150,15 @@ export class Player {
   /** Körper in die Pixelwelt zeichnen; liefert den Halsansatz (Weltkoordinaten) für den Kopf. */
   drawBody(g) {
     const [name, f] = this.pose()
-    const spr = bodySprite(name, f)
+    const spr = bodySprite(name, f, this.style)
+    if (spr.scale === 2) {
+      // 64-Bit-Körper: halbe Spielfeld-Pixel als Raster, gezeichnet später in voller Auflösung
+      const hx = Math.round(this.x * 2) / 2 - CX
+      const hy = Math.round(this.y * 2) / 2 - FEET
+      this.hd = { spr, x: hx, y: hy }
+      return { x: hx + spr.neckX, y: hy + spr.neckY + 1.5 }
+    }
+    this.hd = null
     const bx = Math.round(this.x) - CX
     const by = Math.round(this.y) - FEET
     if (!this.hidden && this.alpha > 0) {
@@ -161,6 +177,20 @@ export class Player {
 
   drawHead(g, neck, S) {
     if (this.hidden || this.alpha <= 0) return
+    if (this.hd) {
+      const { spr, x, y } = this.hd
+      g.save()
+      g.globalAlpha = this.alpha
+      g.imageSmoothingEnabled = false
+      const w = (spr.canvas.width / 2) * S
+      const h = (spr.canvas.height / 2) * S
+      if (this.facing < 0) {
+        g.translate(x * S * 2 + w, 0)
+        g.scale(-1, 1)
+      }
+      g.drawImage(spr.canvas, x * S, y * S, w, h)
+      g.restore()
+    }
     this.head.draw(g, neck.x * S, neck.y * S, HEAD_H * S, this.facing, this.alpha)
   }
 

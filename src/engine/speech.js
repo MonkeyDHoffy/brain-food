@@ -2,14 +2,22 @@
 // Jeder Satz erscheint unten als Untertitel und in der Sprechblase in kurzen Abschnitten.
 // Cues lösen dabei Aktionen auf der Präsentationsfläche aus: [satzIndex, anteil 0..1, funktion].
 import content from '../data/content.json'
+import extras from '../data/extras.json'
 import timings from '../data/timings.json'
 import { audio } from './audio.js'
 import { clock, sleep, until } from './clock.js'
 import { Babble } from './babble.js'
 import { storedTimings } from '../dev/timing.js'
 
-export const SEQ = Object.fromEntries(content.sequences.map((s) => [s.id, s]))
+// Abgestimmter Sprechtext plus Extras (z. B. der Jannik-Gag) mit eigener Aufnahme
+export const ALL_SEQUENCES = [...content.sequences, ...extras.sequences]
+export const SEQ = Object.fromEntries(ALL_SEQUENCES.map((s) => [s.id, s]))
+// Reihenfolge aller Sätze für den Fortschrittsbalken; Extras werden an ihrer Stelle eingefügt
 export const ALL_SENTENCES = content.sequences.flatMap((s) => s.sentences.map((_, i) => `${s.id}:${i}`))
+for (const x of extras.sequences) {
+  const k = ALL_SENTENCES.indexOf(x.insertAfter)
+  ALL_SENTENCES.splice(k + 1, 0, ...x.sentences.map((_, i) => `${x.id}:${i}`))
+}
 
 const TEXT_CPS = 14.5 // Lesetempo im Textmodus (Zeichen pro Sekunde)
 const TEXT_GAP = 450 // Pause zwischen Sätzen im Textmodus (ms)

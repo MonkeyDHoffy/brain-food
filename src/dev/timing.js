@@ -2,6 +2,9 @@
 // Ergebnis: Zeitmarken für src/data/timings.json. Wird zusätzlich im Browser gespeichert, damit man das
 // Ergebnis sofort im Spiel testen kann (gilt dann nur in diesem Browser).
 import content from '../data/content.json'
+import extras from '../data/extras.json'
+
+const SEQUENCES = [...content.sequences, ...extras.sequences]
 import timings from '../data/timings.json'
 import MEDIA from 'virtual:media'
 
@@ -21,7 +24,7 @@ export function openTimingTool() {
   root.className = 'timing-tool'
   document.body.appendChild(root)
   const saved = storedTimings()
-  let seq = content.sequences[0]
+  let seq = SEQUENCES[0]
   let audio = null
   let marks = []
   let recording = false
@@ -35,7 +38,7 @@ export function openTimingTool() {
       <div class="tt-box">
         <h2>Timing-Rekorder</h2>
         <p>Sequenz wählen → <b>Aufnehmen</b> → bei <b>jedem Satzanfang Leertaste</b> drücken (auch beim ersten Satz). <b>Esc</b> bricht ab.</p>
-        <div class="tt-seqs">${content.sequences.map((s) => `<button data-seq="${s.id}" class="${s.id === seq.id ? 'on' : ''}">${s.id}</button>`).join('')}</div>
+        <div class="tt-seqs">${SEQUENCES.map((s) => `<button data-seq="${s.id}" class="${s.id === seq.id ? 'on' : ''}">${s.id}</button>`).join('')}</div>
         <p class="tt-status">Datei: <code>public/media/audio/${seq.audio}</code> <span class="tt-audio">wird geprüft …</span></p>
         <div class="tt-actions">
           <button data-act="rec">${recording ? '■ Stopp' : '● Aufnehmen'}</button>
@@ -65,7 +68,7 @@ export function openTimingTool() {
 
   function select(id) {
     stop()
-    seq = content.sequences.find((s) => s.id === id)
+    seq = SEQUENCES.find((s) => s.id === id)
     render()
   }
 

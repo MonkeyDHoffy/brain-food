@@ -57,6 +57,8 @@ document.getElementById('jump').onclick = jump
 document.getElementById('eyes').onclick = toggleEyes
 document.getElementById('mouth').oninput = (e) => (manual = e.target.value / 100)
 const BROWS = ['flash', 'raise', 'wiggle', 'skeptic', 'happy']
+let bodyStyle = 'strick'
+document.querySelectorAll('[data-body]').forEach((b) => (b.onclick = () => (bodyStyle = b.dataset.body)))
 document.querySelectorAll('[data-brow]').forEach((b) => (b.onclick = () => head.brow(b.dataset.brow)))
 addEventListener('keydown', (e) => {
   const i = Number(e.key) - 1
@@ -126,18 +128,20 @@ function frame(now) {
   if (!player.ground) pose = player.vy < 0 ? 'jump' : 'fall'
   else if (Math.abs(player.vx) > 5) { pose = 'walk'; f = Math.floor(player.walk) % 4 }
   else if (speaking) { pose = 'talk'; f = Math.floor(t * 1.3) % 2 }
-  const spr = bodySprite(pose, f)
+  const spr = bodySprite(pose, f, bodyStyle)
 
   drawRoom()
   const bx = Math.round(player.x) - CX
   const by = Math.round(player.y) - FEET
-  lg.save()
-  if (player.facing < 0) {
-    lg.translate(bx * 2 + spr.canvas.width, 0)
-    lg.scale(-1, 1)
+  if (spr.scale === 1) {
+    lg.save()
+    if (player.facing < 0) {
+      lg.translate(bx * 2 + spr.canvas.width, 0)
+      lg.scale(-1, 1)
+    }
+    lg.drawImage(spr.canvas, bx, by)
+    lg.restore()
   }
-  lg.drawImage(spr.canvas, bx, by)
-  lg.restore()
 
   // Bildschirmmaßstab: Welt füllt die Höhe
   const S = canvas.height / LH
@@ -146,6 +150,18 @@ function frame(now) {
   g.fillRect(0, 0, canvas.width, canvas.height)
   g.imageSmoothingEnabled = false
   g.drawImage(low, ox, 0, LW * S, LH * S)
+  if (spr.scale === 2) {
+    // 64-Bit-Körper in doppelter Pixeldichte
+    const w = (spr.canvas.width / 2) * S
+    const h = (spr.canvas.height / 2) * S
+    g.save()
+    if (player.facing < 0) {
+      g.translate((ox + bx * S) * 2 + w, 0)
+      g.scale(-1, 1)
+    }
+    g.drawImage(spr.canvas, ox + bx * S, by * S, w, h)
+    g.restore()
+  }
   const neckX = player.facing > 0 ? bx + spr.neckX : bx + (spr.canvas.width - spr.neckX)
   const chinX = ox + (neckX) * S
   const chinY = (by + spr.neckY + 1.5) * S

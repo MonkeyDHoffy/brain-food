@@ -1,0 +1,15 @@
+{
+  "_hinweis": "Zusätzliche Sätze außerhalb des abgestimmten 504-Wörter-Texts. Eigene Audiodatei, damit die vier Hauptaufnahmen unverändert bleiben.",
+  "sequences": [
+    {
+      "id": "gag-jannik",
+      "heading": "Raum 2 – Gag nach dem Mechanik-Transfer",
+      "trigger": "nach Satz 5 von 03-decompile-cleanroom",
+      "audio": "03b-gag-jannik.mp3",
+      "insertAfter": "03-decompile-cleanroom:4",
+      "sentences": [
+        "Und genau so habe ich, Jannik, mich übrigens auch dekompiliert – und in dieses Spiel eingebaut. 😉"
+      ]
+    }
+  ]
+}

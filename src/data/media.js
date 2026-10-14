@@ -48,7 +48,7 @@ export const ARTCRAFT = {
   overview: 'artcraft-apps.png',
   overviewCredit: 'Screenshot: ArtCraft Launcher, github.com/storytold/craft-launcher',
   photocraft: 'photocraft-demo.jpg',
-  photocraftCredit: 'Screenshot: PhotoCraft, github.com/storytold/photocraft · Motiv: Hokusai (gemeinfrei)',
+  photocraftCredit: 'PhotoCraft-Screenshot: github.com/storytold · Motiv: Hokusai (gemeinfrei)',
   aiFact: 'Laut Projektstatistik: Bei 736 von 1.302 PhotoCraft-Commits ist ein KI-Modell als Ko-Autor eingetragen (Stand 10.10.2026).',
 }
 

@@ -46,6 +46,12 @@ export class Head {
     this.talkTime = 0
   }
 
+  /** Zwinkern mit einem Auge (Sekunden). */
+  wink(seconds = 0.7) {
+    this.winkT = seconds
+    this.winkLen = seconds
+  }
+
   /** Augenbrauen-Geste: 'flash' (Gruß), 'raise', 'wiggle', 'skeptic', 'happy' */
   brow(name) {
     this.browGest = { name, t: 0 }
@@ -63,24 +69,24 @@ export class Head {
       let done = false
       if (g.name === 'flash') {
         const up = t < 0.16 || (t > 0.3 && t < 0.48)
-        goals.forEach((b) => (b.lift = up ? -24 : base))
+        goals.forEach((b) => (b.lift = up ? -36 : base))
         done = t > 0.62
       } else if (g.name === 'raise') {
-        goals.forEach((b) => (b.lift = -20))
+        goals.forEach((b) => (b.lift = -32))
         done = t > 0.75
       } else if (g.name === 'wiggle') {
-        const s = Math.sin(t * 22) * 12
+        const s = Math.sin(t * 22) * 16
         goals[0].lift = -8 + s
         goals[1].lift = -8 - s
         done = t > 0.85
       } else if (g.name === 'skeptic') {
         goals[0].lift = 4
         goals[0].tilt = -5
-        goals[1].lift = -24
-        goals[1].tilt = 4
+        goals[1].lift = -34
+        goals[1].tilt = 6
         done = t > 1.6
       } else if (g.name === 'happy') {
-        goals.forEach((b) => { b.lift = -12; b.arch = 8 })
+        goals.forEach((b) => { b.lift = -24; b.arch = 18 })
         done = t > 1.4
       }
       if (done) this.browGest = null
@@ -89,7 +95,7 @@ export class Head {
     this.nextBrow -= dt
     if (!this.browGest && this.nextBrow <= 0) {
       const r = Math.random()
-      if (talk) this.brow(r < 0.5 ? 'raise' : r < 0.8 ? 'happy' : 'flash')
+      if (talk) this.brow(r < 0.45 ? 'happy' : r < 0.8 ? 'raise' : 'flash')
       else this.brow(r < 0.45 ? 'flash' : r < 0.8 ? 'wiggle' : 'skeptic')
       this.nextBrow = talk ? 2.2 + Math.random() * 2.5 : 4 + Math.random() * 4
     }
@@ -169,6 +175,8 @@ export class Head {
       b.arch = (b.arch ?? 0) + ((gl.arch - (b.arch ?? 0)) * Math.min(1, dt * 10))
     })
 
+    if (this.winkT > 0) this.winkT = Math.max(0, this.winkT - dt)
+
     // Blinzeln
     this.nextBlink -= dt
     if (this.nextBlink <= 0) {
@@ -220,8 +228,10 @@ export class Head {
     g.rotate(-lid.a)
     g.translate(-PIVOT.x, -PIVOT.y)
     g.drawImage(this.upper, 0, 0)
-    if (this.googly) this.drawEyes(g)
-    this.drawBrows(g)
+    if (this.googly) {
+      this.drawEyes(g)
+      this.drawBrows(g)
+    }
     g.restore()
 
     g.restore()
@@ -304,8 +314,11 @@ export class Head {
   }
 
   drawEyes(g) {
-    const blinkCover = this.blink > 0 ? Math.sin(this.blink * Math.PI) : 0
+    const blink = this.blink > 0 ? Math.sin(this.blink * Math.PI) : 0
+    // Zwinkern: vorderes Auge schließt sich weich und bleibt kurz zu
+    const w = this.winkT > 0 ? Math.min(1, (this.winkLen - this.winkT) / 0.08, this.winkT / 0.08) : 0
     this.eyes.forEach((e, i) => {
+      const blinkCover = i === 1 ? Math.max(blink, w) : blink
       const { x, y } = EYES[i]
       // Schatten
       g.fillStyle = 'rgba(40,25,15,0.25)'

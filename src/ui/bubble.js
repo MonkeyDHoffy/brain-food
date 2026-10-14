@@ -45,7 +45,7 @@ export class Bubble {
   }
 
   /** Positioniert die Blase neben dem Kopf (Bühnenkoordinaten des Spielfelds). */
-  place(anchor) {
+  place(anchor, minTop = 76) {
     if (this.el.hidden) return
     const w = this.el.offsetWidth
     const h = this.el.offsetHeight
@@ -56,7 +56,7 @@ export class Bubble {
       flip = true
     }
     left = Math.max(16, left)
-    const top = Math.max(76, anchor.top + 30 - h)
+    const top = Math.max(minTop, anchor.top + 30 - h)
     this.el.classList.toggle('flip', flip)
     this.el.style.setProperty('--tail-x', flip ? `${w - 58}px` : '26px')
     this.el.style.transform = ''

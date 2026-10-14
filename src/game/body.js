@@ -2,6 +2,7 @@
 // Jede Pose wird einmal in eine kleine Leinwand (24×28 px) gemalt, automatisch umrandet und zwischengespeichert.
 // Ursprung: Füße bei y = FEET, Körpermitte bei x = CX. Gezeichnet wird mit Blick nach rechts.
 import { P } from './palette.js'
+import { paintHD, STYLES, HD_W, HD_H } from './bodyhd.js'
 
 export const BODY_W = 24
 export const BODY_H = 28
@@ -109,23 +110,34 @@ function poseSpec(name, f) {
   }
 }
 
-/** Liefert die fertige Pose als Leinwand plus Ankerpunkt des Halses. */
-export function bodySprite(name = 'idle', frame = 0) {
-  const key = name + frame
+/**
+ * Liefert die fertige Pose als Leinwand plus Ankerpunkt des Halses (in Spielfeld-Pixeln).
+ * style: 'classic' (24×28, einfache Pixel) oder ein 64-Bit-Stil aus bodyhd.js ('strick', 'hoodie') mit
+ * doppelter Pixeldichte – scale = 2 heißt: zwei Sprite-Pixel pro Spielfeld-Pixel.
+ */
+export function bodySprite(name = 'idle', frame = 0, style = 'classic') {
+  const key = `${style}:${name}${frame}`
   let s = cache.get(key)
   if (s) return s
+  const hd = style !== 'classic' && STYLES[style]
   const c = document.createElement('canvas')
-  c.width = BODY_W
-  c.height = BODY_H
+  c.width = hd ? HD_W : BODY_W
+  c.height = hd ? HD_H : BODY_H
   const g = c.getContext('2d')
   const p = poseSpec(name, frame)
-  arm(g, ...p.arms.back, true)
-  leg(g, ...p.legs.back, true)
-  leg(g, ...p.legs.front, false)
-  torso(g, p.lift)
-  arm(g, ...p.arms.front, false)
+  if (hd) paintHD(g, p, style)
+  else {
+    arm(g, ...p.arms.back, true)
+    leg(g, ...p.legs.back, true)
+    leg(g, ...p.legs.front, false)
+    torso(g, p.lift)
+    arm(g, ...p.arms.front, false)
+  }
   outline(c)
-  s = { canvas: c, neckX: 12, neckY: NECK_TOP - p.lift }
+  s = { canvas: c, neckX: 12, neckY: NECK_TOP - p.lift, scale: hd ? 2 : 1 }
   cache.set(key, s)
   return s
 }
+
+export const BODY_STYLES = ['classic', ...Object.keys(STYLES)]
+export const BODY_LABELS = { classic: 'Klassik', ...Object.fromEntries(Object.entries(STYLES).map(([k, v]) => [k, v.label])) }

@@ -68,6 +68,7 @@ function mechanicsScene() {
       <div class="gwin b"><div class="bar"><i class="r"></i>Spiel B · Fantasy-Welt</div><canvas width="140" height="63"></canvas></div>
       <span class="fnchip one">springen()</span>
       <span class="fnchip two">kämpfen()</span>
+      <span class="gagchip">jannik.exe <i>dekompiliert ✓</i> <i>eingebaut ✓</i></span>
       <div class="bridge"><div class="cable"></div><span class="chip ink">Verbindungscode</span><span class="chip lime ai">${icon('spark', { size: 20 })} KI hilft beim Entwickeln</span></div>
     </div>
   </div>`
@@ -305,6 +306,13 @@ export function mountR2(root, { signal, onFrame }) {
         else st.canFight = true
         audio.sfx('sparkle', { vol: 0.6 })
       }))
+    },
+    gag() {
+      // "jannik.exe" fliegt aus der Präsentation hoch ins Spielfeld
+      const chip = $('.gagchip')
+      if (!chip) return
+      chip.classList.add('on')
+      audio.sfx('bits', { rate: 1.3, vol: 0.6 })
     },
     bridge() {
       qa(scene, '.fnchip').forEach((c) => (c.style.opacity = 0))

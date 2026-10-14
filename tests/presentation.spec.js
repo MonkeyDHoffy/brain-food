@@ -4,6 +4,11 @@ import fs from 'node:fs'
 
 const vorgabe = JSON.parse(fs.readFileSync(new URL('../vorgaben/02_Sprechtext/content.json', import.meta.url), 'utf8'))
 const ALLE_SAETZE = vorgabe.sequences.flatMap((s) => s.sentences)
+// Im Spiel kommt zusätzlich der Jannik-Gag (src/data/extras.json) nach Satz 5 von 03 hinzu
+const extras = JSON.parse(fs.readFileSync(new URL('../src/data/extras.json', import.meta.url), 'utf8'))
+const IM_SPIEL = vorgabe.sequences.flatMap((s) => s.sentences.map((t, i) => ({ id: `${s.id}:${i}`, t })))
+for (const x of extras.sequences) IM_SPIEL.splice(IM_SPIEL.findIndex((e) => e.id === x.insertAfter) + 1, 0, ...x.sentences.map((t) => ({ id: x.id, t })))
+const ERWARTET_IM_SPIEL = IM_SPIEL.map((e) => e.t)
 
 function collectErrors(page) {
   const errors = []
@@ -18,7 +23,7 @@ test('Eingebauter Sprechtext entspricht wortgleich der Vorgabe', () => {
   expect(ALLE_SAETZE.join(' ').split(/\s+/).filter((w) => /[\p{L}\d]/u.test(w)).length).toBeGreaterThan(490)
 })
 
-test('Autopilot spielt alle drei Räume bis zum Abspann – jeder Satz erscheint als Untertitel', async ({ page }) => {
+test('Autopilot spielt alle drei Räume bis zum Abspann – jeder Satz (plus Gag) erscheint als Untertitel', async ({ page }) => {
   const errors = collectErrors(page)
   const gesehen = []
   await page.exposeFunction('__untertitel', (t) => gesehen.push(t))
@@ -34,7 +39,7 @@ test('Autopilot spielt alle drei Räume bis zum Abspann – jeder Satz erscheint
   await page.goto('/?auto=1&speed=12&room=1')
   await expect(page.locator('#ending')).toBeVisible({ timeout: 200_000 })
   await expect(page.locator('.lc')).toHaveText(/LEVEL\s*COMPLETE/)
-  expect(gesehen).toEqual(ALLE_SAETZE)
+  expect(gesehen).toEqual(ERWARTET_IM_SPIEL)
   expect(errors).toEqual([])
 })
 

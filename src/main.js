@@ -21,6 +21,7 @@ import { UI } from './ui/ui.js'
 import { Pres } from './pres/index.js'
 import { Director } from './story/director.js'
 import { openTimingTool } from './dev/timing.js'
+import { BODY_STYLES, BODY_LABELS } from './game/body.js'
 
 const params = new URLSearchParams(location.search)
 const $ = (id) => document.getElementById(id)
@@ -66,7 +67,8 @@ function frame(now) {
     pres.update(dt)
   }
   world.render()
-  bubble.place(world.headAnchor())
+  // In Raum 3 bleibt die Blase unter der Galerie (die Rahmen leuchten bei den sieben Apps auf)
+  bubble.place(world.headAnchor(), world.room?.id === 'r3' ? 156 : 76)
   input.endFrame()
   requestAnimationFrame(frame)
 }
@@ -162,6 +164,14 @@ addEventListener('keydown', (e) => {
   else if (c === 'KeyG') {
     world.player.head.googly = !world.player.head.googly
     ui.toast(world.player.head.googly ? 'Kulleraugen an' : 'Kulleraugen aus')
+  } else if (c === 'KeyK') {
+    // Körperstil durchschalten: Klassik → Strick → Hoodie
+    const p = world.player
+    p.style = BODY_STYLES[(BODY_STYLES.indexOf(p.style) + 1) % BODY_STYLES.length]
+    try {
+      localStorage.setItem('bf-body', p.style)
+    } catch {}
+    ui.toast(`Körper: ${BODY_LABELS[p.style]}`)
   } else if (c === 'KeyR') director.restartRoom()
   else if (['Digit1', 'Digit2', 'Digit3'].includes(c)) {
     ui.hideEnding()

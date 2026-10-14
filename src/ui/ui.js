@@ -31,6 +31,12 @@ export class UI {
     this.handlers[name] = fn
   }
 
+  /** Solange ein Overlay offen ist, ist der Rest der Bühne nicht fokussierbar (Tab bleibt im Overlay). */
+  syncInert() {
+    const open = ['boot', 'menu', 'pause', 'help', 'ending'].some((id) => !$(id).hidden)
+    for (const id of ['field', 'pres', 'subtitleBar']) $(id).inert = open
+  }
+
   fire(name, ...a) {
     this.handlers[name]?.(...a)
   }
@@ -82,7 +88,7 @@ export class UI {
 
   subtitle(text, seqId, i, seq) {
     $('subtitleText').textContent = text
-    const titles = { '01-intro': 'Einstieg', '02-compile': 'Kompilieren', '03-decompile-cleanroom': 'Dekompilieren & Clean Room', '04-artcraft-outlook': 'ArtCraft & Ausblick' }
+    const titles = { '01-intro': 'Einstieg', '02-compile': 'Kompilieren', '03-decompile-cleanroom': 'Dekompilieren & Clean Room', '04-artcraft-outlook': 'ArtCraft & Ausblick', 'gag-jannik': 'Kurzer Exkurs' }
     $('subtitleMeta').innerHTML = `${titles[seqId] || ''}<small>Satz ${i + 1} von ${seq.sentences.length}</small>`
     const k = ALL_SENTENCES.indexOf(`${seqId}:${i}`)
     $('progress').style.width = `${((k + 1) / ALL_SENTENCES.length) * 100}%`
@@ -113,6 +119,7 @@ export class UI {
     return new Promise((resolve) => {
       const el = $('boot')
       el.hidden = false
+      this.syncInert()
       el.innerHTML = `
         <div class="crt">
           <div class="logo">${icon('brain', { size: 110 })}<h1>BRAIN<span>FOOD</span></h1><p>Level 1 · Reverse Engineering mit KI</p></div>
@@ -142,6 +149,7 @@ export class UI {
         el.classList.add('off')
         await new Promise((r) => setTimeout(r, 380))
         el.hidden = true
+        this.syncInert()
         el.classList.remove('off')
         audio.startMusic()
         resolve()
@@ -157,6 +165,7 @@ export class UI {
     return new Promise((resolve) => {
       const el = $('menu')
       el.hidden = false
+      this.syncInert()
       const render = (step) => {
         el.innerHTML = `
           <div class="menu-wrap">
@@ -195,6 +204,7 @@ export class UI {
         } else {
           removeEventListener('keydown', keys, true)
           el.hidden = true
+          this.syncInert()
           resolve({ mode: v })
         }
       }
@@ -229,6 +239,7 @@ export class UI {
     this.setPressed('pause', on)
     const el = $('pause')
     el.hidden = !on
+    this.syncInert()
     if (!on) return
     el.innerHTML = `
       <div class="box">
@@ -253,6 +264,7 @@ export class UI {
   help(show) {
     const el = $('help')
     el.hidden = !show
+    this.syncInert()
     if (!show) return
     const k = (key, text) => `<span><kbd>${key}</kbd></span><span>${text}</span>`
     el.innerHTML = `
@@ -274,6 +286,7 @@ export class UI {
   ending({ seconds }) {
     const el = $('ending')
     el.hidden = false
+    this.syncInert()
     audio.sfx('complete')
     const mm = String(Math.floor(seconds / 60)).padStart(2, '0')
     const ss = String(Math.floor(seconds % 60)).padStart(2, '0')
@@ -349,5 +362,6 @@ export class UI {
 
   hideEnding() {
     $('ending').hidden = true
+    this.syncInert()
   }
 }
