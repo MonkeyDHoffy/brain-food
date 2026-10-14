@@ -31,7 +31,7 @@ Bedienleiste und Mauszeiger blenden sich nach 2,5 s Mausruhe aus.
 ## Was fertig ist
 
 - **Raum 1 (Spielefusionen):** Mikrofon mit E, Agenda leuchtet satzgenau auf, 4 Fusionsbilder mit recherchierten Bildunterschriften und Quellen. Danach Definition Reverse Engineering, die Rolle der KI und die Tür.
-- **Raum 2 (Compiler-Labor):** Satz 1 beim Betreten, dann der Sprung auf Knopf 1. Die Figur zerfällt in Bits. Quellcode tippt sich, Maschinencode (echte x86-Bytes), „ausgeliefert“. Sprung auf Knopf 2: rekonstruierter Code („nicht das Original“), KI-Annotation, Mechanik-Transfer zwischen zwei Mini-Spielen, **Jannik-Gag** mit Zwinkern, Spiele-Brücke, Clean-Room-Diagramm mit Trennwand.
+- **Raum 2 (Compiler-Labor):** Die Figur tippt am Schreibtisch-PC den Quellcode (Monitor und Quellcode-Feld zeigen ihn mit), kündigt dann den Compiler an und springt auf Knopf 1. Die Figur zerfällt in Bits, der Monitor wechselt zu Nullen und Einsen, Maschinencode (echte x86-Bytes), „ausgeliefert“. Sprung auf Knopf 2: rekonstruierter Code („nicht das Original“), KI-Annotation, Mechanik-Transfer zwischen zwei Mini-Spielen, **Jannik-Gag** mit Zwinkern, Spiele-Brücke, Clean-Room-Diagramm mit Trennwand.
 - **Raum 3 (Software-Atelier):** ArtCraft-Knopf, die 7 „Craft Apps“ mit offiziellen Icons zählen hoch, PhotoCraft-Screenshot, „laut Entwicklern: Clean Room“ und „laut Projekt: kein Vollersatz“. Dann Ausblick, Recht (Nachbauen ≠ Kopieren, keine Rechtsberatung), offene Frage, Schlussgedanke.
 - **Extras:** Retro-Bootscreen, Glitch-Türwechsel, Figur wird kompiliert, Level-Complete-Abspann mit animiertem Kopf und Quellen, dazu 64-Bit-Körper (Strick als Standard, Hoodie, Klassik).
 - **Kopf:** dein Foto mit Klappmund im South-Park-Stil, Kulleraugen mit Trägheit, Blinzeln, dicke Brauen mit Gesten. Mit Audio steuert die Lautstärke den Mund.
@@ -48,7 +48,7 @@ Bedienleiste und Mauszeiger blenden sich nach 2,5 s Mausruhe aus.
 
 ## Bewusste Entscheidungen und Abweichungen
 
-- In Raum 2 spricht die Figur Satz 1 schon beim Betreten und wartet dann auf den Sprung. Das war dein Wunsch, der Brief sah den Start erst beim Sprung vor.
+- In Raum 2 schreibt die Figur erst den Code und kündigt dann den Compiler an; erst danach wird gesprungen. Das war dein Wunsch, der Brief sah den Start erst beim Sprung vor.
 - Der Gag steht nicht im 504-Wörter-Text, sondern in `src/data/extras.json` mit eigener Audiodatei.
 - Die ArtCraft-Übersicht ist eine Kachelliste mit den offiziellen Icons statt des Launcher-Screenshots, weil sie im Stream lesbarer ist (Screenshot liegt bereit).
 - Weitere Punkte stehen in [ENTSCHEIDUNGEN.md](ENTSCHEIDUNGEN.md).

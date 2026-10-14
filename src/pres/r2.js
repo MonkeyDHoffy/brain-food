@@ -189,9 +189,13 @@ export function mountR2(root, { signal, onFrame }) {
   }
 
   const api = {
-    lookLeft() {
+    editor() {
       setPanel('.src')
       $('.src .code').innerHTML = '<span class="cur"></span>'
+    },
+    lookLeft() {
+      setPanel('.src')
+      $('.f1').classList.add('pulse')
     },
     compilerOn() {
       $('.p1').classList.add('running')
@@ -199,9 +203,9 @@ export function mountR2(root, { signal, onFrame }) {
       c.textContent = 'Compiler läuft'
       c.classList.add('green', 'live')
     },
-    typeSource() {
+    typeSource(ms = 2400) {
       setPanel('.src')
-      run(typeInto($('.src .code'), SOURCE, { cps: 26, render: highlightC, signal }))
+      run(typeInto($('.src .code'), SOURCE, { cps: SOURCE.length / (ms / 1000), render: highlightC, signal }))
     },
     compile() {
       $('.f1').classList.add('on')

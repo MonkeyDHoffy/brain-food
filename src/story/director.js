@@ -152,6 +152,22 @@ export class Director {
         if (d && d.openTarget !== 1) w.openDoor(true)
       },
       gesture: (name, s) => w.player.gest(name, s),
+      // Raum 2: zum Schreibtisch gehen (falls nötig) und dort den Quellcode tippen; der Monitor zeigt ihn mit
+      async toDesk() {
+        const x = ROOMS[self.roomId].spawn
+        if (Math.abs(w.player.x - x) > 3) await self.autopilot.walkTo(x, signal)
+        w.player.facing = 1
+      },
+      typeCode(ms) {
+        w.locked = true
+        w.player.facing = 1
+        w.player.gest('type', ms / 1000)
+        run(animate(ms, (p) => (w.st.code = p), signal).then(() => !signal.aborted && (w.locked = false)))
+      },
+      // Monitor wechselt von Code zu Maschinencode (wischt von oben nach unten)
+      toBinary(ms = 1400) {
+        run(animate(ms, (p) => (w.st.bin = p), signal))
+      },
       lookDown(ms = 1500) {
         w.lookAt = 'down'
         run(sleep(ms, signal).then(() => (w.lookAt = null)))

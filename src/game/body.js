@@ -103,6 +103,12 @@ function poseSpec(name, f) {
       return { lift: 0, legs: { back: [10, 17, 10, 22], front: [14, 17, 14, 22] }, arms: { back: hang.back, front: [16, 8, 22, 13] } }
     case 'wave':
       return { lift: 0, legs: { back: [10, 17, 10, 22], front: [14, 17, 14, 22] }, arms: { back: hang.back, front: f === 0 ? [16, 8, 19, 0] : [16, 8, 21, 2] } }
+    case 'type': // tippt mit beiden Händen auf eine Tastatur vor sich
+      return {
+        lift: 0,
+        legs: { back: [10, 17, 10, 22], front: [14, 17, 14, 22] },
+        arms: { back: [8, 8, 19, f ? 10 : 11], front: [16, 8, 21, f ? 11 : 10] },
+      }
     case 'press':
       return { lift: 0, legs: { back: [10, 17, 9, 22], front: [14, 17, 15, 22] }, arms: { back: [8, 8, 4, 12], front: [16, 8, 20, 12] } }
     default: // idle

@@ -22,7 +22,7 @@ Die ältere Layoutvorlage (`vorgaben/layoutvorlage-alt.html`, 4 Folien) dient nu
 |---|---|---|---|
 | Start | Retro-Bootscreen „BRAIN FOOD OS“ → Level-Auswahl → Manuell / Autopilot | – | – |
 | 1 Spielefusionen | Figur geht zum Mikrofon, **E** (oder Klick) | `01-intro` | Überschrift → 4 Fusionsbilder ploppen nacheinander auf → Kernbegriffe → Tür öffnet |
-| 2 Compiler-Labor | Betreten: Satz 1 („Ich starte den Compiler …“) → Pfeil über Button 1 → **Sprung** | `02-compile` | Quellcode tippt sich → Compiler → Bits → „nur Maschinencode ausgeliefert“ |
+| 2 Compiler-Labor | Betreten: Figur tippt am PC (Satz 1 „Ein Mensch schreibt Quellcode …“), Satz 2 („Ich starte den Compiler …“) → Pfeil über Button 1 → **Sprung** | `02-compile` | Quellcode erscheint beim Tippen → Compiler → Bits → „nur Maschinencode ausgeliefert“ |
 | 2 | Pfeil über Button 2 → **Sprung** | `03-decompile-cleanroom` | Bits → rekonstruierter Code → KI-Annotation → Mechanik-Transfer → Clean Room (zwei Teams, Trennwand) → Tür |
 | 3 Software-Atelier | Pfeil über ArtCraft-Button → **Sprung** | `04-artcraft-outlook` | App-Übersicht → PhotoCraft → „laut Entwicklern: Clean Room“ → Ausblick → Recht → offener Schlussgedanke |
 | Ende | Tür → Level-Complete-Abspann | – | Gag-Statistik, Quellen und Credits, Neustart |

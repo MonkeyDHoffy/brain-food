@@ -56,17 +56,27 @@ export const ROOM_SCRIPTS = {
     const pr = c.pres
     const A = '02-compile'
     const B = '03-decompile-cleanroom'
-    await c.wait(600)
-    // Satz 1 beim Betreten, dann wartet die Figur auf den Sprung auf Button 1
-    await c.say(A, { to: 1, cues: [[0, at(A, 0, 'schaut'), () => { pr.lookLeft(); c.lookDown(1500) }]] })
+    // Erst schreibt die Figur am Schreibtisch den Quellcode (Satz 1), dann kündigt sie den Compiler an
+    // (Satz 2) und wartet auf den Sprung auf Button 1
+    await c.toDesk()
+    pr.editor()
+    await c.wait(400)
+    const TYPE_MS = 4600
+    await c.say(A, {
+      to: 2,
+      cues: [
+        [0, 0.03, () => { c.typeCode(TYPE_MS); pr.typeSource(TYPE_MS) }],
+        [1, at(A, 1, 'schaut'), () => { pr.lookLeft(); c.lookDown(1500) }],
+      ],
+    })
     await c.trigger('btn-compile', '<kbd>␣</kbd>Auf <b>1</b> springen')
     c.buttonOn('btn-compile')
     c.compileFigure('btn-compile', P.lime)
+    c.toBinary()
     pr.compilerOn()
     await c.say(A, {
-      from: 1,
+      from: 2,
       cues: [
-        [1, 0, () => pr.typeSource()],
         [2, at(A, 2, 'übersetzt'), () => pr.compile()],
         [3, 0, () => pr.ship()],
         [4, at(A, 4, 'mühsam'), () => pr.puzzle()],

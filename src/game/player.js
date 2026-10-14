@@ -42,7 +42,7 @@ export class Player {
     this.alpha = 1
     this.hidden = false
     this.talking = false
-    this.gesture = null // 'point' | 'wave' | 'press'
+    this.gesture = null // 'point' | 'wave' | 'press' | 'type'
     this.gestureUntil = 0
     this.t = 0
   }
@@ -142,7 +142,7 @@ export class Player {
   pose() {
     if (!this.ground) return [this.vy < 0 ? 'jump' : 'fall', 0]
     if (Math.abs(this.vx) > 4) return ['walk', Math.floor(this.walk) % 4]
-    if (this.gesture) return [this.gesture, Math.floor(this.t * 3) % 2]
+    if (this.gesture) return [this.gesture, Math.floor(this.t * (this.gesture === 'type' ? 7 : 3)) % 2]
     if (this.talking) return ['talk', Math.floor(this.t * 1.25) % 2]
     return ['idle', Math.floor(this.t * 1.4) % 2]
   }

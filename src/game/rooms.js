@@ -17,7 +17,7 @@ export const ROOMS = {
     ],
   },
   r2: {
-    id: 'r2', index: 2, name: 'Compiler-Labor', spawn: 52, entry: true,
+    id: 'r2', index: 2, name: 'Compiler-Labor', spawn: 58, entry: true,
     objects: [
       { id: 'btn-compile', kind: 'button', x: 170, color: 'green', num: '1', label: 'Kompilieren' },
       { id: 'btn-decompile', kind: 'button', x: 320, color: 'rust', num: '2', label: 'Dekompilieren' },
@@ -34,6 +34,11 @@ export const ROOMS = {
 }
 
 export const BUTTON = { w: 26, top: 86, dome: 4 }
+// Raum 2: Bildschirm des PCs auf dem Schreibtisch; die Figur tippt bei x = spawn
+const SCREEN = { x: 76, y: 54, w: 42, h: 26 }
+// Derselbe Quellcode wie auf der Präsentationsfläche (src/pres/r2.js)
+const CODE = ['// Zwei Zahlen addieren', 'int addiere(int a, int b) {', '  return a + b;', '}']
+const CODE_LEN = CODE.join('\n').length
 export const DOOR = { w: 24, h: 50 }
 
 // ------------------------------------------------------------------------------------------------
@@ -166,11 +171,26 @@ function paintR2(g) {
   ceiling(g, '#d7dfcf')
   wainscot(g, 76, '#cad5c2', '#dfe6d6')
   entryDoor(g, 26)
-  // Großer Monitor (Inhalt dynamisch)
-  R(g, 62, 18, 62, 44, P.ink)
-  R(g, 64, 20, 58, 36, P.screen)
-  R(g, 88, 62, 10, 6, P.ink2)
-  R(g, 80, 68, 26, 2, P.ink)
+  // Schreibtisch mit PC: hier tippt die Figur den Quellcode (Monitor-Inhalt dynamisch)
+  R(g, 74, 52, 46, 30, P.ink)
+  R(g, SCREEN.x, SCREEN.y, SCREEN.w, SCREEN.h, P.screen)
+  R(g, 94, 82, 6, 4, P.ink2)
+  R(g, 89, 86, 16, 2, P.ink)
+  R(g, 62, 88, 62, 1, P.wood)
+  R(g, 62, 89, 62, 2, P.woodD)
+  R(g, 64, 91, 2, 9, P.woodDD)
+  R(g, 120, 91, 2, 9, P.woodDD)
+  R(g, 102, 91, 18, 7, P.woodD)
+  R(g, 103, 92, 16, 5, P.wood2)
+  R(g, 109, 94, 4, 1, P.woodDD)
+  // Tastatur, Maus und Kaffeebecher
+  R(g, 63, 86, 15, 2, P.ink)
+  for (let x = 64; x < 77; x += 2) R(g, x, 86, 1, 1, '#4c6a60')
+  R(g, 80, 87, 3, 1, P.ink)
+  R(g, 81, 86, 1, 1, P.ink)
+  R(g, 110, 83, 5, 5, P.paper2)
+  R(g, 115, 84, 1, 2, P.paper2)
+  R(g, 111, 83, 3, 1, '#6b4a2b')
   // Serverschrank (LEDs dynamisch)
   R(g, 236, 36, 30, 64, P.ink)
   R(g, 238, 38, 26, 60, P.ink2)
@@ -229,6 +249,33 @@ export function roomBackground(id) {
 // --- Bewegliche Teile ------------------------------------------------------------------------------
 const BITS = '0110100111001011010011101001'
 
+// Code-Editor im Kleinformat: jedes Zeichen ein Pixel breit, farbig wie Syntax-Hervorhebung
+function drawEditor(g, progress, t) {
+  const { x: SX, y: SY, w: SW } = SCREEN
+  R(g, SX, SY, SW, 2, '#2a463c')
+  R(g, SX + 1, SY, 12, 2, '#3d6153')
+  let left = Math.floor(progress * CODE_LEN)
+  let cx = SX + 5
+  let cy = SY + 4
+  for (let i = 0; i < CODE.length && left >= 0; i++) {
+    const line = CODE[i]
+    cy = SY + 4 + i * 4
+    R(g, SX + 1, cy, 2, 2, '#3c5a4f')
+    const comment = line.startsWith('//')
+    const kw = new Set()
+    for (const m of line.matchAll(/\b(int|return)\b/g)) for (let k = 0; k < m[0].length; k++) kw.add(m.index + k)
+    const n = Math.min(line.length, left)
+    for (let k = 0; k < n; k++) {
+      const ch = line[k]
+      if (ch === ' ') continue
+      R(g, SX + 5 + k, cy, 1, 2, comment ? '#5f8a74' : kw.has(k) ? P.lime : /\w/.test(ch) ? P.screenL : '#7fae95')
+    }
+    cx = SX + 5 + n
+    left -= line.length + 1
+  }
+  if (progress < 1 ? true : Math.floor(t / 450) % 2) R(g, cx, cy - 1, 1, 4, P.screenL)
+}
+
 export function drawRoomDynamic(g, room, st, t) {
   if (room.id === 'r1') {
     // Fenster mit ziehenden Wolken
@@ -269,17 +316,24 @@ export function drawRoomDynamic(g, room, st, t) {
     }
   }
   if (room.id === 'r2') {
-    // Monitor: laufende Bitspalten
+    // Monitor: erst der Editor mit dem getippten Quellcode, nach dem Kompilieren laufende Bitspalten
+    const { x: SX, y: SY, w: SW, h: SH } = SCREEN
+    const bin = st.bin || 0
     g.save()
     g.beginPath()
-    g.rect(64, 20, 58, 36)
+    g.rect(SX, SY, SW, SH)
     g.clip()
+    if (bin < 1) drawEditor(g, st.code || 0, t)
+    g.beginPath()
+    g.rect(SX, SY, SW, Math.ceil(SH * bin))
+    g.clip()
+    if (bin > 0) R(g, SX, SY, SW, SH, P.screen)
     const speed = st.screenBoost ? 40 : 12
-    for (let col = 0; col < 9; col++) {
-      for (let row = 0; row < 8; row++) {
+    for (let col = 0; col < (bin > 0 ? 7 : 0); col++) {
+      for (let row = 0; row < 5; row++) {
         const n = BITS[(col * 5 + row + Math.floor((t / 1000) * speed * (1 + (col % 3) * 0.3))) % BITS.length]
-        const x = 66 + col * 6
-        const y = 22 + row * 5
+        const x = SX + 2 + col * 6
+        const y = SY + 2 + row * 5
         g.fillStyle = n === '1' ? P.screenL : '#4c7d64'
         if (n === '1') g.fillRect(x + 1, y, 1, 4)
         else {

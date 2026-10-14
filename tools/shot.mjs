@@ -5,7 +5,7 @@ import { chromium } from '@playwright/test'
 
 const [url, prefix = 'shot', stepsJson = '[{"wait":800},{"shot":"a"}]'] = process.argv.slice(2)
 const steps = JSON.parse(stepsJson)
-const browser = await chromium.launch()
+const browser = await chromium.launch({ args: ['--autoplay-policy=no-user-gesture-required'] })
 const page = await browser.newPage({ viewport: { width: 1920, height: 1080 }, deviceScaleFactor: 1 })
 const errors = []
 page.on('pageerror', (e) => errors.push('pageerror: ' + e.message))
