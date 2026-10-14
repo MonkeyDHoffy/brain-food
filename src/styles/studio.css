@@ -1,0 +1,55 @@
+/* Aufnahme-Studio – im Stil der Präsentation (Papier, Tinte, Limette, harte Schatten) */
+:root { --paper: #f2f0e8; --paper-2: #fbfaf3; --ink: #233a34; --green: #22654f; --lime: #dcea9e; --lime-d: #a4bc67; --muted: #64726b; --line: #ccd2c5; --rust: #a74d30; --rust-l: #f2dfd2; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 17px/1.5 'Space Grotesk', system-ui, sans-serif; }
+button { font: inherit; cursor: pointer; }
+:focus-visible { outline: 3px solid var(--rust); outline-offset: 2px; }
+kbd { font: 600 14px/1 'Space Grotesk', sans-serif; border: 2px solid var(--ink); border-bottom-width: 4px; padding: 2px 7px; background: var(--paper-2); }
+code { font: 14px/1 Consolas, monospace; color: var(--muted); }
+
+.top { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; gap: 24px; padding: 14px 28px; background: var(--ink); color: var(--paper); }
+.brand { font-size: 18px; }
+.brand b { font: 700 22px/1 'Pixelify Sans', sans-serif; color: var(--lime); margin-right: 8px; letter-spacing: 1px; }
+.ver { font-size: 13px; background: var(--lime); color: var(--ink); padding: 3px 7px; margin-left: 8px; font-weight: 600; }
+.progress { display: flex; align-items: center; gap: 10px; margin-left: auto; font-weight: 600; }
+.bar { width: 160px; height: 10px; background: #3b5249; }
+.bar i { display: block; height: 100%; width: 0; background: var(--lime); transition: width .3s; }
+.mic { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+.mic select { max-width: 260px; font: inherit; padding: 4px; }
+.meter { width: 120px; height: 12px; background: #3b5249; border: 2px solid #4d665d; }
+.meter i { display: block; height: 100%; width: 0; background: var(--lime); }
+.meter i.hot { background: var(--rust); }
+
+main { max-width: 1060px; margin: 0 auto; padding: 28px 28px 80px; }
+.intro { background: var(--paper-2); border: 3px solid var(--ink); box-shadow: 8px 8px 0 var(--lime-d); padding: 20px 26px; margin-bottom: 26px; }
+.intro h1 { margin: 0 0 8px; font: 700 30px/1.1 'Pixelify Sans', sans-serif; }
+.intro ul { margin: 10px 0; padding-left: 20px; color: var(--muted); }
+.where { font-size: 14px; color: var(--muted); margin: 0; }
+
+h2 { font: 600 14px/1 'Space Grotesk', sans-serif; letter-spacing: 2px; text-transform: uppercase; color: var(--green); margin: 30px 0 10px; }
+.item { background: var(--paper-2); border: 3px solid var(--line); padding: 14px 18px; margin-bottom: 10px; cursor: pointer; transition: border-color .15s, box-shadow .15s; }
+.item.sel { border-color: var(--ink); box-shadow: 6px 6px 0 var(--green); }
+.item.has { border-left: 10px solid var(--green); }
+.item.recording { border-color: var(--rust); box-shadow: 6px 6px 0 var(--rust); }
+.meta { display: flex; align-items: center; gap: 12px; }
+.meta b { font: 700 18px/1 'Space Grotesk', sans-serif; background: var(--ink); color: var(--lime); padding: 4px 7px; }
+.state { margin-left: auto; font-size: 14px; font-weight: 600; color: var(--muted); }
+.item.has .state { color: var(--green); }
+.text { font-size: 23px; line-height: 1.4; margin: 10px 0 12px; letter-spacing: -.2px; }
+.ctrl { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.ctrl button { border: 3px solid var(--ink); background: var(--paper); padding: 7px 12px; box-shadow: 0 3px 0 var(--ink); font-weight: 600; }
+.ctrl button:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink); }
+.ctrl button:disabled { opacity: .35; cursor: default; }
+.ctrl .rec { background: var(--rust-l); border-color: var(--rust); box-shadow: 0 3px 0 var(--rust); color: var(--rust); }
+.item.recording .rec { background: var(--rust); color: #fff; animation: pulse 1s steps(2) infinite; }
+@keyframes pulse { 50% { opacity: .7; } }
+.ctrl .play { background: var(--lime); }
+.ctrl .del { font-weight: 400; }
+.time { font: 600 15px/1 Consolas, monospace; color: var(--muted); min-width: 60px; }
+.wave { margin-left: auto; width: 240px; height: 36px; }
+
+.done { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin-top: 30px; padding: 20px 24px; background: var(--ink); color: var(--paper); }
+.done button { font: 700 22px/1 'Pixelify Sans', sans-serif; background: var(--lime); color: var(--ink); border: 3px solid var(--paper); padding: 14px 22px; margin-left: auto; }
+.done button:disabled { opacity: .35; cursor: default; }
+#doneMsg { flex-basis: 100%; margin: 0; color: var(--lime); font-weight: 600; }
+.auto { font-size: 15px; }

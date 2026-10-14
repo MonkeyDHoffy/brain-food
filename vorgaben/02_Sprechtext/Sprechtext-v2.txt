@@ -1,0 +1,50 @@
+BRAIN FOOD: REVERSE ENGINEERING MIT KI
+SPRECHTEXT v2 – ABGESTIMMT AM 14.10.2026
+625 Wörter, dazu der Jannik-Gag (src/data/extras.json).
+
+Bildschirm 1 – Einstieg am Mikrofon
+
+01. Heute geht es um verrückte Spielefusionen, was sie mit Reverse Engineering zu tun haben, welche Rolle KI dabei spielt – und warum das für Softwarehersteller ziemlich ungemütlich werden könnte.
+02. Meine Timeline ist gerade voll mit Videos, in denen verschiedene Videospiele und ihre Spielmechaniken miteinander gemixt werden.
+03. Auf den Bildern unten seht ihr Beispiele: Figuren, Spielwelten und die Art, wie man sich bewegt, baut oder kämpft, werden neu kombiniert.
+04. Dahinter stecken unterschiedliche technische Ansätze, darunter Reverse Engineering – also das Untersuchen fertiger Software, um ihre Funktionsweise zu verstehen.
+05. Mario in Elden Ring zum Beispiel baut laut Projektbeschreibung auf einer Dekompilierung von Super Mario 64 auf – also auf genau so einem Blick ins Innere eines Spiels.
+06. Neu ist das Tempo: KI kann diese aufwendige Analyse- und Programmierarbeit erheblich beschleunigen – deshalb tauchen solche Fusionen gerade fast im Wochentakt auf.
+07. Wie das funktioniert, zeige ich euch hinter der nächsten Tür.
+
+Bildschirm 2 – Kompilieren
+
+01. Ich starte den Compiler – schaut nach links.
+02. Ein Mensch schreibt Quellcode, zum Beispiel in C: eine Programmiersprache, die Menschen gut lesen und verstehen können.
+03. Der Compiler übersetzt ihn in Maschinensprache – hier als Nullen und Einsen dargestellt, mit denen der Computer arbeiten kann, wir Menschen aber kaum.
+04. Spiele und kommerzielle Programme werden meist nur als Maschinencode ausgeliefert – der lesbare Quellcode bleibt beim Hersteller.
+05. Genau das hat Software lange geschützt: Die Funktionsweise daraus zu erschließen war mühsam – und machte den Nachbau teuer.
+06. Jetzt springe ich auf den Decompiler-Button und zeige euch den Rückweg.
+
+Bildschirm 2 – Dekompilieren und Clean Room
+
+01. Jetzt geht es von der Maschinensprache zurück zu lesbarem Code.
+02. Das nennt man Dekompilieren – eine Methode des Reverse Engineerings.
+03. Das ging schon früher – aber seht euch das Ergebnis an: keine Kommentare, keine sinnvollen Namen. Diesen Code zu verstehen war schwierig, zeitaufwendig und teuer.
+04. Hier kommt KI ins Spiel: Sie erkennt, was der Code tut, schlägt verständliche Namen vor und erklärt ihn – Arbeit, die früher viel Expertenzeit gekostet hat.
+05. Für die Spielefusionen heißt das: Verstandene Spielmechaniken – etwa das Springen oder Kämpfen einer Figur – lassen sich in ein anderes Spiel einbauen.
+06. Manchmal werden auch zwei laufende Spiele verbunden; KI kann helfen, den dafür nötigen Analyse- und Verbindungscode schneller zu entwickeln.
+07. Es gibt aber noch einen anderen Weg: Man beobachtet, was ein Programm tut, und beschreibt seine Funktionen.
+08. Bei einer klassischen Clean-Room-Implementation hält ein Team diese Funktionen fest.
+09. Ein anderes Team schreibt daraus eigenen Code, ohne den Originalcode zu kennen.
+10. Auch hier kann KI helfen, die beschriebenen Funktionen neu zu programmieren – ob die Trennung dann noch sauber ist, ist allerdings eine offene Frage.
+11. Und jetzt wird es ernst: Das betrifft nicht nur Videospiele, sondern auch die Software, mit der wir jeden Tag arbeiten.
+
+Bildschirm 3 – ArtCraft und Ausblick
+
+01. Das ist ArtCraft: Laut Medienberichten hat ein Entwickler mit KI-Unterstützung in wenigen Wochen Nachbauten von sieben Adobe-Programmen veröffentlicht – darunter Photoshop, Illustrator und Premiere.
+02. PhotoCraft zeigt, wie ähnlich so ein Nachbau schon aussieht – kostenlos und quelloffen, während Adobe seine Programme im Monatsabo verkauft.
+03. Laut den Entwicklern handelt es sich um Clean-Room-Implementierungen: öffentliche Beschreibungen und beobachtetes Verhalten statt Adobes Originalcode.
+04. Noch ist PhotoCraft laut Projekt kein vollwertiger Ersatz für professionelle Photoshop-Arbeit.
+05. Den Herstellern dürfte das trotzdem gar nicht schmecken: Was über Jahrzehnte entwickelt und per Abo bezahlt wird, lässt sich plötzlich in Wochen nachbauen.
+06. Und genau hier wird es heikel: Laut eigener Projektdoku wurden auch Dateien einer installierten Photoshop-Version untersucht – ist das dann noch ein sauberer Clean Room?
+07. Funktionen nachzubauen ist zwar nicht automatisch eine Urheberrechtsverletzung – aber Marken, Patente und Lizenzbedingungen sind eigene Baustellen.
+08. Rund um KI und Urheberrecht wird gerade ohnehin heftig gestritten – auch darüber, was KI-Modelle aus fremder Software lernen dürfen.
+09. Wie Gerichte solche KI-Nachbauten bewerten würden, ist bisher offen.
+10. Für uns heißt das: Software wird austauschbarer – der Wert liegt immer mehr in Ideen, Erfahrung und guten Ergebnissen.
+11. KI macht das Nachbauen von Software so leicht wie nie – die große Frage ist: Wie schützen Softwarefirmen künftig, was sie einzigartig macht?

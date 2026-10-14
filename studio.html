@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Brain Food – Aufnahme-Studio</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8' shape-rendering='crispEdges'%3E%3Crect width='8' height='8' fill='%23a74d30'/%3E%3Crect x='3' y='1' width='2' height='4' fill='%23fbfaf3'/%3E%3Crect x='2' y='5' width='4' height='1' fill='%23fbfaf3'/%3E%3Crect x='3' y='6' width='2' height='1' fill='%23fbfaf3'/%3E%3C/svg%3E">
+</head>
+<body>
+  <header class="top">
+    <div class="brand"><b>BRAIN FOOD</b> Aufnahme-Studio <span class="ver">Sprechtext v2</span></div>
+    <div class="progress"><span id="count">0 / 0</span><div class="bar"><i id="bar"></i></div></div>
+    <label class="mic">Mikrofon <select id="mic"></select></label>
+    <div class="meter" title="Pegel"><i id="level"></i></div>
+  </header>
+  <main>
+    <section class="intro">
+      <h1>Satz für Satz einsprechen</h1>
+      <p><kbd>Leertaste</kbd> startet und stoppt die Aufnahme des markierten Satzes · <kbd>Enter</kbd> anhören · <kbd>↑</kbd> <kbd>↓</kbd> Satz wechseln. Nach jeder Aufnahme springt die Markierung zum nächsten Satz.</p>
+      <ul>
+        <li>Ruhiger Raum, gleicher Abstand zum Mikrofon (etwa eine Handbreit), lieber etwas langsamer als im Gespräch.</li>
+        <li>Erst kurz nach dem Klick losreden und am Ende einen Moment warten – Stille schneide ich später weg.</li>
+        <li>Gefällt dir ein Satz nicht: einfach neu aufnehmen, die alte Fassung wird ersetzt.</li>
+      </ul>
+      <p class="where">Gespeichert wird lokal im Projektordner unter <code id="folder">aufnahmen\</code></p>
+    </section>
+    <div id="list"></div>
+    <section class="done">
+      <label class="auto"><input type="checkbox" id="autoNext" checked> nach jeder Aufnahme zum nächsten Satz</label>
+      <button id="ok" type="button" disabled>Alles eingesprochen – OK</button>
+      <p id="doneMsg" hidden></p>
+    </section>
+  </main>
+  <script type="module" src="/src/dev/studio.js"></script>
+</body>
+</html>
