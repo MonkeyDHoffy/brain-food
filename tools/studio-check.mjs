@@ -4,6 +4,13 @@
 import { chromium } from '@playwright/test'
 import fs from 'node:fs'
 
+// Schutz: Gibt es schon echte Aufnahmen, nichts anfassen (der Test nimmt Satz 1 auf und löscht ihn wieder)
+const echte = fs.existsSync('aufnahmen') && fs.readdirSync('aufnahmen', { recursive: true }).some((f) => /\.(webm|ogg|mp4|wav)$/.test(String(f)))
+if (echte) {
+  console.log('Abbruch: Im Ordner aufnahmen/ liegen bereits Aufnahmen – der Studio-Test würde sie überschreiben.')
+  process.exit(0)
+}
+
 const browser = await chromium.launch({ args: ['--use-fake-ui-for-media-stream', '--use-fake-device-for-media-stream'] })
 const page = await browser.newPage({ viewport: { width: 1400, height: 1000 } })
 const errs = []
