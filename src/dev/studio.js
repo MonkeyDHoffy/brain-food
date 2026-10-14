@@ -42,11 +42,37 @@ async function openMic(deviceId) {
   analyser = audioCtx.createAnalyser()
   analyser.fftSize = 1024
   audioCtx.createMediaStreamSource(stream).connect(analyser)
-  const devices = (await navigator.mediaDevices.enumerateDevices()).filter((d) => d.kind === 'audioinput')
+  const all = await navigator.mediaDevices.enumerateDevices()
+  const devices = all.filter((d) => d.kind === 'audioinput')
   const current = stream.getAudioTracks()[0].getSettings().deviceId
   $('mic').innerHTML = devices.map((d) => `<option value="${d.deviceId}" ${d.deviceId === current ? 'selected' : ''}>${d.label || 'Mikrofon'}</option>`).join('')
+  fillOutputs(all, devices.find((d) => d.deviceId === current)?.groupId)
 }
 $('mic').onchange = (e) => openMic(e.target.value)
+
+// Wiedergabe-Gerät (z. B. das Headset): gespeicherte Wahl, sonst das Gerät, das zum Mikrofon gehört
+let outId = ''
+function fillOutputs(all, micGroup) {
+  const outs = all.filter((d) => d.kind === 'audiooutput')
+  if (!outs.length || !('setSinkId' in HTMLMediaElement.prototype)) return
+  let saved = ''
+  try {
+    saved = localStorage.getItem('bf-studio-out') || ''
+  } catch {}
+  const match = outs.find((d) => d.deviceId === saved) || outs.find((d) => micGroup && d.groupId === micGroup && d.deviceId !== 'default')
+  outId = match ? match.deviceId : ''
+  $('out').innerHTML = `<option value="">Standard-Ausgabe</option>${outs
+    .filter((d) => d.deviceId !== 'default' && d.deviceId !== 'communications')
+    .map((d) => `<option value="${d.deviceId}" ${d.deviceId === outId ? 'selected' : ''}>${d.label || 'Lautsprecher'}</option>`)
+    .join('')}`
+}
+$('out').onchange = (e) => {
+  outId = e.target.value
+  try {
+    localStorage.setItem('bf-studio-out', outId)
+  } catch {}
+  if (player && outId) player.setSinkId(outId).catch(() => {})
+}
 
 const buf = new Float32Array(1024)
 function meter() {
@@ -201,7 +227,9 @@ function play(it) {
   if (!files[key(it)]) return
   player?.pause()
   player = new Audio(`/__studio/file?seq=${it.seq}&nr=${it.nr}&t=${files[key(it)].mtime}`)
-  player.play()
+  const go = () => player.play()
+  if (outId && player.setSinkId) player.setSinkId(outId).then(go, go)
+  else go()
 }
 
 async function remove(it) {
