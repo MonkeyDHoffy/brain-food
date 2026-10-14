@@ -21,7 +21,7 @@ Live unter **https://brainfood.hoffja.de** (Passwortschutz, Zugang siehe unten).
 | Shift+N | ganzen Abschnitt überspringen |
 | P / Esc | Pause (im Pausemenü: R Raum neu, O Autopilot) |
 | O | Autopilot an/aus. Ein Tastendruck auf A/D übernimmt sofort manuell |
-| M / U / G / K | Musik / Untertitel / Kulleraugen und Brauen / Körper (Strick, Hoodie, Klassik) |
+| M / U / G / K | Musik / Untertitel (standardmäßig aus, eingeschaltet auf Englisch) / Kulleraugen und Brauen / Körper (Strick, Hoodie, Klassik) |
 | V | Stimmfilter an/aus: etwas wärmer und weicher, gleiche Lautstärke. Die Wahl merkt sich der Browser. |
 | 1 2 3 | Notfall: Raum direkt starten |
 | F / H | Vollbild / Hilfe |

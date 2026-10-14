@@ -7,6 +7,7 @@ import { HeadMan } from './pacman.js'
 import { pixelSvg } from '../game/pixelfont.js'
 import qrcode from 'qrcode-generator'
 import { VIDEO } from '../data/media.js'
+import subtitlesEn from '../data/subtitles-en.json'
 
 const $ = (id) => document.getElementById(id)
 const BASE = import.meta.env.BASE_URL
@@ -34,10 +35,13 @@ function qrSvg(text) {
 export class UI {
   constructor() {
     this.stage = $('stage')
-    this.subOn = true
+    // Untertitel standardmäßig aus; eingeschaltet zeigen sie den Text auf Englisch (Sprechblase bleibt deutsch)
+    this.subOn = false
     this.handlers = {}
     this.toastTimer = 0
     this.buildHud()
+    $('subtitleBar').classList.add('off')
+    this.setPressed('subs', false)
   }
 
   on(name, fn) {
@@ -64,7 +68,7 @@ export class UI {
       btn('auto', 'robot', 'Autopilot (O)', true),
       btn('music', 'music', 'Musik (M)', true),
       btn('voice', 'voice', 'Stimmfilter (V)', true),
-      btn('subs', 'cc', 'Untertitel (U)', true),
+      btn('subs', 'cc', 'Englische Untertitel (U)', true),
       btn('full', 'full', 'Vollbild (F)'),
       btn('help', 'help', 'Hilfe (H)'),
     ].join('')
@@ -101,7 +105,7 @@ export class UI {
   }
 
   subtitle(text, seqId, i, seq) {
-    $('subtitleText').textContent = text
+    $('subtitleText').textContent = subtitlesEn.sequences[seqId]?.[i] || text
     const titles = { '01-intro': 'Einstieg', '02-compile': 'Kompilieren', '03-decompile-cleanroom': 'Dekompilieren & Clean Room', '04-artcraft-outlook': 'ArtCraft & Ausblick', 'gag-jannik': 'Kurzer Exkurs', abschied: 'Abschied' }
     $('subtitleMeta').innerHTML = `${titles[seqId] || ''}<small>Satz ${i + 1} von ${seq.sentences.length}</small>`
     const k = ALL_SENTENCES.indexOf(`${seqId}:${i}`)
@@ -120,7 +124,7 @@ export class UI {
     this.subOn = !this.subOn
     $('subtitleBar').classList.toggle('off', !this.subOn)
     this.setPressed('subs', this.subOn)
-    this.toast(this.subOn ? 'Untertitel an' : 'Untertitel aus')
+    this.toast(this.subOn ? 'Untertitel an (Englisch)' : 'Untertitel aus')
   }
 
   toast(text) {
@@ -291,7 +295,7 @@ export class UI {
           ${k('A D', 'Laufen (auch ← →)')}${k('␣', 'Springen (auch W / ↑)')}
           ${k('E', 'Mikrofon, Tür')}${k('N', 'Nächster Satz / Aktion')}
           ${k('P', 'Pause')}${k('O', 'Autopilot an/aus')}
-          ${k('M', 'Musik an/aus')}${k('U', 'Untertitel an/aus')}
+          ${k('M', 'Musik an/aus')}${k('U', 'Englische Untertitel an/aus')}
           ${k('G', 'Kulleraugen an/aus')}${k('F', 'Vollbild')}
           ${k('R', 'Raum neu starten')}${k('1–3', 'Raum direkt starten')}
           ${k('K', 'Körper wechseln')}${k('⇧ N', 'ganzen Abschnitt überspringen')}

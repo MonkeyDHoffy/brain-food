@@ -6,9 +6,11 @@ const vorgabe = JSON.parse(fs.readFileSync(new URL('../vorgaben/02_Sprechtext/co
 const ALLE_SAETZE = vorgabe.sequences.flatMap((s) => s.sentences)
 // Im Spiel kommt zusätzlich der Jannik-Gag (src/data/extras.json) nach Satz 5 von 03 hinzu
 const extras = JSON.parse(fs.readFileSync(new URL('../src/data/extras.json', import.meta.url), 'utf8'))
-const IM_SPIEL = vorgabe.sequences.flatMap((s) => s.sentences.map((t, i) => ({ id: `${s.id}:${i}`, t })))
-for (const x of extras.sequences) IM_SPIEL.splice(IM_SPIEL.findIndex((e) => e.id === x.insertAfter) + 1, 0, ...x.sentences.map((t) => ({ id: x.id, t })))
-const ERWARTET_IM_SPIEL = IM_SPIEL.map((e) => e.t)
+const IM_SPIEL = vorgabe.sequences.flatMap((s) => s.sentences.map((t, i) => ({ id: `${s.id}:${i}`, seq: s.id, i, t })))
+for (const x of extras.sequences) IM_SPIEL.splice(IM_SPIEL.findIndex((e) => e.id === x.insertAfter) + 1, 0, ...x.sentences.map((t, i) => ({ id: x.id, seq: x.id, i, t })))
+// Die Untertitel zeigen die englische Fassung (src/data/subtitles-en.json), in derselben Reihenfolge
+const EN = JSON.parse(fs.readFileSync(new URL('../src/data/subtitles-en.json', import.meta.url), 'utf8')).sequences
+const ERWARTET_IM_SPIEL = IM_SPIEL.map((e) => EN[e.seq]?.[e.i])
 
 function collectErrors(page) {
   const errors = []
@@ -21,6 +23,22 @@ test('Eingebauter Sprechtext entspricht wortgleich der Vorgabe', () => {
   const eingebaut = JSON.parse(fs.readFileSync(new URL('../src/data/content.json', import.meta.url), 'utf8'))
   expect(eingebaut.sequences.flatMap((s) => s.sentences)).toEqual(ALLE_SAETZE)
   expect(ALLE_SAETZE.join(' ').split(/\s+/).filter((w) => /[\p{L}\d]/u.test(w)).length).toBeGreaterThan(600)
+})
+
+test('Englische Untertitel decken jeden Satz ab (gleiche Satzzahl je Abschnitt, nichts leer)', () => {
+  for (const s of [...vorgabe.sequences, ...extras.sequences]) {
+    expect(EN[s.id]?.length, s.id).toBe(s.sentences.length)
+    for (const t of EN[s.id]) expect(t.trim().length, s.id).toBeGreaterThan(10)
+  }
+})
+
+test('Untertitel sind beim Start aus und lassen sich mit U einschalten', async ({ page }) => {
+  await page.goto('/?room=1&auto=1&speed=4')
+  await expect(page.locator('#subtitleBar')).toHaveClass(/off/)
+  await expect(page.locator('[data-act="subs"]')).toHaveAttribute('aria-pressed', 'false')
+  await page.keyboard.press('KeyU')
+  await expect(page.locator('#subtitleBar')).not.toHaveClass(/off/)
+  await expect(page.locator('[data-act="subs"]')).toHaveAttribute('aria-pressed', 'true')
 })
 
 test('Autopilot spielt alle drei Räume bis zum Abspann – jeder Satz (plus Gag) erscheint als Untertitel', async ({ page }) => {

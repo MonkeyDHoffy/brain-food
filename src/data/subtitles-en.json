@@ -1,0 +1,55 @@
+{
+  "_hinweis": "Englische Untertitel (Taste U). Je Sequenz dieselbe Satzzahl und Reihenfolge wie content.json und extras.json – der Test prüft das. Die Sprechblase bleibt deutsch.",
+  "sequences": {
+    "01-intro": [
+      "Today is all about crazy game mashups, what they have to do with reverse engineering, what role AI plays – and why this could get pretty uncomfortable for software companies.",
+      "My timeline is full of videos right now in which different video games and their game mechanics are mixed together.",
+      "The pictures below show some examples: characters, game worlds and the way you move, build or fight are combined in new ways.",
+      "Behind them are different technical approaches, including reverse engineering – examining finished software to understand how it works.",
+      "Mario in Elden Ring, for example, is based on a decompilation of Super Mario 64, according to its project description – exactly this kind of look inside a game.",
+      "What's new is the speed: AI can massively accelerate this laborious analysis and programming work – which is why mashups like these are popping up almost every week.",
+      "I'll show you how this works behind the next door."
+    ],
+    "02-compile": [
+      "A human writes source code, for example in C: a programming language that people can read and understand well.",
+      "I'm starting the compiler.",
+      "The compiler translates it into machine language – shown here as zeros and ones, which the computer can work with, but we humans hardly can.",
+      "Games and commercial programs are usually shipped only as machine code – the readable source code stays with the vendor.",
+      "That's exactly what protected software for a long time: figuring out how it works from machine code was tedious – and made rebuilding it expensive.",
+      "Now I'll jump on the decompiler button and show you the way back."
+    ],
+    "03-decompile-cleanroom": [
+      "Now we go from machine language back to readable code.",
+      "This is called decompiling – one method of reverse engineering.",
+      "This was possible before – but look at the result: no comments, no meaningful names. Understanding this code was difficult, time-consuming and expensive.",
+      "This is where AI comes in: it recognizes what the code does, suggests understandable names and explains it – work that used to take a lot of expert time.",
+      "For the game mashups, this means: once game mechanics are understood – such as a character's jumping or fighting – they can be built into another game.",
+      "Sometimes two running games are connected, too; AI can help develop the analysis and connection code needed for that faster.",
+      "But there's another way: you observe what a program does and describe its features.",
+      "In a classic clean-room implementation, one team documents these features.",
+      "Another team then writes its own code from that description, without knowing the original code.",
+      "Here, too, AI can help reprogram the described features – whether the separation is still clean, though, is an open question.",
+      "And now it gets serious: this doesn't just affect video games, but also the software we work with every day."
+    ],
+    "04-artcraft-outlook": [
+      "This is ArtCraft: according to media reports, a developer used AI to publish rebuilds of seven Adobe programs within a few weeks – including Photoshop, Illustrator and Premiere.",
+      "PhotoCraft shows how similar such a rebuild already looks – free and open source, while Adobe sells its programs as a monthly subscription.",
+      "According to the developers, these are clean-room implementations: public descriptions and observed behavior instead of Adobe's original code.",
+      "According to the project, PhotoCraft is not yet a full replacement for professional Photoshop work.",
+      "Still, the vendors are unlikely to be happy about it: what was developed over decades and is paid for by subscription can suddenly be rebuilt in weeks.",
+      "And this is exactly where it gets tricky: according to the project's own documentation, files from an installed Photoshop version were examined as well – does that still count as a clean room?",
+      "Rebuilding features isn't automatically copyright infringement – but trademarks, patents and license terms are separate issues.",
+      "There's already a fierce debate about AI and copyright – including what AI models may learn from other people's software.",
+      "How courts would judge AI rebuilds like these is still an open question.",
+      "For us, this means: software is becoming more interchangeable – the value lies more and more in ideas, experience and good results.",
+      "AI makes rebuilding software easier than ever – the big question is: how will software companies protect what makes them unique in the future?"
+    ],
+    "gag-jannik": [
+      "And that's exactly how I, Jannik, decompiled myself, by the way – and built myself into this game. 😉"
+    ],
+    "abschied": [
+      "If you want to learn more about the topic: there's a video tip in the credits.",
+      "That was your Brain Food for today – now it's back to the real breakfast. Enjoy your meal and have a great day!"
+    ]
+  }
+}
