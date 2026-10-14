@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Brain Food – Kopf-Vorschau</title>
+  <style>
+    :root { --paper:#f2f0e8; --ink:#233a34; --green:#22654f; --lime:#dcea9e; --muted:#64726b; --line:#ccd2c5 }
+    * { box-sizing: border-box }
+    body { margin: 0; background: var(--paper); color: var(--ink); font: 15px/1.5 system-ui, sans-serif; display: grid; grid-template-rows: auto 1fr auto; height: 100vh }
+    header { padding: 14px 22px; border-bottom: 2px solid var(--ink); display: flex; gap: 18px; align-items: baseline }
+    header b { font-size: 18px } header span { color: var(--muted) }
+    canvas { width: 100%; height: 100%; display: block }
+    .controls { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 22px; border-top: 2px solid var(--ink); align-items: center }
+    button { font: inherit; padding: 8px 14px; border: 2px solid var(--ink); background: var(--lime); color: var(--ink); cursor: pointer; box-shadow: 0 3px 0 var(--ink) }
+    button:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink) }
+    button:focus-visible { outline: 3px solid #a74d30; outline-offset: 2px }
+    label { display: flex; gap: 8px; align-items: center; margin-left: 12px; color: var(--muted) }
+    .bubble { position: absolute; max-width: 460px; background: #fffef8; border: 3px solid var(--ink); padding: 12px 16px; font-size: 20px; line-height: 1.35; box-shadow: 6px 6px 0 rgba(35,58,52,.15) }
+    .bubble[hidden] { display: none }
+    main { position: relative; min-height: 0 }
+  </style>
+</head>
+<body>
+  <header><b>Kopf-Vorschau</b><span>A/D laufen · Leertaste springen · E Satz sprechen · R reden an/aus · G Kulleraugen</span></header>
+  <main><canvas id="c"></canvas><div class="bubble" id="bubble" hidden></div></main>
+  <div class="controls">
+    <button id="say">Satz sprechen (E)</button>
+    <button id="talk">Dauerreden (R)</button>
+    <button id="jump">Springen (Leertaste)</button>
+    <button id="eyes">Kulleraugen an/aus (G)</button>
+    <label>Mund manuell <input id="mouth" type="range" min="0" max="100" value="0"></label>
+  </div>
+  <script type="module" src="/src/dev/face-preview.js"></script>
+</body>
+</html>

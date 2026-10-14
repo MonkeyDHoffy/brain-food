@@ -1,0 +1,72 @@
+{
+  "title": "Brain Food: Reverse Engineering mit KI",
+  "language": "de-DE",
+  "wordCount": 504,
+  "subtitleMode": "one sentence at a time",
+  "tts": false,
+  "sequences": [
+    {
+      "id": "01-intro",
+      "heading": "Bildschirm 1 – Einstieg am Mikrofon",
+      "trigger": "E am Mikrofon oder Klick",
+      "audio": "01-intro.mp3",
+      "sentences": [
+        "Heute geht es um verrückte Spielefusionen, was sie mit Reverse Engineering zu tun haben, welche Rolle KI dabei spielt und was das für Softwarehersteller bedeutet.",
+        "Gerade tauchen im Internet viele Videos auf, in denen verschiedene Videospiele und ihre Spielmechaniken miteinander gemixt werden.",
+        "Auf den Bildern unten seht ihr Beispiele: Figuren, Spielwelten und die Art, wie man sich bewegt, baut oder kämpft, werden neu kombiniert.",
+        "Dahinter stecken unterschiedliche technische Ansätze, darunter Reverse Engineering – also das Untersuchen fertiger Software, um ihre Funktionsweise zu verstehen.",
+        "KI kann dabei helfen, aufwendige Analyse- und Programmierarbeit erheblich zu vereinfachen und zu beschleunigen.",
+        "Wie das funktioniert, zeige ich euch hinter der nächsten Tür."
+      ]
+    },
+    {
+      "id": "02-compile",
+      "heading": "Bildschirm 2 – Kompilieren",
+      "trigger": "Sprung auf Button 1 „Kompilieren“",
+      "audio": "02-compile.mp3",
+      "sentences": [
+        "Ich starte den Compiler – schaut nach links.",
+        "Ein Mensch schreibt Quellcode, zum Beispiel in C: eine Programmiersprache, die Menschen gut lesen und verstehen können.",
+        "Der Compiler übersetzt ihn in Maschinensprache – hier als Nullen und Einsen dargestellt, mit denen der Computer arbeiten kann, wir Menschen aber kaum.",
+        "Bei vielen kommerziellen Programmen wird nur der Maschinencode ausgeliefert, nicht der lesbare Quellcode.",
+        "Die Funktionsweise daraus zu erschließen war oft aufwendig – und erschwerte dadurch auch den Nachbau.",
+        "Jetzt springe ich auf den Decompiler-Button und zeige euch den Rückweg."
+      ]
+    },
+    {
+      "id": "03-decompile-cleanroom",
+      "heading": "Bildschirm 2 – Dekompilieren und Clean Room",
+      "trigger": "Sprung auf Button 2 „Dekompilieren“",
+      "audio": "03-decompile-cleanroom.mp3",
+      "sentences": [
+        "Jetzt geht es von der Maschinensprache zurück zu lesbarem Code.",
+        "Das nennt man Dekompilieren – eine Methode des Reverse Engineerings.",
+        "Das ging schon früher; den rekonstruierten Code wirklich zu verstehen und nutzbar zu machen, war aber oft schwierig, zeitaufwendig und teuer.",
+        "Hier kommt KI ins Spiel: Sie hilft, diesen Code zu verstehen und weiterzubearbeiten – und kann diese Arbeit erheblich vereinfachen und beschleunigen.",
+        "Für die Spielefusionen heißt das: Verstandene Spielmechaniken – etwa das Springen oder Kämpfen einer Figur – lassen sich in ein anderes Spiel einbauen.",
+        "Manchmal werden auch zwei laufende Spiele verbunden; KI kann helfen, den dafür nötigen Analyse- und Verbindungscode schneller zu entwickeln.",
+        "Es gibt aber noch einen anderen Weg: Man beobachtet, was ein Programm tut, und beschreibt seine Funktionen.",
+        "Bei einer klassischen Clean-Room-Implementation hält ein Team diese Funktionen fest.",
+        "Ein anderes Team schreibt daraus eigenen Code, ohne den Originalcode zu kennen.",
+        "Auch dabei kann KI helfen, die beschriebenen Funktionen neu zu programmieren.",
+        "Auf der nächsten Seite zeige ich euch, dass das nicht nur Videospiele betrifft, sondern auch klassische Anwendungen."
+      ]
+    },
+    {
+      "id": "04-artcraft-outlook",
+      "heading": "Bildschirm 3 – ArtCraft und Ausblick",
+      "trigger": "Sprung auf den ArtCraft-Button",
+      "audio": "04-artcraft-outlook.mp3",
+      "sentences": [
+        "Mit diesem Button zeige ich euch ArtCraft: Mit KI-Unterstützung entstehen hier Nachbauten von sieben bekannten Adobe-Anwendungen – etwa Photoshop, Illustrator und Premiere.",
+        "Das Ausmaß seht ihr in der Übersicht; daneben zeigt PhotoCraft, wie ähnlich ein solcher Nachbau bereits aussehen kann.",
+        "Laut den Entwicklern handelt es sich um Clean-Room-Implementierungen: öffentliche Beschreibungen und beobachtetes Verhalten statt Adobes Originalcode.",
+        "PhotoCraft bietet schon viele bekannte Funktionen, ist laut Projekt aber noch kein vollständiger Ersatz für professionelle Photoshop-Arbeit.",
+        "Dadurch könnten künftig mehr Alternativen entstehen – und etablierte Softwarehersteller stärker unter Druck geraten.",
+        "Funktionen nachzubauen ist rechtlich nicht dasselbe wie geschützten Code zu kopieren und deshalb nicht automatisch eine Urheberrechtsverletzung.",
+        "Wie konkrete KI-Nachbauten rechtlich bewertet werden und ob ihr behaupteter Clean-Room-Prozess einer Prüfung standhält, bleibt spannend.",
+        "KI macht das Nachbauen von Software leichter – ich bin gespannt, wie sehr das die Softwarewelt verändern wird."
+      ]
+    }
+  ]
+}

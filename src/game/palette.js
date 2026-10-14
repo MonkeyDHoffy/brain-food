@@ -1,0 +1,21 @@
+// Farbpalette der Pixelwelt. Angelehnt an die Layoutvorlage (Papier, Tinte, Grün, Limette, Rost),
+// ergänzt um warme Holz- und Hauttöne für Raum und Figur.
+export const P = {
+  ink: '#233a34', ink2: '#2f4a42', inkD: '#18282400',
+  green: '#22654f', greenD: '#174937', greenL: '#3f8a6c', greenXL: '#7fb08f',
+  lime: '#dcea9e', limeD: '#a4bc67', limeL: '#eef5c9',
+  paper: '#f2f0e8', paper2: '#fffef8', cream: '#e8e2cf',
+  wall: '#e7eadb', wall2: '#dfe4d1', wallD: '#cdd5bd', wallDD: '#b8c2a6',
+  line: '#ccd2c5', muted: '#64726b',
+  rust: '#a74d30', rustL: '#d27a55', rustD: '#7d3620', rustXL: '#f2dfd2',
+  wood: '#c9a378', wood2: '#bb946a', woodD: '#9c7650', woodDD: '#7e5d3e',
+  sky: '#d3e7df', skyD: '#b9d6cb', cloud: '#f8faf3',
+  leaf: '#4f8f6a', leafD: '#2f6b4f', leafL: '#78b38a', pot: '#b9643f', potD: '#8f4a2d',
+  metal: '#8f9b94', metalD: '#5f6b65', metalL: '#c6cec8',
+  skin: '#e7b894', skinD: '#cf9a76',
+  sweater: '#ece2cd', sweaterD: '#d6c7a9', sweaterR: '#c3b18f',
+  jeans: '#46596d', jeansD: '#344456',
+  shoe: '#2c2c2a', sole: '#efeee6',
+  outline: '#2a2722',
+  screen: '#1d322b', screenL: '#9fd3a8',
+}
