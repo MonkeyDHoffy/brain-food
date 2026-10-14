@@ -89,6 +89,11 @@ export const audio = {
     return musicOn
   },
 
+  /** Gibt es diese Aufnahme (Pfad unter public/media/audio/)? */
+  hasAudio(file) {
+    return MEDIA.audio.includes(file)
+  },
+
   /** Muss aus einem Klick/Tastendruck heraus aufgerufen werden. */
   unlock() {
     if (ctx) {

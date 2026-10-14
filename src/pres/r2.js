@@ -99,7 +99,7 @@ function cleanroomScene() {
       <span class="chip lime ai-chip reveal">${icon('spark', { size: 20 })} KI hilft beim Neuprogrammieren</span>
     </div>
     <div class="foot-note reveal fn" style="right:640px"><b>EINORDNUNG</b> Clean Room ist eine organisatorische Trennung von Analyse und Umsetzung – keine dritte Compiler-Methode und keine Garantie für Rechtmäßigkeit.</div>
-    <div class="teaser reveal">Nicht nur Spiele – nächste Tür ${icon('arrow', { size: 26 })}</div>
+    <div class="teaser reveal">Jetzt wird’s ernst: unsere Software ${icon('arrow', { size: 26 })}</div>
   </div>`
 }
 
@@ -228,11 +228,12 @@ export function mountR2(root, { signal, onFrame }) {
       $('.src').classList.add('dim')
       $('.src .stamp').classList.add('on')
       const c = $('.status-chip')
-      c.textContent = 'Programm ausgeliefert'
+      c.textContent = 'Nur Maschinencode ausgeliefert'
       c.classList.remove('live')
       audio.sfx('pop')
     },
     puzzle() {
+      $('.status-chip').textContent = 'Schutz durch Aufwand'
       $('.qmarks').classList.add('on')
       $('.lens').classList.add('on')
     },
@@ -253,7 +254,8 @@ export function mountR2(root, { signal, onFrame }) {
       audio.sfx('bits', { rate: 0.85 })
     },
     typeReconstructed() {
-      run(typeInto($('.rec .code'), RAW, { cps: 24, render: highlightC, signal }))
+      const render = (s) => highlightC(s).replace(/\b(a1|a2)\b/g, '<span class="nm">$1</span>')
+      run(typeInto($('.rec .code'), RAW, { cps: 24, render, signal }))
     },
     notOriginal() {
       $('.rec .stamp').classList.add('on')
@@ -261,6 +263,11 @@ export function mountR2(root, { signal, onFrame }) {
       $('.p2').classList.remove('running')
       $('.status-chip').classList.remove('live')
       audio.sfx('pop', { rate: 0.9 })
+    },
+    flagNames() {
+      // keine Kommentare, keine sinnvollen Namen: die Ersatznamen markieren
+      $('.rec').classList.add('flag')
+      audio.sfx('ui-move', { rate: 0.8 })
     },
     cost(i) {
       qa(scene, '.costs .chip')[i]?.classList.add('on')
@@ -355,6 +362,14 @@ export function mountR2(root, { signal, onFrame }) {
       if (step === 4) {
         $('.ai-chip').classList.add('on')
         audio.sfx('sparkle')
+      }
+      if (step === 4.5) {
+        // „ob die Trennung dann noch sauber ist …“
+        const l = $('.wall-label')
+        l.textContent = 'Trennung sauber?'
+        l.classList.remove('pulse')
+        void l.offsetWidth
+        l.classList.add('pulse')
       }
       if (step === 5) {
         $('.fn').classList.add('on')

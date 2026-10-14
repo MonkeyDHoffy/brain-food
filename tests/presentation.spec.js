@@ -2,7 +2,7 @@
 import { test, expect } from '@playwright/test'
 import fs from 'node:fs'
 
-const vorgabe = JSON.parse(fs.readFileSync(new URL('../vorgaben/02_Sprechtext/content.json', import.meta.url), 'utf8'))
+const vorgabe = JSON.parse(fs.readFileSync(new URL('../vorgaben/02_Sprechtext/content-v2.json', import.meta.url), 'utf8'))
 const ALLE_SAETZE = vorgabe.sequences.flatMap((s) => s.sentences)
 // Im Spiel kommt zusätzlich der Jannik-Gag (src/data/extras.json) nach Satz 5 von 03 hinzu
 const extras = JSON.parse(fs.readFileSync(new URL('../src/data/extras.json', import.meta.url), 'utf8'))
@@ -20,7 +20,7 @@ function collectErrors(page) {
 test('Eingebauter Sprechtext entspricht wortgleich der Vorgabe', () => {
   const eingebaut = JSON.parse(fs.readFileSync(new URL('../src/data/content.json', import.meta.url), 'utf8'))
   expect(eingebaut.sequences.flatMap((s) => s.sentences)).toEqual(ALLE_SAETZE)
-  expect(ALLE_SAETZE.join(' ').split(/\s+/).filter((w) => /[\p{L}\d]/u.test(w)).length).toBeGreaterThan(490)
+  expect(ALLE_SAETZE.join(' ').split(/\s+/).filter((w) => /[\p{L}\d]/u.test(w)).length).toBeGreaterThan(600)
 })
 
 test('Autopilot spielt alle drei Räume bis zum Abspann – jeder Satz (plus Gag) erscheint als Untertitel', async ({ page }) => {

@@ -40,8 +40,9 @@ export const ROOM_SCRIPTS = {
         [2, at(S, 2, 'baut'), () => pr.tag('Bauen')],
         [2, at(S, 2, 'kämpft'), () => pr.tag('Kämpfen')],
         [3, at(S, 3, 'Reverse Engineering'), () => { pr.define(); c.lookDown(1800) }],
-        [4, 0, () => { pr.ai(); c.sparkleHead() }],
-        [5, 0, () => { pr.teaser(); c.openDoor() }],
+        [4, at(S, 4, 'Mario'), () => { pr.example(); c.lookDown(1600) }],
+        [5, at(S, 5, 'Tempo'), () => { pr.ai(); c.sparkleHead() }],
+        [6, 0, () => { pr.teaser(); c.openDoor() }],
       ],
     })
     c.world.st.onAir = false
@@ -68,7 +69,7 @@ export const ROOM_SCRIPTS = {
         [1, 0, () => pr.typeSource()],
         [2, at(A, 2, 'übersetzt'), () => pr.compile()],
         [3, 0, () => pr.ship()],
-        [4, at(A, 4, 'aufwendig'), () => pr.puzzle()],
+        [4, at(A, 4, 'mühsam'), () => pr.puzzle()],
         [5, 0, () => pr.hintDecompile()],
       ],
     })
@@ -79,6 +80,7 @@ export const ROOM_SCRIPTS = {
     const cuesB = [
         [1, 0, () => pr.typeReconstructed()],
         [2, 0, () => pr.notOriginal()],
+        [2, at(B, 2, 'keine Kommentare'), () => pr.flagNames()],
         [2, at(B, 2, 'schwierig'), () => pr.cost(0)],
         [2, at(B, 2, 'zeitaufwendig'), () => pr.cost(1)],
         [2, at(B, 2, 'teuer'), () => pr.cost(2)],
@@ -92,6 +94,7 @@ export const ROOM_SCRIPTS = {
         [7, 0, () => pr.cleanRoom(2)],
         [8, 0, () => pr.cleanRoom(3)],
         [9, 0, () => { pr.cleanRoom(4); c.sparkleHead() }],
+        [9, at(B, 9, 'Trennung'), () => { pr.cleanRoom(4.5); c.brow('skeptic') }],
         [10, 0, () => { pr.cleanRoom(5); c.openDoor() }],
     ]
     // Bis zum Mechanik-Transfer (Satz 5), dann der Gag, dann weiter mit Satz 6
@@ -119,15 +122,25 @@ export const ROOM_SCRIPTS = {
     await pr.artcraft()
     await c.say(S, {
       cues: [
+        [0, at(S, 0, 'Wochen'), () => pr.weeks()],
         [0, at(S, 0, 'sieben'), () => { pr.countApps(); c.tween(1700, (p) => (c.world.st.gallery = p * 7)) }],
-        [1, 0, () => { pr.overview(); c.world.st.gallery = 7 }],
-        [1, at(S, 1, 'PhotoCraft'), () => pr.photocraft()],
+        [1, 0, () => { pr.overview(); pr.photocraft(); c.world.st.gallery = 7 }],
+        [1, at(S, 1, 'kostenlos'), () => pr.price()],
         [2, 0, () => pr.cleanRoomClaim()],
         [3, 0, () => pr.notFull()],
-        [4, 0, () => pr.outlook()],
-        [5, 0, () => pr.law()],
-        [6, 0, () => { pr.open(); c.brow('skeptic') }],
-        [7, 0, () => { pr.finale(); c.brow('happy'); c.openDoor() }],
+        [4, 0, () => { pr.decades(); c.brow('raise') }],
+        [5, 0, () => { pr.heikel(); c.brow('skeptic') }],
+        [6, 0, () => pr.law()],
+        [6, at(S, 6, 'Marken'), () => pr.site(0)],
+        [6, at(S, 6, 'Patente'), () => pr.site(1)],
+        [6, at(S, 6, 'Lizenz'), () => pr.site(2)],
+        [7, 0, () => pr.debate()],
+        [8, 0, () => { pr.open(); c.brow('skeptic') }],
+        [9, 0, () => pr.us()],
+        [9, at(S, 9, 'Ideen'), () => pr.tile(0)],
+        [9, at(S, 9, 'Erfahrung'), () => pr.tile(1)],
+        [9, at(S, 9, 'Ergebnissen'), () => pr.tile(2)],
+        [10, 0, () => { pr.finale(); c.brow('happy'); c.openDoor() }],
       ],
     })
     c.openDoor()

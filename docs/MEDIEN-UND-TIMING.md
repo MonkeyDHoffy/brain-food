@@ -1,6 +1,14 @@
 # Medien austauschen und Audio synchronisieren
 
-## Audios einbauen
+## Aufnehmen mit dem Aufnahme-Studio (empfohlen, ab v2)
+
+1. Auf `tools\Aufnahme-Studio.cmd` doppelklicken. Das öffnet `http://localhost:5173/studio.html`.
+2. Jeden Satz einsprechen: **Leertaste** startet und stoppt, **Enter** spielt ab, **↑ ↓** wechselt den Satz. Gespeichert wird sofort in `aufnahmen\<abschnitt>\<nr>.webm` (nicht im Git).
+3. Wenn alles passt: **„Alles eingesprochen – OK“**.
+4. Einbauen: `node tools/audio-einbauen.mjs`. Das schneidet Stille weg, gleicht die Lautstärke an, legt `public/media/audio/<abschnitt>/<nr>.mp3` an und berechnet die Mundbewegung (`src/data/lipsync.json`). `--alle` baut alles neu.
+5. Das Spiel spielt dann Satz für Satz ab. Zeitmarken braucht es nicht. Pausen zwischen den Sätzen stellst du in `src/data/pacing.json` ein (`gapMs` als Standard, `after` für einzelne Sätze).
+
+## Audios einbauen (alte Variante: eine Datei pro Abschnitt)
 
 1. Lege die vier selbst eingesprochenen Dateien unter genau diesen Namen ab:
 

@@ -1,0 +1,5 @@
+{
+  "_hinweis": "Pausen zwischen den Saetzen in ms. gapMs = Standard mit Aufnahme; after = Ausnahmen je Satz, z. B. \"01-intro:3\": 600 (Index ab 0).",
+  "gapMs": 280,
+  "after": {}
+}

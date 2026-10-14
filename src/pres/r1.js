@@ -34,10 +34,16 @@ export function mountR1(root) {
         <p>Fertige Software untersuchen, um ihre Funktionsweise zu verstehen.</p>
         <div class="chips"><span>Ansätze in den Beispielen:</span><b class="chip">Mod</b><b class="chip">Game Bridge</b><b class="chip">Neuimplementierung</b></div>
       </div>
+      <div class="callout card example reveal">
+        <div class="thumb">${imgTag(FUSIONS[0].file, FUSIONS[0].title)}</div>
+        <h3>Beispiel: Mario × Elden Ring</h3>
+        <p>baut laut Projektbeschreibung auf der Dekompilierung von Super Mario 64 auf.</p>
+        <div class="chips"><b class="chip green">Blick ins Innere</b><span>Quelle: github.com/deltarooo/er-mario</span></div>
+      </div>
       <div class="callout card ai reveal">
         <div class="ic">${icon('spark', { size: 46 })}</div>
-        <h3>+ KI</h3>
-        <p>kann aufwendige Analyse- und Programmierarbeit vereinfachen und beschleunigen.</p>
+        <h3>Neu: das Tempo</h3>
+        <p>KI beschleunigt die aufwendige Analyse- und Programmierarbeit – Fusionen erscheinen fast im Wochentakt.</p>
         <div class="chips"><span>Beispiel: Minecraft × GTA V entstand laut README mit „universal-modder“, einem Werkzeugkasten für KI-Coding-Agenten.</span></div>
       </div>
     </div>
@@ -79,7 +85,12 @@ export function mountR1(root) {
       $('.define').classList.add('on')
       audio.sfx('whoosh')
     },
+    example() {
+      $('.example').classList.add('on')
+      audio.sfx('pop')
+    },
     ai() {
+      $('.example').classList.add('gone')
       $('.ai').classList.add('on')
       audio.sfx('sparkle')
     },

@@ -7,7 +7,7 @@ import { audio } from '../engine/audio.js'
 import { input } from '../engine/input.js'
 import { clock, sleep, animate, ease, isAbort, Aborted } from '../engine/clock.js'
 import { run } from '../pres/util.js'
-import { SEQ } from '../engine/speech.js'
+import { SEQ, sentenceFile } from '../engine/speech.js'
 
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches
 const PRELOAD = { r1: ['01-intro'], r2: ['02-compile', '03-decompile-cleanroom', 'gag-jannik'], r3: ['04-artcraft-outlook'] }
@@ -95,7 +95,13 @@ export class Director {
     this.presCtrl = this.pres.mount(id, signal)
     this.ui.room(ROOMS[id])
     // Aufnahmen des Raums schon vorladen (falls vorhanden), damit beim Auslösen nichts hakt
-    for (const seq of PRELOAD[id] || []) audio.voice(seq, SEQ[seq].audio)
+    for (const seq of PRELOAD[id] || []) {
+      if (audio.hasAudio(SEQ[seq].audio)) audio.voice(seq, SEQ[seq].audio)
+      SEQ[seq].sentences.forEach((_, i) => {
+        const f = sentenceFile(seq, i)
+        if (audio.hasAudio(f)) audio.voice(f, f)
+      })
+    }
     // Glitch-Einblendung: Bits lösen sich auf
     w.fx.dissolve = 1
     w.fx.glitch = reduced ? 0 : 0.8

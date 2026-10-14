@@ -8,6 +8,8 @@ import { audio } from './audio.js'
 import { clock, sleep, until } from './clock.js'
 import { Babble } from './babble.js'
 import { storedTimings } from '../dev/timing.js'
+import LIPSYNC from '../data/lipsync.json'
+import PACING from '../data/pacing.json'
 
 // Abgestimmter Sprechtext plus Extras (z. B. der Jannik-Gag) mit eigener Aufnahme
 export const ALL_SEQUENCES = [...content.sequences, ...extras.sequences]
@@ -21,6 +23,24 @@ for (const x of extras.sequences) {
 
 const TEXT_CPS = 14.5 // Lesetempo im Textmodus (Zeichen pro Sekunde)
 const TEXT_GAP = 450 // Pause zwischen Sätzen im Textmodus (ms)
+
+/** Dateiname der Satz-Aufnahme: audio/<abschnitt>/<nr>.mp3 (Nummer ab 01) */
+export const sentenceFile = (id, i) => `${id}/${String(i + 1).padStart(2, '0')}.mp3`
+
+/** Pause nach einem Satz: Standard aus pacing.json, einzelne Sätze können abweichen ("01-intro:3": 600). */
+function gapAfter(id, i, withVoice) {
+  const own = PACING.after?.[`${id}:${i}`]
+  return own ?? (withVoice ? PACING.gapMs ?? 280 : TEXT_GAP)
+}
+
+/** Mundöffnung aus der vorberechneten Lautstärkekurve (tools/audio-einbauen.mjs), mit leichter Silbenbetonung. */
+function envelopeAt(env, t) {
+  const i = Math.floor(t * env.fps)
+  if (i < 0 || i >= env.v.length) return 0
+  const cur = env.v[i] / 100
+  const prev = env.v[Math.max(0, i - 3)] / 100
+  return Math.max(0, Math.min(1, cur * 0.85 + Math.max(0, cur - prev) * 1.4))
+}
 const CHUNK_MAX = 78
 
 export function textDuration(s) {
@@ -97,8 +117,9 @@ export class Speech {
       this.mouth = -1
       return
     }
-    const v = this.active.voice
-    if (v) this.mouth = v.analysed ? audio.voiceLevel() : this.babble.update(dt, audio.voicePlaying)
+    const { voice: v, env, start } = this.active
+    if (v && env) this.mouth = audio.voicePlaying ? envelopeAt(env, audio.voiceTime - (start || 0)) : 0
+    else if (v) this.mouth = v.analysed ? audio.voiceLevel() : this.babble.update(dt, audio.voicePlaying)
     else this.mouth = this.babble.update(dt, this.chunkActive)
   }
 
@@ -126,12 +147,11 @@ export class Speech {
   async say(id, { from = 0, to, cues = [], signal } = {}) {
     const seq = SEQ[id]
     to = to ?? seq.sentences.length
-    // Höchstens 2,5 s auf die Aufnahme warten, sonst Textmodus (sie wird für später weiter geladen)
-    const v = await audio.voiceWithin(id, seq.audio, 2500)
-    const times = v.ok ? sentenceTimes(id, seq, v.duration) : null
-    this.active = { id, voice: v.ok ? v : null }
+    // Aufnahme des ganzen Abschnitts (falls vorhanden); höchstens 2,5 s warten, sonst Textmodus
+    const whole = audio.hasAudio(seq.audio) ? await audio.voiceWithin(id, seq.audio, 2500) : { ok: false }
+    const times = whole.ok ? sentenceTimes(id, seq, whole.duration) : null
     this.skipAllFlag = false
-    audio.duck(v.ok ? 'voice' : 'text')
+    let lastVoice = null
     try {
       for (let i = from; i < to; i++) {
         if (this.skipAllFlag) {
@@ -140,9 +160,27 @@ export class Speech {
         }
         this.skipFlag = false
         const s = seq.sentences[i]
-        const start = times ? times[i] : 0
-        const end = times ? (times[i + 1] ?? v.duration) : 0
-        const dur = times ? (end - start) * 1000 : textDuration(s)
+        // Bevorzugt: eine Aufnahme pro Satz (audio/<abschnitt>/<nr>.mp3) – dann sitzt alles ohne Zeitmarken
+        const file = sentenceFile(id, i)
+        let v = null
+        let start = 0
+        let end = 0
+        if (audio.hasAudio(file)) {
+          const e = await audio.voiceWithin(file, file, 2500)
+          if (e.ok) {
+            v = e
+            end = e.duration
+          }
+        }
+        if (!v && whole.ok) {
+          v = whole
+          start = times[i]
+          end = times[i + 1] ?? whole.duration
+        }
+        const dur = v ? (end - start) * 1000 : textDuration(s)
+        this.active = { id, voice: v, env: v ? LIPSYNC[file.replace('.mp3', '')] : null, start }
+        lastVoice = v
+        audio.duck(v ? 'voice' : 'text')
         this.onSentence?.(id, i, seq)
         this.subtitle(s, id, i, seq)
         const pending = cues.filter((c) => c[0] === i).sort((a, b) => a[1] - b[1])
@@ -150,9 +188,9 @@ export class Speech {
           while (pending.length && pending[0][1] <= progress) pending.shift()[2]()
         }
         fire(0)
-        if (v.ok) audio.playVoice(v, start)
+        if (v) audio.playVoice(v, start)
         const t0 = clock.t
-        const progress = () => (v.ok ? (audio.voiceTime - start) / Math.max(0.01, end - start) : (clock.t - t0) / dur)
+        const progress = () => (v ? (audio.voiceTime - start) / Math.max(0.01, end - start) : (clock.t - t0) / dur)
         const parts = chunks(s)
         const total = parts.reduce((a, p) => a + p.length, 0)
         let acc = 0
@@ -171,12 +209,14 @@ export class Speech {
         }
         fire(1)
         this.chunkActive = false
-        if (!v.ok && !this.skipFlag && i < to - 1) await sleep(TEXT_GAP, signal)
+        if (v && v !== whole) audio.pauseVoice()
+        // Pause zwischen den Sätzen (einstellbar in src/data/pacing.json)
+        if (!this.skipFlag && i < to - 1) await sleep(gapAfter(id, i, !!v), signal)
       }
-      if (!v.ok) await sleep(350, signal)
+      if (!lastVoice) await sleep(350, signal)
     } finally {
       this.chunkActive = false
-      if (v.ok) audio.pauseVoice()
+      if (lastVoice) audio.pauseVoice()
       audio.duck(null)
       this.active = null
       this.skipFlag = false
