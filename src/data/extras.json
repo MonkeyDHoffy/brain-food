@@ -10,6 +10,17 @@
       "sentences": [
         "Und genau so habe ich, Jannik, mich übrigens auch dekompiliert – und in dieses Spiel eingebaut. 😉"
       ]
+    },
+    {
+      "id": "abschied",
+      "heading": "Raum 3 – Abschied",
+      "trigger": "nach dem letzten Satz von 04-artcraft-outlook",
+      "audio": "05-abschied.mp3",
+      "insertAfter": "04-artcraft-outlook:10",
+      "sentences": [
+        "Wer noch mehr zum Thema wissen will: Im Abspann gibt’s einen Video-Tipp.",
+        "Das war euer Brain Food für heute – jetzt ist wieder das echte Frühstück dran. Guten Appetit und einen schönen Tag!"
+      ]
     }
   ]
 }

@@ -140,7 +140,15 @@ export const ROOM_SCRIPTS = {
         [9, at(S, 9, 'Ideen'), () => pr.tile(0)],
         [9, at(S, 9, 'Erfahrung'), () => pr.tile(1)],
         [9, at(S, 9, 'Ergebnissen'), () => pr.tile(2)],
-        [10, 0, () => { pr.finale(); c.brow('happy'); c.openDoor() }],
+        [10, 0, () => { pr.finale(); c.brow('happy') }],
+      ],
+    })
+    // Abschied: Video-Tipp im Abspann, Brain-Food-Wortspiel, guten Appetit
+    await c.say('abschied', {
+      cues: [
+        [0, at('abschied', 0, 'Video-Tipp'), () => { pr.farewell(0); c.lookDown(1400) }],
+        [1, at('abschied', 1, 'Frühstück'), () => { pr.farewell(1); c.gesture('wave', 2.4); c.brow('flash') }],
+        [1, at('abschied', 1, 'Guten Appetit'), () => c.openDoor()],
       ],
     })
     c.openDoor()

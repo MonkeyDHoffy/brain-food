@@ -338,3 +338,5 @@
 .callout.example.gone { opacity: 0; transform: translateY(-10px); }
 
 .panel.rec.flag .code .fn, .panel.rec.flag .code .nm { background: var(--rust-l); outline: 2px dashed var(--rust); outline-offset: 1px; }
+.finale .bye { display: flex; gap: 14px; justify-content: center; margin-top: 22px; min-height: 44px; }
+.finale .bye .chip { font-size: 20px; padding: 10px 14px 9px; }

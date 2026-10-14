@@ -139,6 +139,7 @@ function finaleScene() {
         <div class="brain">${icon('brain', { size: 92 })}</div>
         <h2>KI macht das Nachbauen von Software so leicht <em>wie nie.</em></h2>
         <p class="ask"></p>
+        <div class="bye"><span class="chip ink reveal b0">▶ Video-Tipp im Abspann</span><span class="chip lime reveal b1">Guten Appetit &amp; einen schönen Tag!</span></div>
       </div>
     </div>
   </div>`
@@ -251,6 +252,10 @@ export function mountR3(root, { signal }) {
     tile(i) {
       on(`.t${i + 1}`)
       audio.sfx('pop', { rate: 1 + i * 0.1 })
+    },
+    farewell(i) {
+      on(`.b${i}`)
+      audio.sfx(i ? 'sparkle' : 'pop', { vol: 0.6 })
     },
     async finale() {
       await swap(finaleScene())

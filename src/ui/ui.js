@@ -101,7 +101,7 @@ export class UI {
 
   subtitle(text, seqId, i, seq) {
     $('subtitleText').textContent = text
-    const titles = { '01-intro': 'Einstieg', '02-compile': 'Kompilieren', '03-decompile-cleanroom': 'Dekompilieren & Clean Room', '04-artcraft-outlook': 'ArtCraft & Ausblick', 'gag-jannik': 'Kurzer Exkurs' }
+    const titles = { '01-intro': 'Einstieg', '02-compile': 'Kompilieren', '03-decompile-cleanroom': 'Dekompilieren & Clean Room', '04-artcraft-outlook': 'ArtCraft & Ausblick', 'gag-jannik': 'Kurzer Exkurs', abschied: 'Abschied' }
     $('subtitleMeta').innerHTML = `${titles[seqId] || ''}<small>Satz ${i + 1} von ${seq.sentences.length}</small>`
     const k = ALL_SENTENCES.indexOf(`${seqId}:${i}`)
     $('progress').style.width = `${((k + 1) / ALL_SENTENCES.length) * 100}%`

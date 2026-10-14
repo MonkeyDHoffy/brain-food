@@ -10,7 +10,7 @@ import { run } from '../pres/util.js'
 import { SEQ, sentenceFile } from '../engine/speech.js'
 
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches
-const PRELOAD = { r1: ['01-intro'], r2: ['02-compile', '03-decompile-cleanroom', 'gag-jannik'], r3: ['04-artcraft-outlook'] }
+const PRELOAD = { r1: ['01-intro'], r2: ['02-compile', '03-decompile-cleanroom', 'gag-jannik'], r3: ['04-artcraft-outlook', 'abschied'] }
 
 export class Director {
   constructor({ world, speech, pres, ui }) {

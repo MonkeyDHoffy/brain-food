@@ -7,7 +7,7 @@ import '../styles/studio.css'
 import content from '../data/content.json'
 import extras from '../data/extras.json'
 
-const ROOM = { '01-intro': 'Raum 1 · Einstieg', '02-compile': 'Raum 2 · Kompilieren', '03-decompile-cleanroom': 'Raum 2 · Dekompilieren & Clean Room', 'gag-jannik': 'Raum 2 · Gag', '04-artcraft-outlook': 'Raum 3 · ArtCraft & Ausblick' }
+const ROOM = { '01-intro': 'Raum 1 · Einstieg', '02-compile': 'Raum 2 · Kompilieren', '03-decompile-cleanroom': 'Raum 2 · Dekompilieren & Clean Room', 'gag-jannik': 'Raum 2 · Gag', abschied: 'Raum 3 · Abschied', '04-artcraft-outlook': 'Raum 3 · ArtCraft & Ausblick' }
 
 // Reihenfolge wie im Vortrag: der Gag steht nach seinem Einfügepunkt
 const items = []
