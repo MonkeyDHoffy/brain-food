@@ -18,9 +18,9 @@ const all = process.argv.includes('--alle')
 // Stille vorn/hinten entfernen (-45 dB), tiefes Brummen raus, Lautheit auf -17 LUFS, kurzer Ausklang
 const FILTER = [
   'highpass=f=75',
-  'silenceremove=start_periods=1:start_duration=0.05:start_threshold=-45dB:start_silence=0.06',
+  'silenceremove=start_periods=1:start_duration=0.05:start_threshold=-45dB:start_silence=0.15',
   'areverse',
-  'silenceremove=start_periods=1:start_duration=0.05:start_threshold=-45dB:start_silence=0.12',
+  'silenceremove=start_periods=1:start_duration=0.05:start_threshold=-45dB:start_silence=0.22',
   'areverse',
   'loudnorm=I=-17:TP=-1.5:LRA=11',
   'apad=pad_dur=0.08',
