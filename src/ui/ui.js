@@ -310,10 +310,6 @@ export class UI {
     const stats = [
       ['Spielzeit', `${mm}:${ss}`],
       ['Räume', '3 / 3'],
-      ['Funktionen dekompiliert', '1'],
-      ['Neue Namen dank KI', 'summe()'],
-      ['Clean Rooms betreten', '1'],
-      ['Adobe-Nachbauten gezählt', '7'],
     ]
     el.innerHTML = `
       <div class="end-wrap">
