@@ -1,0 +1,7 @@
+{
+  "_hinweis": "Satzanfänge in Sekunden je Aufnahme. Leer = automatisch nach Textlänge geschätzt. Aufnehmen mit ?timing",
+  "01-intro": null,
+  "02-compile": null,
+  "03-decompile-cleanroom": null,
+  "04-artcraft-outlook": null
+}

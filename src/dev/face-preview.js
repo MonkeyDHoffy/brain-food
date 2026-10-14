@@ -56,6 +56,12 @@ document.getElementById('talk').onclick = toggleTalk
 document.getElementById('jump').onclick = jump
 document.getElementById('eyes').onclick = toggleEyes
 document.getElementById('mouth').oninput = (e) => (manual = e.target.value / 100)
+const BROWS = ['flash', 'raise', 'wiggle', 'skeptic', 'happy']
+document.querySelectorAll('[data-brow]').forEach((b) => (b.onclick = () => head.brow(b.dataset.brow)))
+addEventListener('keydown', (e) => {
+  const i = Number(e.key) - 1
+  if (i >= 0 && i < BROWS.length) head.brow(BROWS[i])
+})
 
 addEventListener('keydown', (e) => {
   if (e.repeat) return

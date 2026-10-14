@@ -14,6 +14,9 @@ const PIVOT = { x: meta.upperCutSpan[0] + 18, y: CUT } // Hinterkopf (Blick nach
 const EYES = [{ x: 136, y: 248 }, { x: 263, y: 254 }]
 const EYE_R = 33
 const PUPIL_R = 14
+// Augenbrauen: Mitte, Länge; out = Richtung des äußeren Endes
+const BROWS = [{ x: 132, y: 197, out: -1 }, { x: 268, y: 202, out: 1 }]
+const BROW_LEN = 78
 const MAX_ANGLE = 0.34 // rad, etwa 19°
 const MAX_LIFT = 10
 
@@ -37,6 +40,60 @@ export class Head {
     this.nextBlink = 2.5
     this.prevOpen = 0
     this.lastV = { x: 0, y: 0 }
+    this.brows = BROWS.map(() => ({ lift: 0, v: 0, tilt: 0, tv: 0 }))
+    this.browGest = null
+    this.nextBrow = 2.5
+    this.talkTime = 0
+  }
+
+  /** Augenbrauen-Geste: 'flash' (Gruß), 'raise', 'wiggle', 'skeptic', 'happy' */
+  brow(name) {
+    this.browGest = { name, t: 0 }
+  }
+
+  // Ziel je Braue: lift (Pixel, negativ = hoch), tilt (Pixel, positiv = inneres Ende hoch)
+  browGoals(dt) {
+    const talk = this.target > 0.02 || this.open > 0.05
+    const base = -this.open * 9
+    const goals = [{ lift: base, tilt: 0, arch: 0 }, { lift: base, tilt: 0, arch: 0 }]
+    const g = this.browGest
+    if (g) {
+      g.t += dt
+      const t = g.t
+      let done = false
+      if (g.name === 'flash') {
+        const up = t < 0.16 || (t > 0.3 && t < 0.48)
+        goals.forEach((b) => (b.lift = up ? -24 : base))
+        done = t > 0.62
+      } else if (g.name === 'raise') {
+        goals.forEach((b) => (b.lift = -20))
+        done = t > 0.75
+      } else if (g.name === 'wiggle') {
+        const s = Math.sin(t * 22) * 12
+        goals[0].lift = -8 + s
+        goals[1].lift = -8 - s
+        done = t > 0.85
+      } else if (g.name === 'skeptic') {
+        goals[0].lift = 4
+        goals[0].tilt = -5
+        goals[1].lift = -24
+        goals[1].tilt = 4
+        done = t > 1.6
+      } else if (g.name === 'happy') {
+        goals.forEach((b) => { b.lift = -12; b.arch = 8 })
+        done = t > 1.4
+      }
+      if (done) this.browGest = null
+    }
+    // Zufällige kleine Gesten: beim Reden öfter (Betonung), sonst gelegentlich
+    this.nextBrow -= dt
+    if (!this.browGest && this.nextBrow <= 0) {
+      const r = Math.random()
+      if (talk) this.brow(r < 0.5 ? 'raise' : r < 0.8 ? 'happy' : 'flash')
+      else this.brow(r < 0.45 ? 'flash' : r < 0.8 ? 'wiggle' : 'skeptic')
+      this.nextBrow = talk ? 2.2 + Math.random() * 2.5 : 4 + Math.random() * 4
+    }
+    return goals
   }
 
   get ready() {
@@ -61,6 +118,7 @@ export class Head {
       e.vx += vx * (0.8 + Math.random() * 0.4)
       e.vy += vy * (0.8 + Math.random() * 0.4)
     }
+    for (const b of this.brows) b.v += vy * 0.35
   }
 
   /** dt in Sekunden; vel = Bewegung der Figur in Weltpixeln/s (für die Trägheit der Pupillen). */
@@ -98,6 +156,17 @@ export class Head {
           e.vy -= 1.6 * vn * ny
         }
       }
+    })
+
+    // Augenbrauen federn zum Ziel
+    const goals = this.browGoals(dt)
+    this.brows.forEach((b, i) => {
+      const gl = goals[i]
+      b.v += ((gl.lift - b.lift) * 320 - b.v * 17) * dt
+      b.lift += b.v * dt
+      b.tv += ((gl.tilt - b.tilt) * 260 - b.tv * 16) * dt
+      b.tilt += b.tv * dt
+      b.arch = (b.arch ?? 0) + ((gl.arch - (b.arch ?? 0)) * Math.min(1, dt * 10))
     })
 
     // Blinzeln
@@ -152,6 +221,7 @@ export class Head {
     g.translate(-PIVOT.x, -PIVOT.y)
     g.drawImage(this.upper, 0, 0)
     if (this.googly) this.drawEyes(g)
+    this.drawBrows(g)
     g.restore()
 
     g.restore()
@@ -197,6 +267,40 @@ export class Head {
       g.lineTo(d.x + (c.x - d.x) * t, d.y + (c.y - d.y) * t)
       g.stroke()
     }
+  }
+
+  // Dicke, freundlich gebogene Cartoon-Brauen mit dunklem Rand (wie die Kulleraugen)
+  drawBrows(g) {
+    this.brows.forEach((b, i) => {
+      const { x, y, out } = BROWS[i]
+      const half = BROW_LEN / 2
+      const ix = x - out * half
+      const ox = x + out * half
+      const iy = y + b.lift - b.tilt
+      const oy = y + b.lift + 6 + b.tilt * 0.6 // äußeres Ende etwas tiefer = freundlich
+      const cx = x + out * 6
+      const cy = Math.min(iy, oy) - 13 - (b.arch || 0)
+      const path = () => {
+        g.beginPath()
+        g.moveTo(ix, iy)
+        g.quadraticCurveTo(cx, cy, ox, oy)
+      }
+      g.lineCap = 'round'
+      g.strokeStyle = '#1d1d1b'
+      g.lineWidth = 28
+      path()
+      g.stroke()
+      g.strokeStyle = '#4a3020'
+      g.lineWidth = 20
+      path()
+      g.stroke()
+      g.strokeStyle = 'rgba(160,110,70,0.55)'
+      g.lineWidth = 4
+      g.beginPath()
+      g.moveTo(ix + out * 8, iy - 4)
+      g.quadraticCurveTo(cx, cy - 4, ox - out * 12, oy - 5)
+      g.stroke()
+    })
   }
 
   drawEyes(g) {

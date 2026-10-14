@@ -1,0 +1,162 @@
+[
+  {
+    "file": "sfx/step-1.mp3",
+    "purpose": "Schritt 1 (weich, Teppich)",
+    "source": "Kenney \"Impact Sounds\" – footstep_carpet_000.ogg (getrimmt, Lautheit angepasst, MP3)",
+    "author": "Kenney (www.kenney.nl)",
+    "license": "CC0 1.0 (Public Domain)",
+    "url": "https://kenney.nl/assets/impact-sounds"
+  },
+  {
+    "file": "sfx/step-2.mp3",
+    "purpose": "Schritt 2 (weich, Teppich)",
+    "source": "Kenney \"Impact Sounds\" – footstep_carpet_001.ogg (getrimmt, Lautheit angepasst, MP3)",
+    "author": "Kenney (www.kenney.nl)",
+    "license": "CC0 1.0 (Public Domain)",
+    "url": "https://kenney.nl/assets/impact-sounds"
+  },
+  {
+    "file": "sfx/step-3.mp3",
+    "purpose": "Schritt 3 (weich, Teppich)",
+    "source": "Kenney \"Impact Sounds\" – footstep_carpet_003.ogg (getrimmt, Lautheit angepasst, MP3)",
+    "author": "Kenney (www.kenney.nl)",
+    "license": "CC0 1.0 (Public Domain)",
+    "url": "https://kenney.nl/assets/impact-sounds"
+  },
+  {
+    "file": "sfx/jump.mp3",
+    "purpose": "Sprung (weicher, aufsteigender Sinus-Sweep)",
+    "source": "Kenney \"Interface Sounds\" – maximize_008.ogg (getrimmt, Lautheit angepasst, MP3)",
+    "author": "Kenney (www.kenney.nl)",
+    "license": "CC0 1.0 (Public Domain)",
+    "url": "https://kenney.nl/assets/interface-sounds"
+  },
+  {
+    "file": "sfx/land.mp3",
+    "purpose": "Landung (weicher Aufsetzer)",
+    "source": "Kenney \"Impact Sounds\" – Mix aus footstep_carpet_001.ogg und impactSoft_medium_002.ogg (getrimmt, Lautheit angepasst, MP3)",
+    "author": "Kenney (www.kenney.nl)",
+    "license": "CC0 1.0 (Public Domain)",
+    "url": "https://kenney.nl/assets/impact-sounds"
+  },
+  {
+    "file": "sfx/button.mp3",
+    "purpose": "Knopfdruck (satter Klick)",
+    "source": "Kenney \"UI Audio\" – click2.ogg (getrimmt, Lautheit angepasst, MP3)",
+    "author": "Kenney (www.kenney.nl)",
+    "license": "CC0 1.0 (Public Domain)",
+    "url": "https://kenney.nl/assets/ui-audio"
+  },
+  {
+    "file": "sfx/mic.mp3",
+    "purpose": "Mikro an (kurzer, freundlicher Blip nach oben)",
+    "source": "Kenney \"Interface Sounds\" – maximize_009.ogg (getrimmt, Lautheit angepasst, MP3)",
+    "author": "Kenney (www.kenney.nl)",
+    "license": "CC0 1.0 (Public Domain)",
+    "url": "https://kenney.nl/assets/interface-sounds"
+  },
+  {
+    "file": "sfx/door.mp3",
+    "purpose": "Tür öffnet sich (sanfter Steel-Drum-Chime, zwei Töne aufwärts)",
+    "source": "Kenney \"Music Jingles\" – Steel jingles/jingles_STEEL04.ogg (Tiefpass 8 kHz, getrimmt, Lautheit angepasst, MP3)",
+    "author": "Kenney (www.kenney.nl)",
+    "license": "CC0 1.0 (Public Domain)",
+    "url": "https://kenney.nl/assets/music-jingles"
+  },
+  {
+    "file": "sfx/glitch.mp3",
+    "purpose": "Raumwechsel (kurzer digitaler Glitch/Whoosh)",
+    "source": "Kenney \"Digital Audio\" – phaserDown3.ogg, gemischt mit Kenney \"Interface Sounds\" (https://kenney.nl/assets/interface-sounds) – glitch_001/002/003.ogg (versetzt, Tiefpass 7 kHz, Lautheit angepasst, MP3)",
+    "author": "Kenney (www.kenney.nl)",
+    "license": "CC0 1.0 (Public Domain)",
+    "url": "https://kenney.nl/assets/digital-audio"
+  },
+  {
+    "file": "sfx/pop.mp3",
+    "purpose": "Bild erscheint (weiches Pop)",
+    "source": "Kenney \"Interface Sounds\" – drop_002.ogg (getrimmt, Lautheit angepasst, MP3)",
+    "author": "Kenney (www.kenney.nl)",
+    "license": "CC0 1.0 (Public Domain)",
+    "url": "https://kenney.nl/assets/interface-sounds"
+  },
+  {
+    "file": "sfx/type.mp3",
+    "purpose": "Tippen (sehr leiser, extrem kurzer Tastenklick)",
+    "source": "Kenney \"Interface Sounds\" – click_002.ogg (Tiefpass 7 kHz, getrimmt, leiser normalisiert, MP3)",
+    "author": "Kenney (www.kenney.nl)",
+    "license": "CC0 1.0 (Public Domain)",
+    "url": "https://kenney.nl/assets/interface-sounds"
+  },
+  {
+    "file": "sfx/bits.mp3",
+    "purpose": "Kompilieren (kurzes digitales Zirpen/Datenrauschen)",
+    "source": "Kenney \"Digital Audio\" – spaceTrash3.ogg (auf 0,75 s gekürzt mit Ausblendung, Tiefpass 7 kHz, Lautheit angepasst, MP3)",
+    "author": "Kenney (www.kenney.nl)",
+    "license": "CC0 1.0 (Public Domain)",
+    "url": "https://kenney.nl/assets/digital-audio"
+  },
+  {
+    "file": "sfx/sparkle.mp3",
+    "purpose": "KI-Moment (sanftes Magie-Glitzern, Ganzton-Lauf aufwärts)",
+    "source": "Kenney \"Music Jingles\" – Steel jingles/jingles_STEEL02.ogg (eine Oktave höher, leichtes Echo, Tiefpass 9 kHz, Lautheit angepasst, MP3)",
+    "author": "Kenney (www.kenney.nl)",
+    "license": "CC0 1.0 (Public Domain)",
+    "url": "https://kenney.nl/assets/music-jingles"
+  },
+  {
+    "file": "sfx/arrow.mp3",
+    "purpose": "Pfeil erscheint (leiser Hinweis-Ping)",
+    "source": "Kenney \"Interface Sounds\" – glass_001.ogg (getrimmt, Lautheit angepasst, MP3)",
+    "author": "Kenney (www.kenney.nl)",
+    "license": "CC0 1.0 (Public Domain)",
+    "url": "https://kenney.nl/assets/interface-sounds"
+  },
+  {
+    "file": "sfx/complete.mp3",
+    "purpose": "Level geschafft (kurzer, freundlicher Steel-Drum-Jingle, endet auf dem Grundton)",
+    "source": "Kenney \"Music Jingles\" – Steel jingles/jingles_STEEL10.ogg (Tiefpass 9 kHz, getrimmt, Lautheit angepasst, MP3)",
+    "author": "Kenney (www.kenney.nl)",
+    "license": "CC0 1.0 (Public Domain)",
+    "url": "https://kenney.nl/assets/music-jingles"
+  },
+  {
+    "file": "sfx/boot.mp3",
+    "purpose": "Retro-Konsolen-Start (sanftes 8-Bit-\"ba-ding\")",
+    "source": "Kenney \"Music Jingles\" – 8-Bit jingles/jingles_NES09.ogg (Tiefpass 3,5 kHz, kurzes Echo, getrimmt, Lautheit angepasst, MP3)",
+    "author": "Kenney (www.kenney.nl)",
+    "license": "CC0 1.0 (Public Domain)",
+    "url": "https://kenney.nl/assets/music-jingles"
+  },
+  {
+    "file": "sfx/ui-move.mp3",
+    "purpose": "Menü-Navigation (leiser Tick)",
+    "source": "Kenney \"UI Audio\" – rollover5.ogg (getrimmt, MP3)",
+    "author": "Kenney (www.kenney.nl)",
+    "license": "CC0 1.0 (Public Domain)",
+    "url": "https://kenney.nl/assets/ui-audio"
+  },
+  {
+    "file": "sfx/ui-select.mp3",
+    "purpose": "Menü-Auswahl (leises, warmes Bestätigen)",
+    "source": "Kenney \"Interface Sounds\" – confirmation_001.ogg (getrimmt, Lautheit angepasst, MP3)",
+    "author": "Kenney (www.kenney.nl)",
+    "license": "CC0 1.0 (Public Domain)",
+    "url": "https://kenney.nl/assets/interface-sounds"
+  },
+  {
+    "file": "sfx/whoosh.mp3",
+    "purpose": "Folienwechsel (weicher Luft-Whoosh)",
+    "source": "OpenGameArt \"Air Woosh Move\" – air_move.wav (auf ca. 1 s gekürzt mit Ausblendung, Tiefpass 7 kHz, Lautheit angepasst, MP3)",
+    "author": "Almitory",
+    "license": "CC0 1.0 (Public Domain)",
+    "url": "https://opengameart.org/content/air-woosh-move"
+  },
+  {
+    "file": "music/loop.mp3",
+    "purpose": "Ruhige Hintergrundmusik (8-Bit-Bossa-Nova im Fahrstuhl-Stil, loopbar)",
+    "source": "OpenGameArt \"Bossa Nova\" – 8bit Bossa.mp3 (auf den 32-Takt-Loop zugeschnitten, 2x hintereinander = ca. 1:59, auf -24 LUFS normalisiert, MP3 128 kbit/s)",
+    "author": "Joth",
+    "license": "CC0 1.0 (Public Domain)",
+    "url": "https://opengameart.org/content/bossa-nova"
+  }
+]
